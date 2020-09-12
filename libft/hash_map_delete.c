@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_hash_map_delete.c                               :+:      :+:    :+:   */
+/*   hash_map_delete.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 16:47:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 17:08:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/12 17:35:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "hash_map.h"
+#include "hash_map_utils.h"
 
 /*
 ** Deletes an element in a hash table, freeing its memory.
@@ -19,8 +20,9 @@
 ** node of curr.
 */
 
-static void			hash_map_find_and_null_node(int key,
-					t_hash_node *prev, t_hash_node *curr, t_hash_node *next)
+t_hash_node			*hash_map_find_and_null_node(int key,
+					t_hash_node *prev, t_hash_node *curr,
+					t_hash_node *next)
 {
 	while (curr)
 	{
@@ -28,16 +30,12 @@ static void			hash_map_find_and_null_node(int key,
 		{
 			if (next == NULL)
 			{
-				free(curr);
-				curr = NULL;
 				if (prev != NULL)
 					prev->next = NULL;
-				return ;
+				return (curr);
 			}
-			free(curr);
-			curr = NULL;
 			prev->next = next;
-			return ;
+			return (curr);
 		}
 		prev = curr;
 		curr = curr->next;
@@ -61,18 +59,9 @@ void				hash_map_delete(t_hash_table *table, int key)
 	curr = table->list[pos];
 	prev = NULL;
 	next = NULL;
-	hash_map_find_and_null_node(key, prev, curr, next);
-}
-
-/*
-** Destroy entire hash table freeing its memory.
-*/
-
-void				hash_map_destroy(t_hash_table *table)
-{
-	hash_map_clear(table);
-	free(table->list);
-	free(table);
+	curr = hash_map_find_and_null_node(key, prev, curr, next);
+	free(curr);
+	curr = NULL;
 }
 
 /*
@@ -98,4 +87,15 @@ void				hash_map_clear(t_hash_table *table)
 		}
 		table->list[i] = NULL;
 	}
+}
+
+/*
+** Destroy entire hash table freeing its memory.
+*/
+
+void				hash_map_destroy(t_hash_table *table)
+{
+	hash_map_clear(table);
+	free(table->list);
+	free(table);
 }

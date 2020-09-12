@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 17:13:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/12 17:35:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
+
+# include "hash_map.h"
 
 typedef enum	e_bool
 {
@@ -84,21 +86,6 @@ typedef union	u_float_dissector_ld {
 	long double			f;
 	t_float_bits_ld		b;
 }				t_float_dissector_ld;
-
-typedef struct	s_hash_node t_hash_node;
-
-struct			s_hash_node
-{
-	int			key;
-	void		*val;
-	t_hash_node	*next;
-};
-
-typedef struct	s_hash_table
-{
-	int			size;
-	t_hash_node	**list;
-}				t_hash_table;
 
 int				ft_isalnum(int c);
 int				ft_isalpha(int c);
@@ -211,28 +198,5 @@ char			*ft_itoa_base_u64(uint64_t nb, uint64_t base);
 int				ft_dprintf(int fd, const char *format, ...);
 int				ft_sprintf(char *str, const char *format, ...);
 int				ft_printf(const char *format, ...);
-
-/*
-** Hash map / Dictionary / Hash table (whatever you want to call it).
-** Usage:
-** t_hash_table table = hash_map_create(50);
-** t_rgb *color = malloc(sizeof(t_rgb));
-** color->r = 5;
-** color->g = 20;
-** color->b = 25;
-** hash_table_add(table, 15, (void*)color);
-** t_rgb *ref = hash_map_get(table, 15);
-** // NULL if not found
-** // Rest are convenience functions for clearing, deleting values & destroying
-** // hash table.
-*/
-
-void			hash_map_delete(t_hash_table *table, int key);
-void			hash_map_clear(t_hash_table *table);
-void			hash_map_destroy(t_hash_table *table);
-t_hash_table	*hash_map_create(int size);
-int				hash_map_hash(t_hash_table *table, int key);
-void			*hash_map_get(t_hash_table *table, int key);
-void			hash_map_add(t_hash_table *table, int key, void *val);
 
 #endif

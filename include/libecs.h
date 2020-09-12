@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 19:13:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/12 20:21:49 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct			s_system
 typedef struct			s_world
 {
 	uint64_t			max_entities;
+	uint64_t			num_entities;
 	uint64_t			*entity_masks;
 	t_entities			entities;
 	uint64_t			next_free_entity_index;

@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/12 15:33:13 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/12 19:16:12 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,10 @@ LIBFT = ./libft
 DIR_SRC = ./
 DIR_TESTS = ./tests
 DIR_OBJ = temp
-SOURCES = entity.c
+SOURCES = entities.c \
+			components.c \
+			systems.c \
+			world.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))

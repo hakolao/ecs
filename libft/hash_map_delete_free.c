@@ -6,12 +6,12 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 17:25:46 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 21:13:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 22:51:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash_map.h"
-#include "hash_map_utils.h"
+#include "ft_printf.h"
 
 /*
 ** Delete a t_hash_node in a hash map if found.
@@ -21,18 +21,24 @@
 void				hash_map_delete_free(t_hash_table *table, int key)
 {
 	int			pos;
-	t_hash_node	*curr;
-	t_hash_node	*next;
-	t_hash_node	*prev;
+	t_hash_node	**curr;
+	t_hash_node	*temp;
 
 	pos = hash_map_hash(table, key);
-	curr = table->list[pos];
-	prev = NULL;
-	next = NULL;
-	curr = hash_map_find_and_null_node(key, prev, curr, next);
-	free(curr->val);
-	free(curr);
-	curr = NULL;
+	curr = &table->list[pos];
+	while (*curr)
+	{
+		temp = *curr;
+		if (temp->key == key)
+		{
+			*curr = temp->next;
+			free(temp->val);
+			free(temp);
+			break ;
+		}
+		else
+			curr = &(*curr)->next;
+	}
 }
 
 /*

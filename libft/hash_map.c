@@ -6,12 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:53:35 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 19:57:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 22:38:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash_map.h"
-#include "hash_map_utils.h"
 #include "ft_printf.h"
 
 /*
@@ -93,12 +92,10 @@ void				hash_map_add(t_hash_table *table, int key, void *val)
 void				*hash_map_get(t_hash_table *table, int key)
 {
 	int			pos;
-	t_hash_node	*list;
 	t_hash_node	*temp;
 
 	pos = hash_map_hash(table, key);
-	list = table->list[pos];
-	temp = list;
+	temp = table->list[pos];
 	while (temp)
 	{
 		if (temp->key == key)

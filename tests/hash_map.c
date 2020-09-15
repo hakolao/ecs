@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:39:09 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 21:16:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 22:54:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,30 @@ const char		*test_hash_map_get(void)
 	hash_map_add(hash_map, key, (void*)"an automat");
 	oh_assert("Hash map get is not correct",
 		ft_strequ((char*)hash_map_get(hash_map, key), "an automat"));
+	hash_map_destroy(hash_map);
+	return (0);
+}
+
+
+const char		*test_hash_map_delete(void)
+{
+	t_hash_table			*hash_map;
+	int						size;
+	int						key1;
+	int						key2;
+
+	size = 128;
+	hash_map = hash_map_create(size);
+	key1 = 1;
+	hash_map_add(hash_map, key1, ft_strdup("an aristocrat"));
+	key2 = 2;
+	hash_map_add(hash_map, key2, ft_strdup("an automat"));
+	hash_map_delete_free(hash_map, key1);
+	oh_assert("Hash map delete1 is not correct",
+		hash_map_get(hash_map, key1) == NULL);
+	hash_map_delete_free(hash_map, key2);
+	oh_assert("Hash map delete2 is not correct",
+		hash_map_get(hash_map, key2) == NULL);
 	hash_map_destroy(hash_map);
 	return (0);
 }

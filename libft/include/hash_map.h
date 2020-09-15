@@ -6,14 +6,14 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 17:27:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 19:51:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 22:48:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HASH_MAP_H
 # define HASH_MAP_H
 
-#include <stdlib.h>
+# include <stdlib.h>
 
 typedef struct	s_hash_node t_hash_node;
 

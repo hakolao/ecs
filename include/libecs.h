@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 19:38:47 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 20:58:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define LIBECS_H
 
 # include "libft.h"
-# include <cstdint>
 
 /*
 ** 64 (max number of bits in uint64_t (for bitmasks))
@@ -29,13 +28,7 @@
 #  define ECS_MAX_ENTITY_TYPES 1024
 #  define ECS_MAX_SYSTEMS 1024
 
-
-/*
-** Component is a hash table containing key per entity
-*/
-
-typedef t_hash_table*	t_component;
-typedef t_hash_table*	t_type_mask;
+typedef struct s_world	t_world;
 
 typedef void			(*t_system_handle)(t_world *world);
 
@@ -46,7 +39,7 @@ typedef void			(*t_system_handle)(t_world *world);
 
 typedef struct			s_system
 {
-	const char			*name;
+	uint64_t			system_id;
 	uint64_t			system_index;
 	uint64_t			components_mask;
 	t_system_handle		system_handle_func;
@@ -56,37 +49,43 @@ typedef struct			s_system
 ** World is the core of the ECS library, it contains entities, and maps
 ** relations between entities and components they hold. It also contains
 ** a reference to all possible components that entities have.
+** entities: Bit masks of components belonging to added entities, 0 = Empty
+** freed_entities: Indices of entities that have been removed (free indices)
+** type_masks: Hash map where each key is an index of a component.
+** Max number of type masks is ECS_MAX_COMPONENTS
 */
 
-typedef struct			s_world
+struct			s_world
 {
+	char				*name;
 	uint64_t			max_entities;
 	uint64_t			num_entities;
 	uint64_t			*entities;
+	int64_t				*freed_entities;
 	uint64_t			next_free_entity_index;
 	int64_t				current_entity_index;
-	t_type_mask			*type_masks[ECS_MAX_COMPONENTS];
-	uint64_t			type_ids[ECS_MAX_ENTITY_TYPES];
-	t_component			component_list[ECS_MAX_COMPONENTS];
+	t_hash_table		*component_list[ECS_MAX_COMPONENTS];
+	uint64_t			num_components;
+	t_hash_table		*type_masks;
 	t_system			systems[ECS_MAX_SYSTEMS];
-	uint64_t			next_free_system_index;
-}						t_world;
+	uint64_t			num_systems;
+};
 
 /*
 ** World init & destroy
 */
 
 t_world					*world_create(const char *name, uint64_t max_entities);
-t_world					*world_destroy(t_world *world);
+void					world_destroy(t_world *world);
 
 /*
 ** Components
 */
 
 void					world_component_add(t_world *world,
-						t_component *parts);
+						t_hash_table *component);
 void					world_component_remove(t_world *world,
-						t_component *parts);
+						t_hash_table *component);
 
 /*
 ** Entities
@@ -98,9 +97,9 @@ void					world_entity_component_add(t_world *world,
 void					world_entity_remove(t_world *world, uint64_t entity);
 void					world_entity_component_remove(t_world *world,
 						uint64_t entity, uint64_t component);
-bool					world_entity_valid(t_world *world,
+t_bool					world_entity_valid(t_world *world,
 						uint64_t entity);
-bool					world_entity_contains(t_world *world, uint64_t entity,
+t_bool					world_entity_contains(t_world *world, uint64_t entity,
 						uint64_t components);
 
 /*

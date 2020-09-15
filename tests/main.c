@@ -6,18 +6,18 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 15:30:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:56:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mu_test.h"
+#include "oh_test.h"
 #include "tests.h"
 
 int tests_run = 0;
 t_test_state test_states[MAX_TESTS];
 
 static void all_tests() {
-	// mu_run_test(test_func);
+	oh_run_test(test_hash_map_create);
 }
 
 int main(void) {

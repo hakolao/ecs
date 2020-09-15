@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:58:24 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 15:23:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:56:21 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mu_test.h"
+#include "oh_test.h"
 
 t_test_state	test_state_create(t_bool success, const char *result, int id)
 {

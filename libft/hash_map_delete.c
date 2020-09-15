@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 16:47:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 17:35:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:55:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_hash_node			*hash_map_find_and_null_node(int key,
 		if (curr)
 			next = curr->next;
 	}
+	return (NULL);
 }
 
 /*
@@ -60,8 +61,11 @@ void				hash_map_delete(t_hash_table *table, int key)
 	prev = NULL;
 	next = NULL;
 	curr = hash_map_find_and_null_node(key, prev, curr, next);
-	free(curr);
-	curr = NULL;
+	if (curr != NULL)
+	{
+		free(curr);
+		curr = NULL;
+	}
 }
 
 /*
@@ -70,7 +74,7 @@ void				hash_map_delete(t_hash_table *table, int key)
 
 void				hash_map_clear(t_hash_table *table)
 {
-	size_t		i;
+	int			i;
 	t_hash_node	*temp;
 	t_hash_node	*curr;
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 23:21:38 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 23:45:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void					world_destroy(t_world *world);
 */
 
 void					world_component_add(t_world *world,
-						t_hash_table *component);
+						uint64_t component);
 void					world_component_remove(t_world *world,
-						t_hash_table *component);
+						uint64_t component);
 
 /*
 ** Entities

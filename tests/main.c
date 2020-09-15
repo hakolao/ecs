@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 22:59:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 23:24:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void all_tests() {
 	oh_run_test(test_hash_map_get);
 	oh_run_test(test_hash_map_delete);
 	oh_run_test(test_world_create);
+	oh_run_test(test_world_system_add);
+	oh_run_test(test_world_system_remove);
 }
 
 int main(void) {

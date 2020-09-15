@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/12 20:21:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 19:38:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBECS_H
 
 # include "libft.h"
+# include <cstdint>
 
 /*
 ** 64 (max number of bits in uint64_t (for bitmasks))
@@ -25,12 +26,9 @@
 ** Redefine these if you wish more capacity for entity types & systems
 */
 
-# ifndef ECS_MAX_ENTITY_TYPES
 #  define ECS_MAX_ENTITY_TYPES 1024
-# endif
-# ifndef ECS_MAX_SYSTEMS
 #  define ECS_MAX_SYSTEMS 1024
-# endif
+
 
 /*
 ** Component is a hash table containing key per entity
@@ -64,14 +62,13 @@ typedef struct			s_world
 {
 	uint64_t			max_entities;
 	uint64_t			num_entities;
-	uint64_t			*entity_masks;
-	t_entities			entities;
+	uint64_t			*entities;
 	uint64_t			next_free_entity_index;
 	int64_t				current_entity_index;
 	t_type_mask			*type_masks[ECS_MAX_COMPONENTS];
 	uint64_t			type_ids[ECS_MAX_ENTITY_TYPES];
 	t_component			component_list[ECS_MAX_COMPONENTS];
-	t_system			systems[MAX_SYSTEMS];
+	t_system			systems[ECS_MAX_SYSTEMS];
 	uint64_t			next_free_system_index;
 }						t_world;
 

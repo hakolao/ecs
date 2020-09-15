@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 17:25:46 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 19:55:22 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/15 21:13:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void				hash_map_delete_free(t_hash_table *table, int key)
 }
 
 /*
-** Clear elements inside hashmap, without freeing table memory.
-** Also frees values. If value(s) has not been malloced, a crash may occur.
+** Clear elements inside hashmap freeing also table values' memory.
+** If value(s) has not been malloced, a crash may occur.
 */
 
 void				hash_map_clear_free(t_hash_table *table)

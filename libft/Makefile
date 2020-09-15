@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 14:43:04 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/12 17:36:10 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/15 23:01:56 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,9 +126,9 @@ SOURCES = ft_atoi.c \
 		ft_dtoa/big_int_pow.c \
 		ft_dtoa/big_int_shift.c \
 		ft_dtoa/big_int_utils.c \
-		hash_map.c \
-		hash_map_delete.c \
-		hash_map_delete_free.c \
+		hash_map/hash_map.c \
+		hash_map/hash_map_delete.c \
+		hash_map/hash_map_delete_free.c \
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))
@@ -144,6 +144,7 @@ $(DIR_OBJ):
 	@mkdir -p temp
 	@mkdir -p temp/ft_printf
 	@mkdir -p temp/ft_dtoa
+	@mkdir -p temp/hash_map
 
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
 	@$(CC) $(FLAGS) $(INC) -c -o $@ $<

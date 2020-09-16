@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 14:12:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:16:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,26 @@ void					world_component_remove(t_world *world,
 	uint64_t	i;
 	uint64_t	removed;
 	void		*get_res;
-	uint64_t	mapped_index;
 
 	i = -1;
 	removed = 0;
+	get_res = hash_map_get(world->component_to_list, component);
 	if (hash_map_has_key(world->component_to_list, component))
 	{
-		get_res = hash_map_get(world->component_to_list, component);
-		mapped_index = get_res == NULL ? 0 : *(uint64_t*)&get_res;
-	}
-	else
-		return ;
-	while (++i < world->num_components + removed)
-	{
-		if (i == mapped_index)
+		while (++i < world->num_components + removed)
 		{
-			hash_map_destroy_free(world->component_list[i]);
-			hash_map_delete(world->component_to_list, component);
-			world->component_list[i] = NULL;
-			world->next_free_component_index =
-				i < world->next_free_component_index ?
-				i : world->next_free_component_index;
-			world->num_components--;
+			if (i == (get_res == NULL ? 0 : *(uint64_t*)&get_res))
+			{
+				hash_map_destroy_free(world->component_list[i]);
+				hash_map_delete(world->component_to_list, component);
+				world->component_list[i] = NULL;
+				world->next_free_component_index =
+					i < world->next_free_component_index ?
+					i : world->next_free_component_index;
+				world->num_components--;
+			}
+			else if (world->component_list[i] == NULL)
+				removed++;
 		}
-		else if (world->component_list[i] == NULL)
-			removed++;
 	}
 }

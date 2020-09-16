@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 16:16:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 16:36:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,20 @@ void					world_component_remove(t_world *world,
 
 uint64_t				world_entity_add(t_world *world,
 						uint64_t components, ...);
+void					world_entity_remove(t_world *world,
+						uint64_t entity_index);
+uint64_t				world_entity_get(t_world *world,
+						uint64_t entity_index);
 void					world_entity_component_add(t_world *world,
-						uint64_t entity, uint64_t component);
-void					world_entity_remove(t_world *world, uint64_t entity);
+						uint64_t entity_index, uint64_t component);
 void					world_entity_component_remove(t_world *world,
-						uint64_t entity, uint64_t component);
+						uint64_t entity_index, uint64_t component);
 t_bool					world_entity_valid(t_world *world,
-						uint64_t entity);
-t_bool					world_entity_contains(t_world *world, uint64_t entity,
-						uint64_t components);
+						uint64_t entity_index);
+t_bool					world_entity_contains(t_world *world,
+						uint64_t entity_index, uint64_t components);
+void					*world_entity_component_get(t_world *world,
+						uint64_t entity, uint64_t component);
 
 /*
 ** Systems

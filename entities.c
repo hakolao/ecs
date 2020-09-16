@@ -6,21 +6,21 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 17:16:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:06:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 #include "libecs_internal_entity_utils.h"
 
-uint64_t		world_entity_add(t_world *world, uint64_t components, ...)
+int64_t			world_entity_add(t_world *world, uint64_t components, ...)
 {
 	va_list		variables;
 	t_bool		res;
 	
 	va_start(variables, components);
 	res = parse_components(world, components, variables,
-		ECS_MAX_COMPONENTS - 1);
+		world->next_free_entity_index);
 	va_end(variables);
 	if (res == false)
 		return (-1);

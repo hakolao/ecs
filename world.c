@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:30:39 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 16:16:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:12:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,5 @@ void			world_destroy(t_world *world)
 	hash_map_destroy(world->component_to_list);
 	i = -1;
 	while (++i < (int)world->num_components)
-	{
-		hash_map_delete(world->component_list[i], ECS_COMPONENT_SIZE_KEY);
 		hash_map_destroy_free(world->component_list[i]);
-	}
 }

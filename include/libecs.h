@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 16:44:29 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:14:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 # define ECS_NO_COMPONENT 0
 
 # define ECS_EMPTY_ENTITY 0
-
-# define ECS_COMPONENT_SIZE_KEY -1
 
 typedef struct s_world	t_world;
 
@@ -99,8 +97,7 @@ void					world_destroy(t_world *world);
 ** Components
 */
 
-void					world_component_add(t_world *world,
-						uint64_t component, size_t data_size);
+void					world_component_add(t_world *world, uint64_t component);
 void					world_component_remove(t_world *world,
 						uint64_t component);
 
@@ -108,7 +105,7 @@ void					world_component_remove(t_world *world,
 ** Entities
 */
 
-uint64_t				world_entity_add(t_world *world,
+int64_t					world_entity_add(t_world *world,
 						uint64_t components, ...);
 void					world_entity_remove(t_world *world,
 						uint64_t entity_index);
@@ -123,7 +120,7 @@ t_bool					world_entity_valid(t_world *world,
 t_bool					world_entity_contains(t_world *world,
 						uint64_t entity_index, uint64_t components);
 void					*world_entity_component_get(t_world *world,
-						uint64_t entity, uint64_t component);
+						uint64_t entity_index, uint64_t component);
 
 /*
 ** Systems

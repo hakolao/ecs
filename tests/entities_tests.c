@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:06:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:25:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ const char		*test_world_entity_add(void)
 		ft_putchar(((char*)entity_comp)[i]);
 	}
 	
-	ft_printf("%d\n", ((t_position*)entity_comp)->x);
+	ft_printf("%d %d\n", ((t_position*)entity_comp)->x, comp1.size);
 	oh_assert("World component adding fails 1", world->num_components == 2 &&
 		world->num_entities == 1 && entity_index == 0 &&
 		world->next_free_entity_index == 1 &&
@@ -56,6 +56,8 @@ const char		*test_world_entity_add(void)
 		world->next_free_entity_index == 2 &&
 		((t_velocity*)entity_comp)->x == 2.5 &&
 		((t_velocity*)entity_comp)->y == 1.9);
+	free(comp1.data);
+	free(comp2.data);
 	world_destroy(world);
 	return (0);
 }

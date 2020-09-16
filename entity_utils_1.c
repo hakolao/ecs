@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:14:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:23:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ t_bool			parse_components(t_world *world, uint64_t components,
 				world_component_add(world, component_mask(components, shift));
 			component_index = get_component_list_index(world,
 				component_mask(components, shift));
-			if (!(component_data = malloc(val.size)) && ft_dprintf(2,
-				"Failed to malloc size for component when adding\n"))
+			if (!(component_data = malloc(sizeof(char) * val.size)) &&
+				ft_dprintf(2, "Failed to malloc component for entity\n"))
 				return (false);
 			ft_printf("Adding size: %d to component_index: %d data: %p\n",
 				val.size, component_index, component_data);

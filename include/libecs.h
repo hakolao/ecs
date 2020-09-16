@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:14:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 18:20:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct			s_system
 typedef struct			s_component
 {
 	size_t				size;
-	void				*data;
+	char				*data;
 }						t_component;
 
 /*

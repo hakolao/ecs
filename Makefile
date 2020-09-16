@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/12 19:16:12 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/16 17:14:13 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ DIR_SRC = ./
 DIR_TESTS = ./tests
 DIR_OBJ = temp
 SOURCES = entities.c \
+			entity_utils_1.c \
+			entity_utils_2.c \
 			components.c \
 			systems.c \
 			world.c

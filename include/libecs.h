@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 13:40:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:55:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define ECS_SYSTEM_EMPTY UINT64_MAX
 
 # define ECS_NO_COMPONENT 0
+
+# define ECS_COMPONENT_DATA_BANK_KEY -1
 
 typedef struct s_world	t_world;
 
@@ -66,7 +68,6 @@ struct			s_world
 	uint64_t			*entities;
 	int64_t				*freed_entities;
 	uint64_t			next_free_entity_index;
-	int64_t				current_entity_index;
 	t_hash_table		*component_list[ECS_MAX_COMPONENTS];
 	uint64_t			next_free_component_index;
 	t_hash_table		*component_to_list;
@@ -89,7 +90,7 @@ void					world_destroy(t_world *world);
 */
 
 void					world_component_add(t_world *world,
-						uint64_t component);
+						uint64_t component, void *component_data);
 void					world_component_remove(t_world *world,
 						uint64_t component);
 

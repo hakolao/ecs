@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:30:39 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 14:12:38 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:28:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_world			*world_create(const char *name, uint64_t max_entities)
 	world->max_entities = max_entities;
 	world->num_entities = 0;
 	world->next_free_entity_index = 0;
-	world->current_entity_index = -1;
 	ft_memset(world->component_list, 0,
 		sizeof(t_hash_table*) * ECS_MAX_COMPONENTS);
 	world->next_free_component_index = 0;

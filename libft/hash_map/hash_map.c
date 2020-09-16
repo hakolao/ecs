@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:53:35 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 22:38:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:06:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,9 @@ void				hash_map_add(t_hash_table *table, int key, void *val)
 
 void				*hash_map_get(t_hash_table *table, int key)
 {
-	int			pos;
 	t_hash_node	*temp;
 
-	pos = hash_map_hash(table, key);
-	temp = table->list[pos];
+	temp = table->list[hash_map_hash(table, key)];
 	while (temp)
 	{
 		if (temp->key == key)
@@ -103,4 +101,22 @@ void				*hash_map_get(t_hash_table *table, int key)
 		temp = temp->next;
 	}
 	return (NULL);
+}
+
+/*
+** Retrieve a value from the hash table. If value is not found, return NULL.
+*/
+
+t_bool				hash_map_has_key(t_hash_table *table, int key)
+{
+	t_hash_node	*temp;
+
+	temp = table->list[hash_map_hash(table, key)];
+	while (temp)
+	{
+		if (temp->key == key)
+			return (true);
+		temp = temp->next;
+	}
+	return (false);
 }

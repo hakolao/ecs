@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hash_map.c                                         :+:      :+:    :+:   */
+/*   hash_map_tests.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:39:09 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 22:54:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:07:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,26 @@ const char		*test_hash_map_delete(void)
 	hash_map_delete_free(hash_map, key2);
 	oh_assert("Hash map delete2 is not correct",
 		hash_map_get(hash_map, key2) == NULL);
+	hash_map_destroy(hash_map);
+	return (0);
+}
+
+const char		*test_hash_map_has_key(void)
+{
+	t_hash_table	*hash_map;
+	int				size;
+	int				key;
+	int				hashed_key;
+
+	size = 128;
+	hash_map = hash_map_create(size);
+	key = (int)"okko";
+	hashed_key = hash_map_hash(hash_map, key);
+	hash_map_add(hash_map, key, (void*)"an aristocrat");
+	oh_assert("Hash has key is not correct",
+		hash_map_has_key(hash_map, key) == true);
+	oh_assert("Hash has key is not correct",
+		hash_map_has_key(hash_map, (int)"lol") == false);
 	hash_map_destroy(hash_map);
 	return (0);
 }

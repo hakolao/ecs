@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 23:45:41 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 13:40:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ struct			s_world
 	int64_t				current_entity_index;
 	t_hash_table		*component_list[ECS_MAX_COMPONENTS];
 	uint64_t			next_free_component_index;
+	t_hash_table		*component_to_list;
 	uint64_t			num_components;
 	t_hash_table		*type_masks;
 	t_system			systems[ECS_MAX_SYSTEMS];

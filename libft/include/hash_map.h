@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 17:27:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 22:48:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:06:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define HASH_MAP_H
 
 # include <stdlib.h>
+# include "t_bool.h"
 
 typedef struct	s_hash_node t_hash_node;
 
@@ -57,5 +58,6 @@ t_hash_table	*hash_map_create(int size);
 int				hash_map_hash(t_hash_table *table, int key);
 void			*hash_map_get(t_hash_table *table, int key);
 void			hash_map_add(t_hash_table *table, int key, void *val);
+t_bool			hash_map_has_key(t_hash_table *table, int key);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 23:17:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 14:05:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
-
+# include "t_bool.h"
 # include "hash_map.h"
-
-typedef enum	e_bool
-{
-	false,
-	true
-}				t_bool;
 
 typedef struct	s_list
 {

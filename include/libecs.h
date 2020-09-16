@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 15:32:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 16:16:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ typedef struct			s_system
 	t_system_handle		system_handle_func;
 }						t_system;
 
+typedef struct			s_component
+{
+	size_t				size;
+	void				*data;
+}						t_component;
+
 /*
 ** World is the core of the ECS library, it contains entities, and maps
 ** relations between entities and components they hold. It also contains
@@ -67,8 +73,9 @@ struct			s_world
 	uint64_t			max_entities;
 	uint64_t			num_entities;
 	uint64_t			*entities;
-	int64_t				*freed_entities;
+	int64_t				*vacant_entities;
 	uint64_t			next_free_entity_index;
+	int64_t				next_vacant_entity_index;
 	t_hash_table		*component_list[ECS_MAX_COMPONENTS];
 	uint64_t			next_free_component_index;
 	t_hash_table		*component_to_list;

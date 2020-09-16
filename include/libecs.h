@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 16:36:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 16:44:29 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define ECS_SYSTEM_EMPTY UINT64_MAX
 
 # define ECS_NO_COMPONENT 0
+
+# define ECS_EMPTY_ENTITY 0
 
 # define ECS_COMPONENT_SIZE_KEY -1
 
@@ -112,8 +114,8 @@ void					world_entity_remove(t_world *world,
 						uint64_t entity_index);
 uint64_t				world_entity_get(t_world *world,
 						uint64_t entity_index);
-void					world_entity_component_add(t_world *world,
-						uint64_t entity_index, uint64_t component);
+void					world_entity_components_add(t_world *world,
+						uint64_t entity_index, uint64_t component, ...);
 void					world_entity_component_remove(t_world *world,
 						uint64_t entity_index, uint64_t component);
 t_bool					world_entity_valid(t_world *world,

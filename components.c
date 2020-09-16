@@ -6,14 +6,14 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 15:04:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 15:36:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 
 static t_bool			is_valid_component_data(t_world *world,
-						uint64_t component, void *component_data)
+						uint64_t component)
 {
 	void		*get_res;
 	uint64_t	mapped_index;
@@ -26,25 +26,22 @@ static t_bool			is_valid_component_data(t_world *world,
 		else
 			mapped_index = 0;
 		if (world->component_list[mapped_index] != NULL)
-		{
-			free(component_data);
 			return (0);
-		}
 	}
 	return (1);
 }
 
 void					world_component_add(t_world *world,
-						uint64_t component, void *component_data)
+						uint64_t component, size_t data_size)
 {
 	uint64_t	next_free_index;
 
-	if (!is_valid_component_data(world, component, component_data))
+	if (!is_valid_component_data(world, component))
 		return ;
 	world->component_list[world->next_free_component_index] =
 		hash_map_create(world->max_entities);
 	hash_map_add(world->component_list[world->next_free_component_index],
-		ECS_COMPONENT_DATA_BANK_KEY, component_data);
+		ECS_COMPONENT_SIZE_KEY, (void*)data_size);
 	hash_map_add(world->component_to_list, component,
 		(void*)world->next_free_component_index);
 	next_free_index = world->next_free_component_index + 1;
@@ -71,6 +68,8 @@ void					world_component_remove(t_world *world,
 		{
 			if (i == (get_res == NULL ? 0 : *(uint64_t*)&get_res))
 			{
+				hash_map_delete(world->component_list[i],
+					ECS_COMPONENT_SIZE_KEY);
 				hash_map_destroy_free(world->component_list[i]);
 				hash_map_delete(world->component_to_list, component);
 				world->component_list[i] = NULL;

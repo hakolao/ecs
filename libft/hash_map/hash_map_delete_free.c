@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 17:25:46 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/15 22:51:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 15:43:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void				hash_map_delete_free(t_hash_table *table, int key)
 			*curr = temp->next;
 			free(temp->val);
 			free(temp);
+			temp = NULL;
 			break ;
 		}
 		else
@@ -50,16 +51,16 @@ void				hash_map_clear_free(t_hash_table *table)
 {
 	int			i;
 	t_hash_node	*temp;
-	t_hash_node	*curr;
+	t_hash_node	**curr;
 
 	i = -1;
 	while (++i < table->size)
 	{
-		curr = table->list[i];
-		while (curr)
+		curr = &table->list[i];
+		while (*curr)
 		{
-			temp = curr;
-			curr = curr->next;
+			temp = *curr;
+			*curr = temp->next;
 			free(temp->val);
 			free(temp);
 			temp = NULL;

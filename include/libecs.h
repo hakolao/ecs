@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 14:55:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/16 15:32:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBECS_H
 
 # include "libft.h"
+# include <stdarg.h>
 
 /*
 ** 64 (max number of bits in uint64_t (for bitmasks))
@@ -32,7 +33,7 @@
 
 # define ECS_NO_COMPONENT 0
 
-# define ECS_COMPONENT_DATA_BANK_KEY -1
+# define ECS_COMPONENT_SIZE_KEY -1
 
 typedef struct s_world	t_world;
 
@@ -90,7 +91,7 @@ void					world_destroy(t_world *world);
 */
 
 void					world_component_add(t_world *world,
-						uint64_t component, void *component_data);
+						uint64_t component, size_t data_size);
 void					world_component_remove(t_world *world,
 						uint64_t component);
 
@@ -98,7 +99,8 @@ void					world_component_remove(t_world *world,
 ** Entities
 */
 
-uint64_t				world_entity_add(t_world *world, uint64_t components);
+uint64_t				world_entity_add(t_world *world,
+						uint64_t components, ...);
 void					world_entity_component_add(t_world *world,
 						uint64_t entity, uint64_t component);
 void					world_entity_remove(t_world *world, uint64_t entity);

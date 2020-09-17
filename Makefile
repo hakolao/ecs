@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/16 17:14:13 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/17 18:30:34 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,14 +39,39 @@ $(DIR_OBJ):
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
 	@$(CC) $(FLAGS) $(INCLUDES) -c -o $@ $<
 
-TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)
+# Tests
 
+TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)
 test: all
 	@make -C $(LIBFT)
 	$(CC) -o test_run $(TEST_SRCS) -L$(LIBFT) -lft $(FLAGS) $(INCLUDES) $(NAME)
 	./test_run
 	@/bin/rm -f main.o
 	@/bin/rm -f test_run
+	@make fclean
+	@make -C $(LIBFT) fclean
+
+# Demo
+
+DIR_DEMO = ./demo
+DEMO_SRCS =$(wildcard $(DIR_DEMO)/*.c)
+LIBSDL2 = $(DIR_DEMO)/SDL2
+DEMO_FLAGS = -rpath $(LIBSDL2) \
+				-framework SDL2 -F$(LIBSDL2)/ \
+				-framework SDL2_image -F$(LIBSDL2)/ \
+				-framework SDL2_ttf -F$(LIBSDL2)/ \
+				-L$(LIBFT) -lft
+DEMO_INCLUDES = -I$(DIR_DEMO)/include \
+				-I$(LIBSDL2)/SDL2.framework/Headers \
+				-I$(LIBSDL2)/SDL2_image.framework/Headers \
+				-I$(LIBSDL2)/SDL2_ttf.framework/Headers
+demo: all
+	@make -C $(LIBFT)
+	$(CC) -o demo_run $(DEMO_SRCS) \
+		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
+	./demo_run
+	@/bin/rm -f main.o
+	@/bin/rm -f demo_run
 	@make fclean
 	@make -C $(LIBFT) fclean
 

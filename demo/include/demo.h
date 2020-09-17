@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:43:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:54:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct				s_window
 typedef struct				s_app
 {
 	t_window				*window;
+	uint32_t				fps;
 }							t_app;
 
 /*
@@ -82,7 +83,7 @@ void						render_text(t_app *app, t_text_params params);
 ** Utils
 */
 void						error_check(int test, const char *message);
-void						draw_fps(t_app *app, uint32_t fps);
+void						draw_fps(t_app *app);
 uint32_t					capture_framerate(uint32_t time_since_start);
 uint32_t					get_relative_font_size(t_app *app,
 							uint32_t font_size);

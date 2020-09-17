@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:42:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:56:21 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ uint32_t			capture_framerate(uint32_t time_since_start)
 	return (prev_fps);
 }
 
-void				draw_fps(t_app *app, uint32_t fps)
+void				draw_fps(t_app *app)
 {
 	char	*fps_str;
 
-	if (!(fps_str = ft_itoa_base_u32(fps, 10)))
+	if (!(fps_str = ft_itoa_base_u32(app->fps, 10)))
 		return ;
 	render_text(app, (t_text_params){
 		.text = fps_str, .font = FONT, .blend_ratio = 1.0,
-		.font_size = FONT_SIZE, .xy = (int[2]){111, 111},
-		.text_color = (SDL_Color){0, 0, 0, 255}});
+		.font_size = FONT_SIZE, .xy = (int[2]){5, 5},
+		.text_color = (SDL_Color){255, 0, 0, 255}});
 	ft_strdel(&fps_str);
 }
 

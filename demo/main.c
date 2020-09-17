@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:44:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 18:55:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void			update_frame_buffer(t_app *app)
 	ft_memset(app->window->framebuffer, 255,
 		app->window->width * app->window->height * sizeof (uint32_t));
 	//ToDo: Render whatever you wanna render to framebuffer
+	draw_fps(app);
 }
 
 static void			draw_frame(t_app *app)
@@ -44,7 +45,6 @@ static void			main_loop(t_app *app)
 	SDL_Event	event;
 	t_bool		is_running;
 	uint32_t	time_since_start;
-	uint32_t	fps;
 
 	is_running = true;
 	while (is_running)
@@ -57,8 +57,7 @@ static void			main_loop(t_app *app)
 				is_running = false;
 		}
 		draw_frame(app);
-		fps = capture_framerate(time_since_start);
-		draw_fps(app, fps);
+		app->fps = capture_framerate(time_since_start);
 	}
 }
 
@@ -77,6 +76,7 @@ int					main(void)
 {
 	t_app	app;
 
+	app.fps = 0;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());
 	window_init(&app);

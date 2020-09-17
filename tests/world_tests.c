@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 22:55:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 16:16:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 13:55:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ const char			*test_world_create(void)
 		world->max_entities == 128 && world->component_to_list != NULL);
 	oh_assert("World initialized correctly", world->num_components == 0 &&
 		world->num_entities == 0 && world->num_systems == 0 &&
+		world->num_components == 0 &&
 		world->next_free_component_index == 0 &&
 		world->next_free_entity_index == 0 &&
 		world->next_free_system_index == 0 &&

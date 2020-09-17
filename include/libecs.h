@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:20:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 13:17:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdarg.h>
 
 /*
-** 64 (max number of bits in uint64_t (for bitmasks))
+** 64 (max number of bits in uint64_t (for bitmasks)). Might be unnecessary
+** limitation...
 */
 
 # define ECS_MAX_COMPONENTS 64
@@ -53,18 +54,15 @@ typedef struct			s_system
 
 typedef struct			s_component
 {
+	uint64_t			id;
 	size_t				size;
-	char				*data;
+	void				*data;
 }						t_component;
 
 /*
 ** World is the core of the ECS library, it contains entities, and maps
 ** relations between entities and components they hold. It also contains
 ** a reference to all possible components that entities have.
-** entities: Bit masks of components belonging to added entities, 0 = Empty
-** freed_entities: Indices of entities that have been removed (free indices)
-** type_masks: Hash map where each key is an index of a component.
-** Max number of type masks is ECS_MAX_COMPONENTS
 */
 
 struct			s_world
@@ -80,7 +78,6 @@ struct			s_world
 	uint64_t			next_free_component_index;
 	t_hash_table		*component_to_list;
 	uint64_t			num_components;
-	t_hash_table		*type_masks;
 	t_system			systems[ECS_MAX_SYSTEMS];
 	uint64_t			next_free_system_index;
 	uint64_t			num_systems;
@@ -106,13 +103,13 @@ void					world_component_remove(t_world *world,
 */
 
 int64_t					world_entity_add(t_world *world,
-						uint64_t components, ...);
+						uint64_t num_components, ...);
 void					world_entity_remove(t_world *world,
 						uint64_t entity_index);
 uint64_t				world_entity_get(t_world *world,
 						uint64_t entity_index);
 void					world_entity_components_add(t_world *world,
-						uint64_t entity_index, uint64_t component, ...);
+						uint64_t entity_index, uint64_t num_components, ...);
 void					world_entity_component_remove(t_world *world,
 						uint64_t entity_index, uint64_t component);
 t_bool					world_entity_valid(t_world *world,

@@ -6,27 +6,28 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:06:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 12:49:22 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 #include "libecs_internal_entity_utils.h"
 
-int64_t			world_entity_add(t_world *world, uint64_t components, ...)
+int64_t			world_entity_add(t_world *world, uint64_t num_components, ...)
 {
-	va_list		variables;
-	t_bool		res;
-	
-	va_start(variables, components);
-	res = parse_components(world, components, variables,
+	va_list			variables;
+	uint64_t		entity_mask;
+	int64_t			res;
+
+	va_start(variables, num_components);
+	entity_mask = parse_components(world, num_components, variables,
 		world->next_free_entity_index);
 	va_end(variables);
-	if (res == false)
+	if (entity_mask == false)
 		return (-1);
 	else
 		res = world->next_free_entity_index;
-	world->entities[world->next_free_entity_index] = components;
+	world->entities[world->next_free_entity_index] = entity_mask;
 	if (world->next_vacant_entity_index != -1)
 		world->next_free_entity_index =
 			world->vacant_entities[world->next_vacant_entity_index--];
@@ -61,17 +62,17 @@ void			world_entity_remove(t_world *world, uint64_t entity_index)
 }
 
 void			world_entity_components_add(t_world *world,
-				uint64_t entity_index, uint64_t components, ...)
+				uint64_t entity_index, uint64_t num_components, ...)
 {
 	va_list		variables;
 	uint64_t	entity_mask;
 	t_bool		res;
-	
+
 	if (!world_entity_valid(world, entity_index))
 		return ;
-	va_start(variables, components);
-	entity_mask = components;
-	res = parse_components(world, components, variables, entity_index);
+	va_start(variables, num_components);
+	entity_mask = num_components;
+	res = parse_components(world, num_components, variables, entity_index);
 	va_end(variables);
 }
 
@@ -92,5 +93,5 @@ void			*world_entity_component_get(t_world *world,
 		!hash_map_has_key(world->component_to_list, component))
 		return (NULL);
 	component_index = get_component_list_index(world, component);
-	return (hash_map_get(world->component_list[component_index], entity_index));	
+	return (hash_map_get(world->component_list[component_index], entity_index));
 }

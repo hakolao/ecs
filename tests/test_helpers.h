@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:23:16 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 17:40:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 12:47:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ typedef struct		s_velocity
 
 typedef enum		e_component_id
 {
-	component_empty = 0,
-	component_position = 1,
-	component_velocity = 1 << 1,
+	comp_empty = 0,
+	comp_position = 1,
+	comp_velocity = 1 << 1,
 }					t_component_id;
 
 #endif

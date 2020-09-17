@@ -6,11 +6,20 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 18:13:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 13:52:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
+
+/*
+** https://stackoverflow.com/questions/51094594/
+*/
+
+static t_bool			is_valid_component_id(uint64_t component_id)
+{
+	return (component_id && !(component_id & (component_id - 1)));
+}
 
 static t_bool			is_valid_component_data(t_world *world,
 						uint64_t component)
@@ -18,6 +27,8 @@ static t_bool			is_valid_component_data(t_world *world,
 	void		*get_res;
 	uint64_t	mapped_index;
 
+	if (!is_valid_component_id(component))
+		return (false);
 	if (hash_map_has_key(world->component_to_list, component))
 	{
 		get_res = hash_map_get(world->component_to_list, component);
@@ -26,9 +37,9 @@ static t_bool			is_valid_component_data(t_world *world,
 		else
 			mapped_index = 0;
 		if (world->component_list[mapped_index] != NULL)
-			return (0);
+			return (false);
 	}
-	return (1);
+	return (true);
 }
 
 void					world_component_add(t_world *world,

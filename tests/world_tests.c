@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 22:55:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 13:55:38 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 14:05:52 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ const char			*test_world_create(void)
 		world->next_free_entity_index == 0 &&
 		world->next_free_system_index == 0 &&
 		world->vacant_entities[0] == -1 &&
-		world->next_vacant_entity_index == -1);
+		world->next_vacancy_index == -1);
 	world_destroy(world);
 	return (0);
 }

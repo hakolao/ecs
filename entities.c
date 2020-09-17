@@ -6,35 +6,40 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 12:49:22 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 14:52:52 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 #include "libecs_internal_entity_utils.h"
 
+/*
+**
+*/
+
 int64_t			world_entity_add(t_world *world, uint64_t num_components, ...)
 {
 	va_list			variables;
 	uint64_t		entity_mask;
-	int64_t			res;
+	uint64_t		new_entity_index;
 
+	if (world->next_vacancy_index > -1)
+	{
+		new_entity_index = world->vacant_entities[world->next_vacancy_index];
+		world->vacant_entities[world->next_vacancy_index] = 0;
+		world->next_vacancy_index--;
+	}
+	else
+		new_entity_index = world->next_free_entity_index++;
 	va_start(variables, num_components);
 	entity_mask = parse_components(world, num_components, variables,
-		world->next_free_entity_index);
+		new_entity_index);
 	va_end(variables);
-	if (entity_mask == false)
+	if (entity_mask == false && ft_dprintf(2, "Failed to add entity\n"))
 		return (-1);
-	else
-		res = world->next_free_entity_index;
-	world->entities[world->next_free_entity_index] = entity_mask;
-	if (world->next_vacant_entity_index != -1)
-		world->next_free_entity_index =
-			world->vacant_entities[world->next_vacant_entity_index--];
-	else
-		world->next_free_entity_index++;
+	world->entities[new_entity_index] = entity_mask;
 	world->num_entities++;
-	return (res);
+	return (new_entity_index);
 }
 
 void			world_entity_remove(t_world *world, uint64_t entity_index)
@@ -56,8 +61,8 @@ void			world_entity_remove(t_world *world, uint64_t entity_index)
 		shift--;
 	}
 	world->entities[entity_index] = ECS_EMPTY_ENTITY;
-	world->next_vacant_entity_index++;
-	world->vacant_entities[world->next_vacant_entity_index] = entity_index;
+	world->next_vacancy_index++;
+	world->vacant_entities[world->next_vacancy_index] = entity_index;
 	world->num_entities--;
 }
 

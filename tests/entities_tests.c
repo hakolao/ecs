@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 13:58:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 14:54:50 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,62 @@ const char			*test_world_entity_add(void)
 	entity_index = add_mock_entity(world);
 	entity_comp = world_entity_component_get(world, entity_index,
 		comp_position);
-	oh_assert("World component adding fails 1", world->num_components == 2 &&
+	oh_assert("World entity adding fails 1", world->num_components == 2 &&
 		world->num_entities == 1 && entity_index == 0 &&
 		world->next_free_entity_index == 1 &&
 		((t_position*)entity_comp)->x == 5 &&
 		((t_position*)entity_comp)->y == 10);
+
 	entity_index = add_mock_entity(world);
 	entity_comp =
 		world_entity_component_get(world, entity_index, comp_velocity);
-	oh_assert("World component adding fails 2", world->num_components == 2 &&
+	oh_assert("World entity adding fails 2", world->num_components == 2 &&
 		world->num_entities == 2 && entity_index == 1 &&
 		world->next_free_entity_index == 2 &&
 		((t_velocity*)entity_comp)->x == 1.0 &&
 		((t_velocity*)entity_comp)->y == 2.0);
+	world_destroy(world);
+	return (0);
+}
+
+/*
+** entities: 1, 2, 3, 0, 0, 0...
+** remove index 1 (2):
+** entities: 1, 0, 3, 0, 0, 0...
+** vacant_entities: 1, 0, 0, 0...
+** next_vacancy_index: 0
+** add entity from vacancy array (at index 0)
+** entities: 1, new, 3, 0, 0, 0...
+** vacant_entities: 0, 0, 0...
+*/
+
+const char			*test_world_entity_remove(void)
+{
+	t_world		*world;
+	int64_t		entity_index1;
+	int64_t		entity_index2;
+	int64_t		entity_index3;
+
+	world = world_create("Test", 128);
+	entity_index1 = add_mock_entity(world);
+	entity_index2 = add_mock_entity(world);
+	entity_index3 = add_mock_entity(world);
+	world_entity_remove(world, entity_index2);
+	oh_assert("World entity removal fails1", world->num_entities == 2 &&
+		world->next_free_entity_index == 3 &&
+		world->next_vacancy_index == 0 &&
+		world->vacant_entities[world->next_vacancy_index] == 1);
+	entity_index2 = add_mock_entity(world);
+	oh_assert("World entity add after removal fails",
+		world->num_entities == 3 && world->next_free_entity_index == 3 &&
+		world->next_vacancy_index == -1 &&
+		world->vacant_entities[world->next_vacancy_index] == 0);
+	world_entity_remove(world, entity_index1);
+	world_entity_remove(world, entity_index2);
+	world_entity_remove(world, entity_index3);
+	oh_assert("World entity remove all fails",
+		world->num_entities == 0 && world->next_free_entity_index == 3 &&
+		world->next_vacancy_index == 2);
 	world_destroy(world);
 	return (0);
 }

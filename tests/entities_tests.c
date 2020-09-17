@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:54:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:27:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ const char			*test_world_entity_component_add(void)
 		&(t_component){.id = comp_foo, .size = sizeof(t_foo),
 		.data = &(t_foo){.bar = 10.00}});
 	entity_comp1 = world_entity_component_get(world, entity_index, comp_color);
-	entity_comp2= world_entity_component_get(world, entity_index, comp_foo);
+	entity_comp2 = world_entity_component_get(world, entity_index, comp_foo);
 	oh_assert("Entity component adding failed", world->num_components == 4 &&
 		((t_color*)entity_comp1)->val == 111 &&
 		((t_foo*)entity_comp2)->bar == 10.00);
@@ -118,6 +118,34 @@ const char			*test_world_entity_component_add(void)
 	oh_assert("Entity component adding by overwriting values failed",
 		world->num_components == 4 && ((t_color*)entity_comp1)->val == 12345 &&
 		((t_foo*)entity_comp2)->bar == 12.00);
+	world_destroy(world);
+	return (0);
+}
+
+const char			*test_world_entity_utils(void)
+{
+	t_world		*world;
+	int64_t		entity_index;
+
+	world = world_create("Test", 128);
+	entity_index = add_mock_entity(world);
+	world_entity_components_add(world, entity_index, 2, &(t_component){.id =
+		comp_color, .size = sizeof(t_color), .data = &(t_color){.val = 111}},
+		&(t_component){.id = comp_foo, .size = sizeof(t_foo),
+		.data = &(t_foo){.bar = 10.00}});
+	world_entity_components_remove(world, entity_index, comp_color);
+	oh_assert("World entity component removal failed 1",
+		world->entities[entity_index] ==
+		(comp_foo | comp_position | comp_velocity) && world->num_entities == 1);
+	world_entity_components_remove(world, entity_index, comp_foo);
+	oh_assert("World entity component removal failed 2",
+		world->entities[entity_index] == (comp_position | comp_velocity) &&
+		world->num_entities == 1);
+	world_entity_components_remove(world, entity_index,
+		comp_velocity | comp_position);
+	oh_assert("World entity component removal failed 3",
+		world->entities[entity_index] == 0 &&
+		world->num_entities == 0);
 	world_destroy(world);
 	return (0);
 }

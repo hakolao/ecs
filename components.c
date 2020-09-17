@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 14:40:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:03:11 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** https://stackoverflow.com/questions/51094594/
 */
 
-static t_bool			is_valid_component_id(uint64_t component_id)
+t_bool					is_valid_component_id(uint64_t component_id)
 {
 	return (component_id && !(component_id & (component_id - 1)));
 }

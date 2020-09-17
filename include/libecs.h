@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 14:05:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:13:27 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ uint64_t				world_entity_get(t_world *world,
 						uint64_t entity_index);
 void					world_entity_components_add(t_world *world,
 						uint64_t entity_index, uint64_t num_components, ...);
-void					world_entity_component_remove(t_world *world,
-						uint64_t entity_index, uint64_t component);
+void					world_entity_components_remove(t_world *world,
+						uint64_t entity_index, uint64_t components_to_remove);
 t_bool					world_entity_valid(t_world *world,
 						uint64_t entity_index);
 t_bool					world_entity_contains(t_world *world,

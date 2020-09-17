@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:17:29 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:14:05 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void all_tests() {
 	oh_run_test(test_world_entity_add);
 	oh_run_test(test_world_entity_remove);
 	oh_run_test(test_world_entity_component_add);
+	oh_run_test(test_world_entity_utils);
 }
 
 int main(void) {

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:43:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 16:27:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,53 @@ void			world_entity_components_add(t_world *world,
 				uint64_t entity_index, uint64_t num_components, ...)
 {
 	va_list		variables;
-	uint64_t	entity_mask;
-	t_bool		res;
+	uint64_t	added_components;
 
 	if (!world_entity_valid(world, entity_index))
 		return ;
 	va_start(variables, num_components);
-	entity_mask = num_components;
-	res = parse_components(world, num_components, variables, entity_index);
+	added_components =
+		parse_components(world, num_components, variables, entity_index);
+	world->entities[entity_index] |= added_components;
 	va_end(variables);
 }
 
-void			world_entity_component_remove(t_world *world,
-				uint64_t entity_index, uint64_t component)
+/*
+** Example of how component removal works:
+** Components to remove 100
+** entity: 1111
+** component 100
+** after 1011
+*/
+
+void			world_entity_components_remove(t_world *world,
+				uint64_t entity_index, uint64_t components_to_remove)
 {
+	uint64_t		entity_components;
+	uint64_t		curr_component;
+	int				shift;
+
 	if (!world_entity_valid(world, entity_index))
 		return ;
-	entity_remove_component(world, entity_index, component);
+	entity_components = world_entity_get(world, entity_index);
+	shift = 0;
+	while (shift < ECS_MAX_COMPONENTS - 1)
+	{
+		curr_component = (1ULL << shift) & components_to_remove;
+		if (curr_component &&
+			world_entity_contains(world, entity_index, curr_component))
+		{
+			entity_remove_component(world, entity_index, curr_component);
+			entity_components ^= curr_component;
+		}
+		shift++;
+	}
+	if (entity_components == 0)
+	{
+		world_entity_remove(world, entity_index);
+		return ;
+	}
+	world->entities[entity_index] = entity_components;
 }
 
 void			*world_entity_component_get(t_world *world,

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:03:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include <stdarg.h>
 
 /*
-** 64 (max number of bits in uint64_t (for bitmasks)). Might be unnecessary
-** limitation...
+** 64 (max number of bits in uint64_t (for bitmasks)).
 */
 
 # define ECS_MAX_COMPONENTS 64

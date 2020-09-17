@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:20:47 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 00:55:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void			update_frame_buffer(t_app *app)
 {
 	ft_memset(app->window->framebuffer, 255,
 		app->window->width * app->window->height * sizeof (uint32_t));
-	//ToDo: Render whatever you wanna render to framebuffer
+	ecs_systems_run_single(app->world, system_render);
 	draw_fps(app);
 }
 
@@ -62,9 +62,11 @@ static void			main_loop(t_app *app)
 				is_running = false;
 		}
 		systems_params_update(app);
-		ecs_systems_run(app->world);
+		ecs_systems_run(app->world, system_move);
 		draw_frame(app);
 		app->delta_time = SDL_GetTicks() - time_since_start;
+		if (app->delta_time > 1000.0 / 32)
+			app->delta_time = 1000 / 32;
 		app->fps = capture_framerate(app->delta_time);
 	}
 }

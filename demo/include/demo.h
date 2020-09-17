@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:20:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 00:56:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,14 @@ typedef enum				e_comp_id
 	comp_render = 1ULL << 2,
 }							t_comp_id;
 
+/*
+** If a system should not be run with other systems, its id should not be 0
+*/
+
 typedef enum				e_system_id
 {
-	system_render,
-	system_move,
+	system_render = 123,
+	system_move = 111
 }							t_system_id;
 
 /*

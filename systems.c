@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:23:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 00:42:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ uint64_t		ecs_system_index(t_ecs_world *world, uint64_t system_id)
 	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
 }
 
-void			ecs_systems_run(t_ecs_world *world)
+void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 {
 	uint64_t	i;
 	uint64_t	entity_index;
@@ -81,22 +81,45 @@ void			ecs_systems_run(t_ecs_world *world)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if (world->systems[i].system_id != ECS_SYSTEM_EMPTY)
-				world->systems[i].system_handle_func(world,
-					world->entities[entity_index]);
+			if ((world->systems[i].system_id & systems) ==
+				world->systems[i].system_id &&
+				world->systems[i].system_id != ECS_SYSTEM_EMPTY &&
+				ecs_world_entity_contains(world->entities[entity_index],
+				world->systems[i].components_mask))
+				world->systems[i].system_handle_func(world, entity_index);
 			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 				removed_systems++;
 		}
 	}
 }
 
+void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
+{
+	uint64_t	entity_index;
+	t_system	system;
+
+	if (world->num_entities == 0 ||
+		!hash_map_has_key(world->system_to_list, system_id))
+		return ;
+	system = world->systems[ecs_system_index(world, system_id)];
+	entity_index = -1;
+	while (++entity_index < world->max_entities)
+	{
+		if (world->entities[entity_index] == 0 &&
+			!ecs_world_entity_contains(world->entities[entity_index],
+				system.components_mask))
+			continue ;
+		system.system_handle_func(world, entity_index);
+	}
+}
+
 void			ecs_system_update_params(t_ecs_world *world,
-				uint64_t system_id, void *params, size_t params_size)
+				uint64_t system_id, void *params)
 {
 	uint64_t	system_index;
 
 	if (!hash_map_has_key(world->system_to_list, system_id))
 		return ;
 	system_index = ecs_system_index(world, system_id);
-	ft_memcpy(&world->systems[system_index].params, params, params_size);
+	world->systems[system_index].params = params;
 }

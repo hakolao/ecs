@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:19:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 00:29:50 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 typedef struct s_ecs_world	t_ecs_world;
 
 typedef void				(*t_system_handle)(t_ecs_world *world,
-							uint64_t entity);
+							uint64_t entity_index);
 
 /*
 ** Components mask holds information on which components belong to the system
@@ -143,10 +143,12 @@ void						ecs_world_system_remove(t_ecs_world *world,
 							uint64_t system_id);
 uint64_t					ecs_system_index(t_ecs_world *world,
 							uint64_t system_id);
-void						ecs_systems_run(t_ecs_world *world);
+void						ecs_systems_run(t_ecs_world *world,
+							uint64_t systems);
 void						ecs_system_update_params(t_ecs_world *world,
-							uint64_t system_id, void *params,
-							size_t params_size);
+							uint64_t system_id, void *params);
+void						ecs_systems_run_single(t_ecs_world *world,
+							uint64_t system_id);
 
 /*
 ** ECS utils

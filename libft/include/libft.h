@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 19:37:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 01:17:50 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ char			*ft_strnjoin(char const *s1, char const *s2,
 				size_t len1, size_t len2);
 double			ft_ceil(double num);
 double			ft_floor(double num);
-int				ft_rand(int seed);
+uint32_t		ft_rand(uint32_t seed);
 char			*ft_itoa(int32_t nb);
 char			*ft_itoa_64(int64_t nb);
 char			*ft_itoa_base_32(int32_t nb, int32_t base);

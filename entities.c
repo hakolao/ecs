@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:47:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,6 @@ void			*ecs_world_entity_component_get(t_ecs_world *world,
 	if (!ecs_world_entity_valid(world, entity_index) ||
 		!hash_map_has_key(world->component_to_list, component))
 		return (NULL);
-	component_index = get_component_list_index(world, component);
+	component_index = ecs_component_index(world, component);
 	return (hash_map_get(world->component_list[component_index], entity_index));
 }

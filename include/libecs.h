@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:30:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:42:02 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void						ecs_world_component_add(t_ecs_world *world,
 							uint64_t component);
 void						ecs_world_component_remove(t_ecs_world *world,
 							uint64_t component);
+uint64_t					ecs_component_index(t_ecs_world *world,
+							uint64_t component_id);
 
 /*
 ** Entities

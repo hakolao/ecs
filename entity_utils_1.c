@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:41:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_bool	add_entity_component_data(t_ecs_world *world, uint64_t entity_inde
 	return (true);
 }
 
-uint64_t		get_component_list_index(t_ecs_world *world, uint64_t component_id)
+uint64_t		ecs_component_index(t_ecs_world *world, uint64_t component_id)
 {
 	void		*get_res;
 
@@ -59,7 +59,7 @@ uint64_t		parse_components(t_ecs_world *world, uint64_t num_components,
 		comp = (t_component*)va_arg(variables, t_component*);
 		if (!hash_map_has_key(world->component_to_list, comp->id))
 			ecs_world_component_add(world, comp->id);
-		component_index = get_component_list_index(world, comp->id);
+		component_index = ecs_component_index(world, comp->id);
 		if (!add_entity_component_data(world, entity_index, comp,
 			component_index))
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 19:08:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 19:49:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
+
+# define MAX_ENTITIES 1024
 
 typedef struct				s_text_params
 {
@@ -57,7 +59,59 @@ typedef struct				s_app
 	t_window				*window;
 	uint32_t				fps;
 	uint32_t				delta_time;
+	t_ecs_world				*world;
 }							t_app;
+
+/*
+** Demo components
+*/
+
+typedef struct				s_position
+{
+	float		x;
+	float		y;
+}							t_position;
+
+typedef struct				s_velocity
+{
+	float		dx;
+	float		dy;
+}							t_velocity;
+
+typedef struct				s_specs
+{
+	uint32_t	color;
+	uint32_t	width;
+	uint32_t	height;
+}							t_specs;
+
+/*
+** Component identifiers, should be powers of 2
+*/
+
+typedef enum				e_comp_id
+{
+	comp_empty = 0,
+	comp_pos = 1,
+	comp_vel = 1 << 1,
+	comp_specs = 1 << 2,
+}							t_comp_id;
+
+typedef enum				e_system_id
+{
+	system_render,
+	system_move,
+}							t_system_id;
+
+/*
+** System
+*/
+void						systems_create(t_ecs_world *world);
+
+/*
+** Entities
+*/
+void						entities_create(t_ecs_world *world);
 
 /*
 ** Window

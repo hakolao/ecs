@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/17 18:30:34 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/17 19:56:23 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,8 @@ clean:
 	@/bin/rm -f $(OBJS)
 	@/bin/rm -rf $(DIR_OBJ)
 	@make -C $(LIBFT) clean
+	@if [ -a demo_run ]; then rm demo_run; fi;
+	@if [ -a test_run ]; then rm test_run; fi;
 
 fclean: clean
 	@/bin/rm -f $(NAME)

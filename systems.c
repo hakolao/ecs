@@ -6,13 +6,13 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 13:27:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 
-void			world_system_add(t_world *world, t_system system)
+void			ecs_world_system_add(t_ecs_world *world, t_system system)
 {
 	uint64_t			next_free_index;
 
@@ -29,7 +29,7 @@ void			world_system_add(t_world *world, t_system system)
 	world->num_systems++;
 }
 
-void			world_system_remove(t_world *world, uint64_t system_id)
+void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 {
 	uint64_t	i;
 	uint64_t	removed;

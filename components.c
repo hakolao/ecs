@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 16:03:11 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_bool					is_valid_component_id(uint64_t component_id)
 	return (component_id && !(component_id & (component_id - 1)));
 }
 
-static t_bool			is_valid_component_data(t_world *world,
+static t_bool			is_valid_component_data(t_ecs_world *world,
 						uint64_t component)
 {
 	void		*get_res;
@@ -42,7 +42,7 @@ static t_bool			is_valid_component_data(t_world *world,
 	return (true);
 }
 
-void					world_component_add(t_world *world,
+void					ecs_world_component_add(t_ecs_world *world,
 						uint64_t component)
 {
 	uint64_t	next_free_index;
@@ -61,7 +61,7 @@ void					world_component_add(t_world *world,
 	world->num_components++;
 }
 
-void					world_component_remove(t_world *world,
+void					ecs_world_component_remove(t_ecs_world *world,
 						uint64_t component)
 {
 	uint64_t	i;

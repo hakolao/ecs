@@ -6,15 +6,15 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:30:39 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 14:05:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 17:03:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 
-t_world			*world_create(const char *name, uint64_t max_entities)
+t_ecs_world			*ecs_world_create(const char *name, uint64_t max_entities)
 {
-	t_world	*world;
+	t_ecs_world	*world;
 
 	if (!(world = malloc(sizeof(*world))) ||
 		!(world->name = ft_strdup(name)) ||
@@ -37,7 +37,7 @@ t_world			*world_create(const char *name, uint64_t max_entities)
 	return (world);
 }
 
-void			world_destroy(t_world *world)
+void			ecs_world_destroy(t_ecs_world *world)
 {
 	int	i;
 	int	removed;

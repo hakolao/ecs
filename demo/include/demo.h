@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:54:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 19:08:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct				s_app
 {
 	t_window				*window;
 	uint32_t				fps;
+	uint32_t				delta_time;
 }							t_app;
 
 /*

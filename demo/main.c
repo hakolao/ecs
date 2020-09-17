@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:55:20 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 19:09:29 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static void			main_loop(t_app *app)
 				is_running = false;
 		}
 		draw_frame(app);
-		app->fps = capture_framerate(time_since_start);
+		app->delta_time = SDL_GetTicks() - time_since_start;
+		app->fps = capture_framerate(app->delta_time);
 	}
 }
 

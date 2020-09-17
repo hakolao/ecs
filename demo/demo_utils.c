@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:56:21 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 19:08:46 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ void				error_check(int test, const char *message)
 	}
 }
 
-uint32_t			capture_framerate(uint32_t time_since_start)
+uint32_t			capture_framerate(uint32_t delta_time)
 {
 	static uint32_t		delta_time_sum;
 	static uint32_t		frames_per_sec;
 	static uint32_t		prev_fps;
-	uint32_t			delta_time;
 
-	delta_time = SDL_GetTicks() - time_since_start;
 	delta_time_sum += delta_time;
 	frames_per_sec++;
 	if (delta_time_sum > 1000.0)

@@ -6,15 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:15:19 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 22:57:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "oh_test.h"
 #include "libecs.h"
 
-static void		mock_system_handle(t_ecs_world *world)
+static void		mock_system_handle(t_ecs_world *world, uint64_t entity)
 {
+	(void)entity;
 	(void)world;
 }
 
@@ -26,6 +27,7 @@ const char		*test_world_system_add(void)
 	system.system_id = 5;
 	system.system_handle_func = mock_system_handle;
 	system.components_mask = ECS_NO_COMPONENT;
+	system.params = NULL;
 	world = ecs_world_create("Test world", 64);
 	ecs_world_system_add(world, system);
 	oh_assert("World system adds wrong 1", world->num_systems == 1 &&
@@ -48,6 +50,7 @@ const char		*test_world_system_remove(void)
 	system.system_id = 5;
 	system.system_handle_func = mock_system_handle;
 	system.components_mask = ECS_NO_COMPONENT;
+	system.params = NULL;
 	world = ecs_world_create("Test world", 64);
 	ecs_world_system_add(world, system);
 	system.system_id = 16;

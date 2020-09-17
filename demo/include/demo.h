@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:11:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:20:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef enum				e_system_id
 ** System
 */
 void						systems_create(t_app *app);
+void						systems_params_update(t_app *app);
 
 /*
 ** Entities

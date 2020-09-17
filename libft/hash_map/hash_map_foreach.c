@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 20:31:08 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:39:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:23:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void				hash_map_foreach(t_hash_table *table, void (*f)(void *val))
 	t_hash_node	**curr;
 	int			i;
 
+	if (!table)
+		return ;
 	i = -1;
 	while (++i < table->size)
 	{

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:19:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ static t_bool			is_valid_component_data(t_ecs_world *world,
 			return (false);
 	}
 	return (true);
+}
+
+t_hash_table			*ecs_component_entities(t_ecs_world *world,
+						uint64_t component_id)
+{
+	if (!hash_map_has_key(world->component_to_list, component_id))
+		return (NULL);
+	return (world->component_list[ecs_component_index(world, component_id)]);
 }
 
 void					ecs_world_component_add(t_ecs_world *world,

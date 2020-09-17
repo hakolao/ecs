@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:53:35 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 14:06:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:16:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void				hash_map_add(t_hash_table *table, int key, void *val)
 	t_hash_node	*temp;
 	t_hash_node	*new_node;
 
+	if (!table)
+		return ;
 	pos = hash_map_hash(table, key);
 	list = table->list[pos];
 	if (!(new_node = malloc(sizeof(t_hash_node))))
@@ -93,6 +95,8 @@ void				*hash_map_get(t_hash_table *table, int key)
 {
 	t_hash_node	*temp;
 
+	if (!table)
+		return (NULL);
 	temp = table->list[hash_map_hash(table, key)];
 	while (temp)
 	{
@@ -111,6 +115,8 @@ t_bool				hash_map_has_key(t_hash_table *table, int key)
 {
 	t_hash_node	*temp;
 
+	if (!table)
+		return (false);
 	temp = table->list[hash_map_hash(table, key)];
 	while (temp)
 	{

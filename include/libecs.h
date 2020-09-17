@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:42:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:19:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@
 
 typedef struct s_ecs_world	t_ecs_world;
 
-typedef void				(*t_system_handle)(t_ecs_world *world);
+typedef void				(*t_system_handle)(t_ecs_world *world,
+							uint64_t entity);
 
 /*
 ** Components mask holds information on which components belong to the system
@@ -51,6 +52,7 @@ typedef struct				s_system
 	uint64_t			system_id;
 	uint64_t			components_mask;
 	t_system_handle		system_handle_func;
+	void				*params;
 }							t_system;
 
 typedef struct				s_component
@@ -103,6 +105,8 @@ void						ecs_world_component_remove(t_ecs_world *world,
 							uint64_t component);
 uint64_t					ecs_component_index(t_ecs_world *world,
 							uint64_t component_id);
+t_hash_table				*ecs_component_entities(t_ecs_world *world,
+							uint64_t component_id);
 
 /*
 ** Entities
@@ -122,8 +126,10 @@ void						ecs_world_entity_components_remove(t_ecs_world
 							uint64_t components_to_remove);
 t_bool						ecs_world_entity_valid(t_ecs_world *world,
 							uint64_t entity_index);
-t_bool						ecs_world_entity_contains(t_ecs_world *world,
+t_bool						ecs_world_entity_at_contains(t_ecs_world *world,
 							uint64_t entity_index, uint64_t components);
+t_bool						ecs_world_entity_contains(uint64_t entity,
+							uint64_t components);
 void						*ecs_world_entity_component_get(t_ecs_world *world,
 							uint64_t entity_index, uint64_t component);
 
@@ -137,6 +143,10 @@ void						ecs_world_system_remove(t_ecs_world *world,
 							uint64_t system_id);
 uint64_t					ecs_system_index(t_ecs_world *world,
 							uint64_t system_id);
+void						ecs_systems_run(t_ecs_world *world);
+void						ecs_system_update_params(t_ecs_world *world,
+							uint64_t system_id, void *params,
+							size_t params_size);
 
 /*
 ** ECS utils

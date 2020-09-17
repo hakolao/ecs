@@ -6,18 +6,15 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:47:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 22:51:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 #include "libecs_internal_entity_utils.h"
 
-/*
-**
-*/
-
-int64_t			ecs_world_entity_add(t_ecs_world *world, uint64_t num_components, ...)
+int64_t			ecs_world_entity_add(t_ecs_world *world,
+				uint64_t num_components, ...)
 {
 	va_list			variables;
 	uint64_t		entity_mask;
@@ -31,6 +28,10 @@ int64_t			ecs_world_entity_add(t_ecs_world *world, uint64_t num_components, ...)
 	}
 	else
 		new_entity_index = world->next_free_entity_index++;
+	if (new_entity_index >= world->max_entities &&
+		ft_dprintf(2, "Entity index %d over max entities %d, entity not added",
+			new_entity_index, world->max_entities))
+		return (-1);
 	va_start(variables, num_components);
 	entity_mask = parse_components(world, num_components, variables,
 		new_entity_index);
@@ -47,7 +48,8 @@ int64_t			ecs_world_entity_add(t_ecs_world *world, uint64_t num_components, ...)
 ** component its index / id is removed from the component_list[component_index]
 */
 
-void			ecs_world_entity_remove(t_ecs_world *world, uint64_t entity_index)
+void			ecs_world_entity_remove(t_ecs_world *world,
+				uint64_t entity_index)
 {
 	uint64_t		entity_components;
 	uint64_t		component_id;
@@ -108,7 +110,7 @@ void			ecs_world_entity_components_remove(t_ecs_world *world,
 	{
 		curr_component = (1ULL << shift) & components_to_remove;
 		if (curr_component &&
-			ecs_world_entity_contains(world, entity_index, curr_component))
+			ecs_world_entity_at_contains(world, entity_index, curr_component))
 		{
 			entity_remove_component(world, entity_index, curr_component);
 			entity_components ^= curr_component;

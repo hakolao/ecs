@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:10:41 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 23:20:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void			main_loop(t_app *app)
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
 		}
+		systems_params_update(app);
+		ecs_systems_run(app->world);
 		draw_frame(app);
 		app->delta_time = SDL_GetTicks() - time_since_start;
 		app->fps = capture_framerate(app->delta_time);

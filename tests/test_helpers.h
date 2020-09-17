@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:23:16 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 14:59:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 15:12:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct		s_velocity
 
 typedef struct		s_color
 {
-	int				rgba[4];
 	int				val;
 }					t_color;
 

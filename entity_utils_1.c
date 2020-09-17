@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:30:21 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 15:55:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static t_bool	add_entity_component_data(t_world *world, uint64_t entity_index,
 				t_component *comp, uint64_t	component_index)
 {
 	void		*component_data;
-	void		**existing_data;
 
 	if (!hash_map_has_key(world->component_list[component_index],
 		entity_index))
@@ -24,18 +23,15 @@ static t_bool	add_entity_component_data(t_world *world, uint64_t entity_index,
 		if (!(component_data = malloc(comp->size)) &&
 			ft_dprintf(2, "Failed to malloc component for entity\n"))
 			return (false);
-		ft_memmove(component_data, comp->data, comp->size);
+		ft_memcpy(component_data, comp->data, comp->size);
 		hash_map_add(world->component_list[component_index],
 			entity_index, component_data);
 	}
 	else
 	{
-		ft_printf("Already had key for entity %d, component %d, moving data instead\n",
-			entity_index, comp->id);
 		component_data = hash_map_get(world->component_list[component_index],
 		entity_index);
-		existing_data = &component_data;
-		ft_memcpy(*existing_data, comp->data, comp->size);
+		ft_memcpy(component_data, comp->data, comp->size);
 	}
 	return (true);
 }

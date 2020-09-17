@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:31:21 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 15:54:49 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,8 @@ const char			*test_world_entity_component_add(void)
 
 	world = world_create("Test", 128);
 	entity_index = add_mock_entity(world);
-	world_entity_components_add(world, entity_index, 2,
-		&(t_component){.id = comp_color, .size = sizeof(t_color),
-		.data = &(t_color){.val = 111}},
+	world_entity_components_add(world, entity_index, 2, &(t_component){.id =
+		comp_color, .size = sizeof(t_color), .data = &(t_color){.val = 111}},
 		&(t_component){.id = comp_foo, .size = sizeof(t_foo),
 		.data = &(t_foo){.bar = 10.00}});
 	entity_comp1 = world_entity_component_get(world, entity_index, comp_color);
@@ -110,17 +109,14 @@ const char			*test_world_entity_component_add(void)
 	oh_assert("Entity component adding failed", world->num_components == 4 &&
 		((t_color*)entity_comp1)->val == 111 &&
 		((t_foo*)entity_comp2)->bar == 10.00);
-	world_entity_components_add(world, entity_index, 2,
-		&(t_component){.id = comp_color, .size = sizeof(t_color),
-		.data = &(t_color){.val = 12345}},
-		&(t_component){.id = comp_velocity, .size = sizeof(t_foo),
+	world_entity_components_add(world, entity_index, 2, &(t_component){.id =
+		comp_color, .size = sizeof(t_color), .data = &(t_color){.val = 12345}},
+		&(t_component){.id = comp_foo, .size = sizeof(t_foo),
 		.data = &(t_foo){.bar = 12.00}});
 	entity_comp1 = world_entity_component_get(world, entity_index, comp_color);
 	entity_comp2 = world_entity_component_get(world, entity_index, comp_foo);
-	ft_printf("((t_foo*)entity_comp2)->bar: %f\n", ((t_foo*)entity_comp2)->bar);
 	oh_assert("Entity component adding by overwriting values failed",
-		world->num_components == 4 &&
-		((t_color*)entity_comp1)->val == 12345 &&
+		world->num_components == 4 && ((t_color*)entity_comp1)->val == 12345 &&
 		((t_foo*)entity_comp2)->bar == 12.00);
 	world_destroy(world);
 	return (0);

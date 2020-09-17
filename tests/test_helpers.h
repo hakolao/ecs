@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:23:16 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 15:12:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 15:53:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct		s_color
 
 typedef struct		s_foo
 {
-	float			bar;
+	double			bar;
 }					t_foo;
 
 typedef enum		e_component_id

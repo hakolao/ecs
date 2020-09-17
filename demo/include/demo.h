@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 19:49:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:03:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define MAX_ENTITIES 1024
+# define MAX_ENTITIES 2048
 
 typedef struct				s_text_params
 {
@@ -91,10 +91,10 @@ typedef struct				s_specs
 
 typedef enum				e_comp_id
 {
-	comp_empty = 0,
-	comp_pos = 1,
-	comp_vel = 1 << 1,
-	comp_specs = 1 << 2,
+	comp_empty = 0ULL,
+	comp_pos = 1ULL,
+	comp_vel = 1ULL << 1,
+	comp_specs = 1ULL << 2,
 }							t_comp_id;
 
 typedef enum				e_system_id

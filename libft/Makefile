@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 14:43:04 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/17 19:37:16 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/17 20:38:46 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -129,6 +129,7 @@ SOURCES = ft_atoi.c \
 		hash_map/hash_map.c \
 		hash_map/hash_map_delete.c \
 		hash_map/hash_map_delete_free.c \
+		hash_map/hash_map_foreach.c \
 		ft_rand.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))

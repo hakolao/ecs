@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 16:14:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:38:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void all_tests() {
 	oh_run_test(test_hash_map_get);
 	oh_run_test(test_hash_map_delete);
 	oh_run_test(test_hash_map_has_key);
+	oh_run_test(test_hash_map_foreach);
 	ft_printf("World tests:\n");
 	oh_run_test(test_world_create);
 	ft_printf("World system tests:\n");

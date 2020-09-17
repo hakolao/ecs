@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:54 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 16:13:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:38:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ const char		*test_hash_map_add(void);
 const char		*test_hash_map_get(void);
 const char		*test_hash_map_delete(void);
 const char		*test_hash_map_has_key(void);
+const char		*test_hash_map_foreach(void);
 
 const char		*test_world_create(void);
 const char		*test_world_system_add(void);

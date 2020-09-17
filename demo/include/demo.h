@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:03:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:11:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,13 @@ typedef struct				s_velocity
 	float		dy;
 }							t_velocity;
 
-typedef struct				s_specs
+typedef struct				t_render
 {
 	uint32_t	color;
 	uint32_t	width;
 	uint32_t	height;
-}							t_specs;
+	t_window	**window;
+}							t_render;
 
 /*
 ** Component identifiers, should be powers of 2
@@ -94,7 +95,7 @@ typedef enum				e_comp_id
 	comp_empty = 0ULL,
 	comp_pos = 1ULL,
 	comp_vel = 1ULL << 1,
-	comp_specs = 1ULL << 2,
+	comp_render = 1ULL << 2,
 }							t_comp_id;
 
 typedef enum				e_system_id
@@ -106,12 +107,12 @@ typedef enum				e_system_id
 /*
 ** System
 */
-void						systems_create(t_ecs_world *world);
+void						systems_create(t_app *app);
 
 /*
 ** Entities
 */
-void						entities_create(t_ecs_world *world);
+void						entities_create(t_app *app);
 
 /*
 ** Window

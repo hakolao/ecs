@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:30:39 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:18:11 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_ecs_world			*ecs_world_create(const char *name, uint64_t max_entities)
 	ft_memset(world->systems, 0, sizeof(uint64_t) * ECS_MAX_SYSTEMS);
 	world->num_systems = 0;
 	world->next_free_system_index = 0;
+	world->system_to_list = hash_map_create(ECS_MAX_SYSTEMS);
 	world->next_vacancy_index = -1;
 	return (world);
 }
@@ -46,6 +47,7 @@ void			ecs_world_destroy(t_ecs_world *world)
 	free(world->entities);
 	free(world->vacant_entities);
 	hash_map_destroy(world->component_to_list);
+	hash_map_destroy(world->system_to_list);
 	i = -1;
 	removed = 0;
 	while (++i < (int)world->num_components + removed)

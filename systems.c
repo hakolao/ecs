@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:30:21 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void			ecs_world_system_add(t_ecs_world *world, t_system system)
 			ECS_SYSTEM_EMPTY);
 	ft_memcpy(&world->systems[world->next_free_system_index],
 		&system, sizeof(t_system));
+	hash_map_add(world->system_to_list, system.system_id,
+		(void*)world->next_free_system_index);
 	next_free_index = world->next_free_system_index + 1;
 	while (next_free_index < world->num_systems &&
 		world->systems[next_free_index].system_id != ECS_SYSTEM_EMPTY)
@@ -42,6 +44,7 @@ void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 	{
 		if (world->systems[i].system_id == system_id)
 		{
+			hash_map_delete(world->system_to_list, system_id);
 			ft_memset(&world->systems[i], 0, sizeof(t_system));
 			world->systems[i].system_id = ECS_SYSTEM_EMPTY;
 			world->next_free_system_index = i < world->next_free_system_index ?
@@ -51,4 +54,12 @@ void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 		else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 			removed++;
 	}
+}
+
+uint64_t		ecs_system_index(t_ecs_world *world, uint64_t system_id)
+{
+	void		*get_res;
+
+	get_res = hash_map_get(world->system_to_list, system_id);
+	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
 }

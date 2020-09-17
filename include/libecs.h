@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 17:03:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:30:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ struct						s_ecs_world
 	uint64_t			num_components;
 	t_system			systems[ECS_MAX_SYSTEMS];
 	uint64_t			next_free_system_index;
+	t_hash_table		*system_to_list;
 	uint64_t			num_systems;
 };
 
@@ -131,6 +132,8 @@ void						*ecs_world_entity_component_get(t_ecs_world *world,
 void						ecs_world_system_add(t_ecs_world *world,
 							t_system system);
 void						ecs_world_system_remove(t_ecs_world *world,
+							uint64_t system_id);
+uint64_t					ecs_system_index(t_ecs_world *world,
 							uint64_t system_id);
 
 /*

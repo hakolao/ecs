@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 19:53:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 20:10:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static void			main_loop(t_app *app)
 	is_running = true;
 	app->world = ecs_world_create("Demo world", MAX_ENTITIES);
 	ft_printf("Created world: %s\n", app->world->name);
-	systems_create(app->world);
-	entities_create(app->world);
+	systems_create(app);
+	entities_create(app);
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{

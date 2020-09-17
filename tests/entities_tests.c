@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 14:54:50 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/17 15:10:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ const char			*test_world_entity_add(void)
 		world->next_free_entity_index == 1 &&
 		((t_position*)entity_comp)->x == 5 &&
 		((t_position*)entity_comp)->y == 10);
-
 	entity_index = add_mock_entity(world);
 	entity_comp =
 		world_entity_component_get(world, entity_index, comp_velocity);
@@ -76,8 +75,7 @@ const char			*test_world_entity_remove(void)
 	entity_index3 = add_mock_entity(world);
 	world_entity_remove(world, entity_index2);
 	oh_assert("World entity removal fails1", world->num_entities == 2 &&
-		world->next_free_entity_index == 3 &&
-		world->next_vacancy_index == 0 &&
+		world->next_free_entity_index == 3 && world->next_vacancy_index == 0 &&
 		world->vacant_entities[world->next_vacancy_index] == 1);
 	entity_index2 = add_mock_entity(world);
 	oh_assert("World entity add after removal fails",
@@ -87,9 +85,27 @@ const char			*test_world_entity_remove(void)
 	world_entity_remove(world, entity_index1);
 	world_entity_remove(world, entity_index2);
 	world_entity_remove(world, entity_index3);
-	oh_assert("World entity remove all fails",
-		world->num_entities == 0 && world->next_free_entity_index == 3 &&
-		world->next_vacancy_index == 2);
+	oh_assert("World entity remove all fails", world->num_entities == 0 &&
+		world->next_free_entity_index == 3 && world->next_vacancy_index == 2);
 	world_destroy(world);
 	return (0);
 }
+
+// const char			*test_world_entity_component_add(void)
+// {
+// 	t_world		*world;
+// 	void		*entity_comp;
+// 	int64_t		entity_index;
+
+// 	world = world_create("Test", 128);
+// 	entity_index = add_mock_entity(world);
+// 	world_entity_components_add(world, entity_index, 2,
+// 		&(t_component){.id = comp_color, .size = sizeof(t_color),
+// 		.data = &(t_color){.rgba =
+// 			(int[4]){255, 255, 255, 255}, .val = 0xFFFFFFFF}},
+// 		&(t_component){.id = comp_velocity, .size = sizeof(t_foo),
+// 		.data = &(t_foo){.bar = 10.39}});
+// 	entity_comp = world_entity_component_get(world, entity_index,
+// 		comp_position);
+// 	return (0);
+// }

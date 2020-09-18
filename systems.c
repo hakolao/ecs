@@ -6,11 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:33:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 14:20:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
+
+/*
+** Adds a system to the world. These systems contain a handle function which
+** are run on each entity.
+*/
 
 void			ecs_world_system_add(t_ecs_world *world, t_system system)
 {
@@ -21,7 +26,7 @@ void			ecs_world_system_add(t_ecs_world *world, t_system system)
 			ECS_SYSTEM_EMPTY);
 	ft_memcpy(&world->systems[world->next_free_system_index],
 		&system, sizeof(t_system));
-	hash_map_add(world->system_to_index, system.system_id,
+	hash_map_add(world->index_by_system, system.system_id,
 		(void*)world->next_free_system_index);
 	next_free_index = world->next_free_system_index + 1;
 	while (next_free_index < world->num_systems &&
@@ -30,6 +35,10 @@ void			ecs_world_system_add(t_ecs_world *world, t_system system)
 	world->next_free_system_index = next_free_index;
 	world->num_systems++;
 }
+
+/*
+** Removes a system from the world.
+*/
 
 void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 {
@@ -44,7 +53,7 @@ void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 	{
 		if (world->systems[i].system_id == system_id)
 		{
-			hash_map_delete(world->system_to_index, system_id);
+			hash_map_delete(world->index_by_system, system_id);
 			ft_memset(&world->systems[i], 0, sizeof(t_system));
 			world->systems[i].system_id = ECS_SYSTEM_EMPTY;
 			world->next_free_system_index = i < world->next_free_system_index ?
@@ -56,13 +65,26 @@ void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 	}
 }
 
+/*
+** A convenience method to get system index from index_by_system hash table
+** by system id. This should only be called if index_by_system hash table
+** contains system_id key. Or that you are certain key is there.
+*/
+
 uint64_t		ecs_system_index(t_ecs_world *world, uint64_t system_id)
 {
 	void		*get_res;
 
-	get_res = hash_map_get(world->system_to_index, system_id);
+	get_res = hash_map_get(world->index_by_system, system_id);
 	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
 }
+
+/*
+** A convenience method to run each system on all world entities.
+** System ids can be given like (system_render | system_move | system_color).
+** All matching systems are checked on entities that contains that system's
+** components_mask.
+*/
 
 void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 {
@@ -93,13 +115,17 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 	}
 }
 
+/*
+** A convenience method to run a single system on each world entity
+*/
+
 void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
 {
 	uint64_t	entity_index;
 	t_system	system;
 
 	if (world->num_entities == 0 ||
-		!hash_map_has_key(world->system_to_index, system_id))
+		!hash_map_has_key(world->index_by_system, system_id))
 		return ;
 	system = world->systems[ecs_system_index(world, system_id)];
 	entity_index = -1;
@@ -113,12 +139,18 @@ void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
 	}
 }
 
+/*
+** A convenience method to update system params. For example app->delta_time
+** could be passed here (make sure it exists the app's life time since no
+** malloc is used here nor memcopying)
+*/
+
 void			ecs_system_update_params(t_ecs_world *world,
 				uint64_t system_id, void *params)
 {
 	uint64_t	system_index;
 
-	if (!hash_map_has_key(world->system_to_index, system_id))
+	if (!hash_map_has_key(world->index_by_system, system_id))
 		return ;
 	system_index = ecs_system_index(world, system_id);
 	world->systems[system_index].params = params;

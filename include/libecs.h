@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:33:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 14:02:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ struct						s_ecs_world
 	int64_t				*vacant_entities;
 	uint64_t			next_free_entity_index;
 	int64_t				next_vacancy_index;
-	t_hash_table		*components_to_entity[ECS_MAX_COMPONENTS];
+	t_hash_table		*components_by_entity[ECS_MAX_COMPONENTS];
 	uint64_t			next_free_component_index;
-	t_hash_table		*component_to_index;
+	t_hash_table		*index_by_component;
 	uint64_t			num_components;
 	t_system			systems[ECS_MAX_SYSTEMS];
 	uint64_t			next_free_system_index;
-	t_hash_table		*system_to_index;
+	t_hash_table		*index_by_system;
 	uint64_t			num_systems;
 };
 

@@ -6,12 +6,19 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:33:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 14:05:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
 #include "libecs_internal_entity_utils.h"
+
+/*
+** Adding an entity fills the first vacant index. If no vacancies next free
+** entity index is used.
+** Num components defines how many va_args are parsed, which should be of
+** t_component type. See tests for more information.
+*/
 
 int64_t			ecs_world_entity_add(t_ecs_world *world,
 				uint64_t num_components, ...)
@@ -44,8 +51,11 @@ int64_t			ecs_world_entity_add(t_ecs_world *world,
 }
 
 /*
-** Loop through each component (enums as bits, up to 64), and if entity has a
-** component its index / id is removed from the component_list[component_index]
+** Loop through each valid componentid (enums as bits, up to 64),
+** and if entity has a matching component that entity's component gets removed
+** from the component by entity hash map.
+** Removed entity in world->entities becomes empty and next vacancy index
+** gets incremented and vacant entity gets set to be the empty entity's index.
 */
 
 void			ecs_world_entity_remove(t_ecs_world *world,
@@ -71,6 +81,12 @@ void			ecs_world_entity_remove(t_ecs_world *world,
 	world->vacant_entities[world->next_vacancy_index] = entity_index;
 	world->num_entities--;
 }
+
+/*
+** An existing entity may get new components via this function. This works like
+** when adding an entity, but instead entity_index has been given as input.
+** parse components replaces matching components that already exist.
+*/
 
 void			ecs_world_entity_components_add(t_ecs_world *world,
 				uint64_t entity_index, uint64_t num_components, ...)
@@ -125,14 +141,20 @@ void			ecs_world_entity_components_remove(t_ecs_world *world,
 	world->entities[entity_index] = entity_components;
 }
 
+/*
+** Fetches the component of an entity as void*. The caller should know how to
+** cast the result.
+*/
+
 void			*ecs_world_entity_component_get(t_ecs_world *world,
 				uint64_t entity_index, uint64_t component)
 {
 	uint64_t	component_index;
 
 	if (!ecs_world_entity_valid(world, entity_index) ||
-		!hash_map_has_key(world->component_to_index, component))
+		!hash_map_has_key(world->index_by_component, component))
 		return (NULL);
 	component_index = ecs_component_index(world, component);
-	return (hash_map_get(world->components_to_entity[component_index], entity_index));
+	return (hash_map_get(world->components_by_entity[component_index],
+			entity_index));
 }

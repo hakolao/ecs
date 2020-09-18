@@ -75,7 +75,7 @@ component ids & corresponding components, and system ids.
 1. Create world initializes the world struct.
 
 ```c
-t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
+	t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
 ```
 
 2. Create systems which must include components the system uses and system

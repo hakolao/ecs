@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/17 19:56:23 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/18 12:55:24 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,20 +71,19 @@ demo: all
 		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
 	./demo_run
 	@/bin/rm -f main.o
-	@/bin/rm -f demo_run
-	@make fclean
-	@make -C $(LIBFT) fclean
+	@make clean
+	@make -C $(LIBFT) clean
 
 clean:
 	@/bin/rm -f $(OBJS)
 	@/bin/rm -rf $(DIR_OBJ)
 	@make -C $(LIBFT) clean
-	@if [ -a demo_run ]; then rm demo_run; fi;
-	@if [ -a test_run ]; then rm test_run; fi;
 
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@make -C $(LIBFT) fclean
+	@if [ -a demo_run ]; then rm demo_run; fi;
+	@if [ -a test_run ]; then rm test_run; fi;
 
 re: fclean all
 

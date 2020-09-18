@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:33:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:58:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,12 @@ t_bool					is_valid_component_id(uint64_t component_id)
 	return (component_id && !(component_id & (component_id - 1)));
 }
 
-static t_bool			is_valid_component_data(t_ecs_world *world,
+static t_bool			is_valid_component(t_ecs_world *world,
 						uint64_t component)
 {
-	void		*get_res;
-	uint64_t	mapped_index;
-
 	if (!is_valid_component_id(component))
 		return (false);
-	if (hash_map_has_key(world->component_to_index, component))
-	{
-		get_res = hash_map_get(world->component_to_index, component);
-		if (get_res != NULL)
-			mapped_index = *(uint64_t*)&get_res;
-		else
-			mapped_index = 0;
-		if (world->components_to_entity[mapped_index] != NULL)
-			return (false);
-	}
-	return (true);
+	return (ecs_component_entities(world, component) == NULL);
 }
 
 t_hash_table			*ecs_component_entities(t_ecs_world *world,
@@ -47,7 +34,8 @@ t_hash_table			*ecs_component_entities(t_ecs_world *world,
 {
 	if (!hash_map_has_key(world->component_to_index, component_id))
 		return (NULL);
-	return (world->components_to_entity[ecs_component_index(world, component_id)]);
+	return (world->components_to_entity[
+			ecs_component_index(world, component_id)]);
 }
 
 void					ecs_world_component_add(t_ecs_world *world,
@@ -55,7 +43,7 @@ void					ecs_world_component_add(t_ecs_world *world,
 {
 	uint64_t	next_free_index;
 
-	if (!is_valid_component_data(world, component))
+	if (!is_valid_component(world, component))
 		return ;
 	world->components_to_entity[world->next_free_component_index] =
 		hash_map_create(world->max_entities);

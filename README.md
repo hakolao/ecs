@@ -11,6 +11,8 @@ make demo # runs a visual demo, if you wish to edit parameters, go to demo/inclu
 make test # runs tests
 ```
 
+![demopng](demo/assets/demo.png)
+
 ## Use
 ```
 make # creates libecs.a that you an include in your libs

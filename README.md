@@ -25,106 +25,103 @@ make # creates libecs.a that you an include in your libs
 Structs & enums must be defined to be used by the library functions. At least
 component ids & corresponding components, and system ids.
 ```c
-	/*
-	** Demo components (to be used by each entity)
-	*/
+/*
+** Demo components (to be used by each entity)
+*/
 
-	typedef struct s_position
-	{
-		float x;
-		float y;
-	} t_position;
+typedef struct s_position
+{
+	float x;
+	float y;
+} t_position;
 
-	typedef struct s_velocity
-	{
-		float dx;
-		float dy;
-	} t_velocity;
+typedef struct s_velocity
+{
+	float dx;
+	float dy;
+} t_velocity;
 
-	typedef struct t_render
-	{
-		uint32_t color;
-		uint32_t width;
-		uint32_t height;
-		t_window **window;
-	} t_render;
+typedef struct t_render
+{
+	uint32_t color;
+	uint32_t width;
+	uint32_t height;
+	t_window **window;
+} t_render;
 
-	/*
-	** Component identifiers, should be powers of 2 and ULL for valid component
-	** ids.
-	*/
+/*
+** Component identifiers, should be powers of 2 and ULL for valid component
+** ids.
+*/
 
-	typedef enum e_comp_id
-	{
-		comp_empty = 0ULL,
-		comp_pos = 1ULL,
-		comp_vel = 1ULL << 1,
-		comp_render = 1ULL << 2,
-	} t_comp_id;
+typedef enum e_comp_id
+{
+	comp_empty = 0ULL,
+	comp_pos = 1ULL,
+	comp_vel = 1ULL << 1,
+	comp_render = 1ULL << 2,
+} t_comp_id;
 
-	/*
-	** System ids.
-	** If a system should not be run with other systems, its id should not be 0
-	*/
+/*
+** System ids.
+** If a system should not be run with other systems, its id should not be 0
+*/
 
-	typedef enum e_system_id
-	{
-		system_render = 123,
-		system_move = 111
-	} t_system_id;
+typedef enum e_system_id
+{
+	system_render = 123,
+	system_move = 111
+} t_system_id;
 ```
 
 1. Create world initializes the world struct.
-
 ```c
-	t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
+t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
 ```
 
 2. Create systems which must include components the system uses and system
 handle functions. See `demo/demo_system.c` on what the render handles could look
 like.
-
 ```c
-	static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
-	{
-		void *system_args;
-		t_position *pos;
-		t_velocity *vel;
-		uint32_t dt;
+static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
+{
+	void *system_args;
+	t_position *pos;
+	t_velocity *vel;
+	uint32_t dt;
 
-		system_args = world->systems[ecs_system_index(world, system_move)].params;
-		if (system_args != NULL)
+	system_args = world->systems[ecs_system_index(world, system_move)].params;
+	if (system_args != NULL)
+	{
+		dt = (uint32_t)(*(size_t*)system_args);
+		pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
+			entity_index);
+		vel = (t_velocity*)hash_map_get(ecs_component_entities(world, comp_vel),
+			entity_index);
+		if (pos && vel)
 		{
-			dt = (uint32_t)(*(size_t*)system_args);
-			pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
-				entity_index);
-			vel = (t_velocity*)hash_map_get(ecs_component_entities(world, comp_vel),
-				entity_index);
-			if (pos && vel)
-			{
-				pos->x += vel->dx * dt;
-				pos->y += vel->dy * dt;
-			}
+			pos->x += vel->dx * dt;
+			pos->y += vel->dy * dt;
 		}
 	}
+}
 
-	ecs_world_system_add(app->world, (t_system){
-		.system_id = system_render,
-		.components_mask = comp_render | comp_pos,
-		.system_handle_func = system_render_handle,
-		.params = NULL
-	});
-	ecs_world_system_add(app->world, (t_system){
-		.system_id = system_move,
-		.components_mask = comp_pos | comp_vel,
-		.system_handle_func = system_movement_handle,
-		.params = (void*)&app->delta_time
-	});
+ecs_world_system_add(app->world, (t_system){
+	.system_id = system_render,
+	.components_mask = comp_render | comp_pos,
+	.system_handle_func = system_render_handle,
+	.params = NULL
+});
+ecs_world_system_add(app->world, (t_system){
+	.system_id = system_move,
+	.components_mask = comp_pos | comp_vel,
+	.system_handle_func = system_movement_handle,
+	.params = (void*)&app->delta_time
+});
 ```
 
 3. Create entities with initial components they have. Components can be added
 afterwards as well.
-
 ```c
 void entities_create(t_app *app)
 {
@@ -151,10 +148,10 @@ void entities_create(t_app *app)
 4. Run Systems (this would usually happen each game loop, but can be run only once too)
 
 ```c
-	ecs_systems_run(app->world, system_move | system_render);
+ecs_systems_run(app->world, system_move | system_render);
 ```
 
 5. Update system params if needed, e.g. delta time. Though before ecs_systems_run.
 ```c
-	ecs_system_update_params(app->world, system_move, &app->delta_time);
+ecs_system_update_params(app->world, system_move, &app->delta_time);
 ```

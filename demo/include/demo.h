@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:47:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 16:25:56 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct				s_app
 }							t_app;
 
 /*
-** Demo components
+** Demo components (to be used by each entity)
 */
 
 typedef struct				s_position
@@ -87,7 +87,8 @@ typedef struct				t_render
 }							t_render;
 
 /*
-** Component identifiers, should be powers of 2
+** Component identifiers, should be powers of 2 and ULL for valid component
+** ids.
 */
 
 typedef enum				e_comp_id
@@ -99,6 +100,7 @@ typedef enum				e_comp_id
 }							t_comp_id;
 
 /*
+** System ids.
 ** If a system should not be run with other systems, its id should not be 0
 */
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 01:17:56 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:48:23 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void					system_movement_handle(t_ecs_world *world,
 			entity_index);
 		if (pos && vel)
 		{
-			// ft_printf("x %f, y %f\n", pos->x, pos->y);
 			pos->x += vel->dx * dt;
 			pos->y += vel->dy * dt;
 		}

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:18:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:33:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ static t_bool	add_entity_component_data(t_ecs_world *world, uint64_t entity_inde
 {
 	void		*component_data;
 
-	if (!hash_map_has_key(world->component_list[component_index],
+	if (!hash_map_has_key(world->components_to_entity[component_index],
 		entity_index))
 	{
 		if (!(component_data = malloc(comp->size)) &&
 			ft_dprintf(2, "Failed to malloc component for entity\n"))
 			return (false);
 		ft_memcpy(component_data, comp->data, comp->size);
-		hash_map_add(world->component_list[component_index],
+		hash_map_add(world->components_to_entity[component_index],
 			entity_index, component_data);
 	}
 	else
 	{
-		component_data = hash_map_get(world->component_list[component_index],
+		component_data = hash_map_get(world->components_to_entity[component_index],
 		entity_index);
 		ft_memcpy(component_data, comp->data, comp->size);
 	}
@@ -40,7 +40,7 @@ uint64_t		ecs_component_index(t_ecs_world *world, uint64_t component_id)
 {
 	void		*get_res;
 
-	get_res = hash_map_get(world->component_to_list, component_id);
+	get_res = hash_map_get(world->component_to_index, component_id);
 	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
 }
 
@@ -57,7 +57,7 @@ uint64_t		parse_components(t_ecs_world *world, uint64_t num_components,
 	while (++i < (int)num_components)
 	{
 		comp = (t_component*)va_arg(variables, t_component*);
-		if (!hash_map_has_key(world->component_to_list, comp->id))
+		if (!hash_map_has_key(world->component_to_index, comp->id))
 			ecs_world_component_add(world, comp->id);
 		component_index = ecs_component_index(world, comp->id);
 		if (!add_entity_component_data(world, entity_index, comp,

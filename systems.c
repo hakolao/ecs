@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 00:42:47 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:33:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void			ecs_world_system_add(t_ecs_world *world, t_system system)
 			ECS_SYSTEM_EMPTY);
 	ft_memcpy(&world->systems[world->next_free_system_index],
 		&system, sizeof(t_system));
-	hash_map_add(world->system_to_list, system.system_id,
+	hash_map_add(world->system_to_index, system.system_id,
 		(void*)world->next_free_system_index);
 	next_free_index = world->next_free_system_index + 1;
 	while (next_free_index < world->num_systems &&
@@ -44,7 +44,7 @@ void			ecs_world_system_remove(t_ecs_world *world, uint64_t system_id)
 	{
 		if (world->systems[i].system_id == system_id)
 		{
-			hash_map_delete(world->system_to_list, system_id);
+			hash_map_delete(world->system_to_index, system_id);
 			ft_memset(&world->systems[i], 0, sizeof(t_system));
 			world->systems[i].system_id = ECS_SYSTEM_EMPTY;
 			world->next_free_system_index = i < world->next_free_system_index ?
@@ -60,7 +60,7 @@ uint64_t		ecs_system_index(t_ecs_world *world, uint64_t system_id)
 {
 	void		*get_res;
 
-	get_res = hash_map_get(world->system_to_list, system_id);
+	get_res = hash_map_get(world->system_to_index, system_id);
 	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
 }
 
@@ -99,7 +99,7 @@ void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
 	t_system	system;
 
 	if (world->num_entities == 0 ||
-		!hash_map_has_key(world->system_to_list, system_id))
+		!hash_map_has_key(world->system_to_index, system_id))
 		return ;
 	system = world->systems[ecs_system_index(world, system_id)];
 	entity_index = -1;
@@ -118,7 +118,7 @@ void			ecs_system_update_params(t_ecs_world *world,
 {
 	uint64_t	system_index;
 
-	if (!hash_map_has_key(world->system_to_list, system_id))
+	if (!hash_map_has_key(world->system_to_index, system_id))
 		return ;
 	system_index = ecs_system_index(world, system_id);
 	world->systems[system_index].params = params;

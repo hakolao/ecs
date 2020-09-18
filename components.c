@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 23:19:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:33:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static t_bool			is_valid_component_data(t_ecs_world *world,
 
 	if (!is_valid_component_id(component))
 		return (false);
-	if (hash_map_has_key(world->component_to_list, component))
+	if (hash_map_has_key(world->component_to_index, component))
 	{
-		get_res = hash_map_get(world->component_to_list, component);
+		get_res = hash_map_get(world->component_to_index, component);
 		if (get_res != NULL)
 			mapped_index = *(uint64_t*)&get_res;
 		else
 			mapped_index = 0;
-		if (world->component_list[mapped_index] != NULL)
+		if (world->components_to_entity[mapped_index] != NULL)
 			return (false);
 	}
 	return (true);
@@ -45,9 +45,9 @@ static t_bool			is_valid_component_data(t_ecs_world *world,
 t_hash_table			*ecs_component_entities(t_ecs_world *world,
 						uint64_t component_id)
 {
-	if (!hash_map_has_key(world->component_to_list, component_id))
+	if (!hash_map_has_key(world->component_to_index, component_id))
 		return (NULL);
-	return (world->component_list[ecs_component_index(world, component_id)]);
+	return (world->components_to_entity[ecs_component_index(world, component_id)]);
 }
 
 void					ecs_world_component_add(t_ecs_world *world,
@@ -57,13 +57,13 @@ void					ecs_world_component_add(t_ecs_world *world,
 
 	if (!is_valid_component_data(world, component))
 		return ;
-	world->component_list[world->next_free_component_index] =
+	world->components_to_entity[world->next_free_component_index] =
 		hash_map_create(world->max_entities);
-	hash_map_add(world->component_to_list, component,
+	hash_map_add(world->component_to_index, component,
 		(void*)world->next_free_component_index);
 	next_free_index = world->next_free_component_index + 1;
 	while (next_free_index < world->num_components &&
-		world->component_list[next_free_index] != NULL)
+		world->components_to_entity[next_free_index] != NULL)
 		next_free_index++;
 	world->next_free_component_index = next_free_index;
 	world->num_components++;
@@ -78,22 +78,22 @@ void					ecs_world_component_remove(t_ecs_world *world,
 
 	i = -1;
 	removed = 0;
-	get_res = hash_map_get(world->component_to_list, component);
-	if (hash_map_has_key(world->component_to_list, component))
+	get_res = hash_map_get(world->component_to_index, component);
+	if (hash_map_has_key(world->component_to_index, component))
 	{
 		while (++i < world->num_components + removed)
 		{
 			if (i == (get_res == NULL ? 0 : *(uint64_t*)&get_res))
 			{
-				hash_map_destroy_free(world->component_list[i]);
-				hash_map_delete(world->component_to_list, component);
-				world->component_list[i] = NULL;
+				hash_map_destroy_free(world->components_to_entity[i]);
+				hash_map_delete(world->component_to_index, component);
+				world->components_to_entity[i] = NULL;
 				world->next_free_component_index =
 					i < world->next_free_component_index ?
 					i : world->next_free_component_index;
 				world->num_components--;
 			}
-			else if (world->component_list[i] == NULL)
+			else if (world->components_to_entity[i] == NULL)
 				removed++;
 		}
 	}

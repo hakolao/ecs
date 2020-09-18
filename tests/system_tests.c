@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:15:19 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 22:57:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:44:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		mock_system_handle(t_ecs_world *world, uint64_t entity)
 
 const char		*test_world_system_add(void)
 {
-	t_system	system;
+	t_system		system;
 	t_ecs_world		*world;
 
 	system.system_id = 5;
@@ -44,7 +44,7 @@ const char		*test_world_system_add(void)
 
 const char		*test_world_system_remove(void)
 {
-	t_system	system;
+	t_system		system;
 	t_ecs_world		*world;
 
 	system.system_id = 5;

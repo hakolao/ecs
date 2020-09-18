@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:00:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:46:20 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 12:59:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ void			recreate_frame(t_app *app)
 	app->window->frame = SDL_CreateTexture(app->window->renderer,
 		PIXEL_FORMAT, SDL_TEXTUREACCESS_STREAMING, app->window->width,
 		app->window->height);
+	free(app->window->framebuffer);
+	error_check(!(app->window->framebuffer =
+		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
+		"Failed to malloc framebuffer in resize");
 	error_check(app->window->frame == NULL, SDL_GetError());
 	if (app->window->font != NULL)
 		TTF_CloseFont(app->window->font);
@@ -71,7 +75,9 @@ void			window_init(t_app *app)
 	app->window->parent = app;
 	app->window->is_hidden = false;
 	app->window->frame = NULL;
-	app->window->framebuffer = NULL;
+	error_check(!(app->window->framebuffer =
+		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
+		"Failed to malloc framebuffer");
 	app->window->font = NULL;
 	app->window->resized = false;
 	recreate_frame(app);

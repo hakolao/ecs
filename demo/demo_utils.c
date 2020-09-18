@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 19:08:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:30:14 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,21 @@ uint32_t			capture_framerate(uint32_t delta_time)
 void				draw_fps(t_app *app)
 {
 	char	*fps_str;
+	char	*dt_str;
 
-	if (!(fps_str = ft_itoa_base_u32(app->fps, 10)))
+	if (!(fps_str = ft_itoa_base_u32(app->fps, 10)) ||
+		!(dt_str = ft_itoa_base_u32(app->delta_time, 10)))
 		return ;
 	render_text(app, (t_text_params){
 		.text = fps_str, .font = FONT, .blend_ratio = 1.0,
 		.font_size = FONT_SIZE, .xy = (int[2]){5, 5},
 		.text_color = (SDL_Color){255, 0, 0, 255}});
+	render_text(app, (t_text_params){
+		.text = dt_str, .font = FONT, .blend_ratio = 1.0,
+		.font_size = FONT_SIZE, .xy = (int[2]){5, 5 + FONT_SIZE + 1},
+		.text_color = (SDL_Color){255, 0, 0, 255}});
 	ft_strdel(&fps_str);
+	ft_strdel(&dt_str);
 }
 
 uint32_t			get_relative_font_size(t_app *app, uint32_t font_size)

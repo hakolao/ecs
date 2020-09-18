@@ -6,18 +6,31 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 11:44:14 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 13:29:11 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
 
-static void			update_frame_buffer(t_app *app)
+/*
+** Set 4 colors at a time for speed
+*/
+
+static void			clear_frame(t_app *app)
 {
-	ft_memset(app->window->framebuffer, 255,
-		app->window->width * app->window->height * sizeof (uint32_t));
-	ecs_systems_run_single(app->world, system_render);
-	draw_fps(app);
+	int			i;
+	uint32_t	color;
+
+	i = 0;
+	color = 0xFFFFFFFF;
+	while (i < app->window->width * app->window->height)
+	{
+		app->window->framebuffer[i] = color;
+		app->window->framebuffer[i + 1] = color;
+		app->window->framebuffer[i + 2] = color;
+		app->window->framebuffer[i + 3] = color;
+		i += 4;
+	}
 }
 
 static void			draw_frame(t_app *app)
@@ -30,11 +43,8 @@ static void			draw_frame(t_app *app)
 		while (app->window->is_hidden)
 			SDL_PollEvent(NULL);
 	}
-	SDL_LockTexture(app->window->frame, NULL,
-		(void**)&app->window->framebuffer,
-		&app->window->pitch);
-	update_frame_buffer(app);
-	SDL_UnlockTexture(app->window->frame);
+	SDL_UpdateTexture(app->window->frame, NULL, app->window->framebuffer,
+		app->window->width * 4);
 	SDL_RenderCopy(app->window->renderer, app->window->frame,
 		NULL, NULL);
 	SDL_RenderPresent(app->window->renderer);
@@ -61,8 +71,10 @@ static void			main_loop(t_app *app)
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
 		}
+		clear_frame(app);
 		systems_params_update(app);
-		ecs_systems_run(app->world, system_move);
+		ecs_systems_run(app->world, system_move | system_render);
+		draw_fps(app);
 		draw_frame(app);
 		app->delta_time = SDL_GetTicks() - time_since_start;
 		app->fps = capture_framerate(app->delta_time);
@@ -71,6 +83,7 @@ static void			main_loop(t_app *app)
 
 static void			app_cleanup(t_app *app)
 {
+	free(app->window->framebuffer);
 	SDL_DestroyRenderer(app->window->renderer);
 	SDL_DestroyWindow(app->window->window);
 	free(app->window);

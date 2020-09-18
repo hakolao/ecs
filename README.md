@@ -27,49 +27,49 @@ component ids & corresponding components, and system ids.
 	** Demo components (to be used by each entity)
 	*/
 
-	typedef struct				s_position
+	typedef struct s_position
 	{
-		float		x;
-		float		y;
-	}							t_position;
+		float x;
+		float y;
+	} t_position;
 
-	typedef struct				s_velocity
+	typedef struct s_velocity
 	{
-		float		dx;
-		float		dy;
-	}							t_velocity;
+		float dx;
+		float dy;
+	} t_velocity;
 
-	typedef struct				t_render
+	typedef struct t_render
 	{
-		uint32_t	color;
-		uint32_t	width;
-		uint32_t	height;
-		t_window	**window;
-	}							t_render;
+		uint32_t color;
+		uint32_t width;
+		uint32_t height;
+		t_window **window;
+	} t_render;
 
 	/*
 	** Component identifiers, should be powers of 2 and ULL for valid component
 	** ids.
 	*/
 
-	typedef enum				e_comp_id
+	typedef enum e_comp_id
 	{
 		comp_empty = 0ULL,
 		comp_pos = 1ULL,
 		comp_vel = 1ULL << 1,
 		comp_render = 1ULL << 2,
-	}							t_comp_id;
+	} t_comp_id;
 
 	/*
 	** System ids.
 	** If a system should not be run with other systems, its id should not be 0
 	*/
 
-	typedef enum				e_system_id
+	typedef enum e_system_id
 	{
 		system_render = 123,
 		system_move = 111
-	}							t_system_id;
+	} t_system_id;
 ```
 
 1. Create world initializes the world struct.
@@ -83,13 +83,12 @@ handle functions. See `demo/demo_system.c` on what the render handles could look
 like.
 
 ```c
-	static void					system_movement_handle(t_ecs_world *world,
-								uint64_t entity_index)
+	static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
 	{
-		void			*system_args;
-		t_position		*pos;
-		t_velocity		*vel;
-		uint32_t		dt;
+		void *system_args;
+		t_position *pos;
+		t_velocity *vel;
+		uint32_t dt;
 
 		system_args = world->systems[ecs_system_index(world, system_move)].params;
 		if (system_args != NULL)
@@ -106,7 +105,6 @@ like.
 			}
 		}
 	}
-
 
 	ecs_world_system_add(app->world, (t_system){
 		.system_id = system_render,
@@ -126,10 +124,10 @@ like.
 afterwards as well.
 
 ```c
-void						entities_create(t_app *app)
+void entities_create(t_app *app)
 {
-	int32_t		i;
-	int32_t		size;
+	int32_t i;
+	int32_t size;
 
 	i = 1;
 	while (app->world->num_entities < MAX_ENTITIES)

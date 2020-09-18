@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 01:21:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 11:40:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void						entities_create(t_app *app)
 	i = 1;
 	while (app->world->num_entities < MAX_ENTITIES)
 	{
-		size = 32 + ft_rand(i) % 5;
+		size = 1;
 		ecs_world_entity_add(app->world, 3,
 			&(t_component){.id = comp_pos, .size = sizeof(t_position),
 				.data = &(t_position){

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 00:56:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/18 11:41:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define MAX_ENTITIES 2048
+# define MAX_ENTITIES 1000000
 
 typedef struct				s_text_params
 {

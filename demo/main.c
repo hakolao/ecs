@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:05:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:56:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static void			main_loop(t_app *app)
 		}
 		clear_frame(app);
 		systems_params_update(app);
-		ecs_systems_run(app->world, system_forces | system_render | system_reset);
+		ecs_systems_run_parallel(NUM_THREADS, app->world,
+			system_forces | system_render | system_reset);
 		draw_fps(app);
 		draw_frame(app);
 		app->info.delta_time = SDL_GetTicks() - app->info.time_since_start;

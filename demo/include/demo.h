@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:39:25 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 15:37:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "libft.h"
 # include "libecs.h"
 
+# define NUM_THREADS 8
+
 # define WIDTH 1280
 # define HEIGHT 720
 
@@ -26,7 +28,7 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define MAX_ENTITIES 1000000
+# define MAX_ENTITIES 10000
 
 # define CONST_GRAVITY 9.81
 # define CONST_MOVEMENT 1.0

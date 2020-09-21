@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:54:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 15:31:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "libft.h"
 # include <stdarg.h>
-
-# define THREADS 8
 
 /*
 ** 64 (max number of bits in uint64_t (for bitmasks)).
@@ -112,8 +110,11 @@ struct						s_ecs_world
 typedef struct				s_system_parallel
 {
 	t_ecs_world			**world;
-	uint32_t			thread_index;
+	uint32_t			thread_id;
+	uint32_t			num_threads;
 	uint64_t			systems;
+	uint32_t			min_entity_index;
+	uint32_t			max_entity_index;
 }							t_system_parallel;
 
 /*

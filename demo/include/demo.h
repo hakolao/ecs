@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 17:19:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:03:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void						systems_params_update(t_app *app);
 ** Entities
 */
 void						entities_create_up_to_max(t_app *app);
+void						init_entity_phyiscs(t_app *app, t_physics *physics);
 
 /*
 ** Window

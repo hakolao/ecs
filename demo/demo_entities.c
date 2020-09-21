@@ -6,11 +6,23 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 17:00:18 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:04:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
+
+void						init_entity_phyiscs(t_app *app, t_physics *physics)
+{
+	physics->position.x = (float)(rand() % app->window->width);
+	physics->position.y = (float)(rand() % app->window->height) -
+		app->window->height;
+	physics->mass = ft_abs((rand() / 2 * rand()) % 1000) * 0.01 + 1.0;
+	physics->mass = physics->mass == 0.0 ? physics->mass + 0.2 : physics->mass;
+	physics->inertia = 1.0;
+	physics->velocity.dx = 0.0;
+	physics->velocity.dy = 0.0;
+}
 
 static void					random_entity_create(t_app *app, uint32_t z_val)
 {
@@ -18,15 +30,7 @@ static void					random_entity_create(t_app *app, uint32_t z_val)
 	t_physics		physics;
 
 	size = ENTITY_SIZE;
-	physics.position.x =
-		(float)((size / 2) + rand() % app->window->width) - (float)(size / 2);
-	physics.position.y =
-		(float)((float)size / 2.0 + rand() % 30) - (float)(size / 2) - 150.0;
-	physics.mass = ft_abs((rand() / 2 * rand()) % 1000) * 0.01 + 1.0;
-	physics.mass = physics.mass == 0.0 ? physics.mass + 0.2 : physics.mass;
-	physics.inertia = 1.0;
-	physics.velocity.dx = 0.0;
-	physics.velocity.dy = 0.0;
+	init_entity_phyiscs(app, &physics);
 	ecs_world_entity_add(app->world, 2,
 		&(t_component){.id = comp_physics, .size = sizeof(t_physics),
 			.data = &physics},

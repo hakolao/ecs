@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 17:25:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:15:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ static void			main_loop(t_app *app)
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
+			if ((event.type == SDL_KEYDOWN && event.key.repeat == false))
+				if (event.key.keysym.sym == SDLK_p)
+					app->is_gravity = !app->is_gravity;
 			// !Note Must be here so resize doesn't cause a segfault due to some
 			// !component data being dependent on window dimensions
 			// !(intentionally)
@@ -113,6 +116,7 @@ int					main(void)
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
+	app.is_gravity = true;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());
 	window_init(&app);

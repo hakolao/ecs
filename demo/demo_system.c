@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:24:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:59:08 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void					system_reset_handle(t_ecs_world *world,
 		physics->position.y > app->window->height + render_specs->height / 2)
 	{
 		physics->position.x =
-			(float)((render_specs->width / 2) + rand() % WIDTH) -
+			(float)((render_specs->width / 2) + rand() % app->window->width) -
 			(float)(render_specs->width / 2);
 		physics->position.y =
 			(float)((float)render_specs->height / 2.0 + rand() % 30) -

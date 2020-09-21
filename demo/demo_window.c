@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:00:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:14:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 17:25:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int		resize_callback(void *data, SDL_Event *event)
 {
-	t_window	*window;
 	t_app 		*app;
 
 	if (event->type == SDL_WINDOWEVENT &&
@@ -24,17 +23,16 @@ static int		resize_callback(void *data, SDL_Event *event)
 		 event->window.event == SDL_WINDOWEVENT_SHOWN ||
 		 event->window.event == SDL_WINDOWEVENT_HIDDEN))
 		{
-		window = (t_window*)data;
-		if (event->window.windowID == window->window_id)
+		app = (t_app*)data;
+		if (event->window.windowID == app->window->window_id)
 		{
-			app = (t_app*)(window->parent);
 			app->window->resized = true;
-			SDL_GetWindowSize(window->window, &app->window->width,
+			SDL_GetWindowSize(app->window->window, &app->window->width,
 				&app->window->height);
 			if (event->window.event == SDL_WINDOWEVENT_HIDDEN)
-				window->is_hidden = true;
+				app->window->is_hidden = true;
 			else if (event->window.event == SDL_WINDOWEVENT_SHOWN)
-				window->is_hidden = false;
+				app->window->is_hidden = false;
 		}
 	}
 	return 0;
@@ -47,21 +45,22 @@ void			recreate_frame(t_app *app)
 	app->window->frame = SDL_CreateTexture(app->window->renderer,
 		PIXEL_FORMAT, SDL_TEXTUREACCESS_STREAMING, app->window->width,
 		app->window->height);
-	free(app->window->framebuffer);
-	error_check(!(app->window->framebuffer =
-		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
+	error_check(app->window->frame == NULL, SDL_GetError());
+	if (app->window->framebuffer != NULL)
+		free(app->window->framebuffer);
+	error_check(!(app->window->framebuffer = malloc(sizeof(uint32_t) *
+		app->window->width * app->window->height)),
 		"Failed to malloc framebuffer in resize");
-	free(app->window->zbuffer);
-	error_check(!(app->window->zbuffer =
-		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
+	if (app->window->zbuffer != NULL)
+		free(app->window->zbuffer);
+	error_check(!(app->window->zbuffer = malloc(sizeof(uint32_t) *
+		app->window->width * app->window->height)),
 		"Failed to malloc framebuffer in resize");
 	ft_memset(app->window->zbuffer, INT32_MAX, sizeof(uint32_t) *
 		app->window->width * app->window->height);
-	error_check(app->window->frame == NULL, SDL_GetError());
 	if (app->window->font != NULL)
 		TTF_CloseFont(app->window->font);
-	app->window->font = TTF_OpenFont(FONT,
-		get_relative_font_size(app, FONT_SIZE));
+	app->window->font = TTF_OpenFont(FONT, FONT_SIZE);
 	error_check(app->window->font == NULL, TTF_GetError());
 }
 
@@ -78,14 +77,12 @@ void			window_init(t_app *app)
 		SDL_CreateRenderer(app->window->window, -1, SDL_RENDERER_SOFTWARE);
 	error_check(app->window->renderer == NULL, SDL_GetError());
 	app->window->window_id = SDL_GetWindowID(app->window->window);
-	app->window->parent = app;
 	app->window->is_hidden = false;
 	app->window->frame = NULL;
-	error_check(!(app->window->framebuffer =
-		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
-		"Failed to malloc framebuffer");
+	app->window->framebuffer = NULL;
+	app->window->zbuffer = NULL;
 	app->window->font = NULL;
 	app->window->resized = false;
 	recreate_frame(app);
-	SDL_AddEventWatch(resize_callback, app->window);
+	SDL_AddEventWatch(resize_callback, app);
 }

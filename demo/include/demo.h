@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:24:20 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 17:19:27 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define WIDTH 1280
 # define HEIGHT 720
 
+# define NAME "Demo World"
 # define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
@@ -58,7 +59,6 @@ typedef struct				s_window
 	SDL_Window				*window;
 	uint32_t				window_id;
 	t_bool					is_hidden;
-	void					*parent;
 }							t_window;
 
 typedef struct				s_info

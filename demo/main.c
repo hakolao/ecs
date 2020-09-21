@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:14:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 17:25:30 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,23 @@ static void			clear_frame(t_app *app)
 
 static void			draw_frame(t_app *app)
 {
-
-	if (app->window->resized)
-	{
-		recreate_frame(app);
-		app->window->resized = false;
-		while (app->window->is_hidden)
-			SDL_PollEvent(NULL);
-	}
 	SDL_UpdateTexture(app->window->frame, NULL, app->window->framebuffer,
 		app->window->width * 4);
 	SDL_RenderCopy(app->window->renderer, app->window->frame,
 		NULL, NULL);
 	SDL_RenderPresent(app->window->renderer);
+}
+
+static void			recreate_after_resize(t_app *app)
+{
+	ecs_world_destroy(app->world);
+	app->world = ecs_world_create(NAME, MAX_ENTITIES);
+	recreate_frame(app);
+	systems_create(app);
+	entities_create_up_to_max(app);
+	app->window->resized = false;
+	while (app->window->is_hidden)
+		SDL_PollEvent(NULL);
 }
 
 static void			main_loop(t_app *app)
@@ -60,7 +64,7 @@ static void			main_loop(t_app *app)
 	t_bool		is_running;
 
 	is_running = true;
-	app->world = ecs_world_create("Demo world", MAX_ENTITIES);
+	app->world = ecs_world_create(NAME, MAX_ENTITIES);
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
 	entities_create_up_to_max(app);
@@ -73,6 +77,11 @@ static void			main_loop(t_app *app)
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
+			// !Note Must be here so resize doesn't cause a segfault due to some
+			// !component data being dependent on window dimensions
+			// !(intentionally)
+			if (app->window->resized)
+				recreate_after_resize(app);
 		}
 		clear_frame(app);
 		systems_params_update(app);
@@ -87,6 +96,7 @@ static void			main_loop(t_app *app)
 
 static void			app_cleanup(t_app *app)
 {
+	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
 	SDL_DestroyRenderer(app->window->renderer);
 	SDL_DestroyWindow(app->window->window);

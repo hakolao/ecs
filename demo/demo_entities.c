@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:24:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 17:00:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void					random_entity_create(t_app *app, uint32_t z_val)
 
 	size = ENTITY_SIZE;
 	physics.position.x =
-		(float)((size / 2) + rand() % WIDTH) - (float)(size / 2);
+		(float)((size / 2) + rand() % app->window->width) - (float)(size / 2);
 	physics.position.y =
 		(float)((float)size / 2.0 + rand() % 30) - (float)(size / 2) - 150.0;
 	physics.mass = ft_abs((rand() / 2 * rand()) % 1000) * 0.01 + 1.0;

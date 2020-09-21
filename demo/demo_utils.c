@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 12:17:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 17:02:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,4 @@ void				draw_fps(t_app *app)
 		.text_color = (SDL_Color){255, 0, 0, 255}});
 	ft_strdel(&fps_str);
 	ft_strdel(&dt_str);
-}
-
-uint32_t			get_relative_font_size(t_app *app, uint32_t font_size)
-{
-	float		aspect_ratio;
-
-	aspect_ratio = (float)app->window->width /
-					(float)app->window->height;
-	return (app->window->width / (float)WIDTH * aspect_ratio * font_size);
 }

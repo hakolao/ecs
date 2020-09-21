@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 12:18:23 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:02:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 
 # define MAX_ENTITIES 10000
 
-# define GRAVITY 9.81
+# define CONST_GRAVITY 9.81
+# define CONST_MOVEMENT 1.0
 
 typedef struct				s_text_params
 {
@@ -73,17 +74,25 @@ typedef struct				s_app
 ** Demo components (to be used by each entity)
 */
 
-typedef struct				s_position
+typedef struct				s_pos
 {
-	float		x;
-	float		y;
-}							t_position;
+	float	x;
+	float	y;
+}							t_pos;
 
-typedef struct				s_velocity
+typedef struct				s_vel
 {
-	float		dx;
-	float		dy;
-}							t_velocity;
+	float	dx;
+	float	dy;
+}							t_vel;
+
+typedef struct				s_physics
+{
+	float	mass;
+	float	inertia;
+	t_pos	position;
+	t_vel	velocity;
+}							t_physics;
 
 typedef struct				t_visuals
 {
@@ -100,9 +109,8 @@ typedef struct				t_visuals
 typedef enum				e_comp_id
 {
 	comp_empty = 0ULL,
-	comp_pos = 1ULL,
-	comp_vel = 1ULL << 1,
-	comp_vis = 1ULL << 2,
+	comp_physics = 1ULL,
+	comp_vis = 1ULL << 1,
 }							t_comp_id;
 
 /*

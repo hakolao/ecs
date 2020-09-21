@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 12:19:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:10:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static void			main_loop(t_app *app)
 {
 	SDL_Event	event;
 	t_bool		is_running;
-	uint32_t	time_since_start;
 
 	is_running = true;
 	app->world = ecs_world_create("Demo world", MAX_ENTITIES);
@@ -64,7 +63,7 @@ static void			main_loop(t_app *app)
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{
-		time_since_start = SDL_GetTicks();
+		app->info.time_since_start = SDL_GetTicks();
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
@@ -73,10 +72,10 @@ static void			main_loop(t_app *app)
 		}
 		clear_frame(app);
 		systems_params_update(app);
-		ecs_systems_run(app->world, system_fall | system_render | system_remove);
+		ecs_systems_run(app->world, system_forces | system_render | system_reset);
 		draw_fps(app);
 		draw_frame(app);
-		app->info.delta_time = SDL_GetTicks() - time_since_start;
+		app->info.delta_time = SDL_GetTicks() - app->info.time_since_start;
 		app->info.fps = capture_framerate(app->info.delta_time);
 	}
 }

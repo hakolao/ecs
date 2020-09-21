@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 13:02:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:04:23 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct				s_info
 {
 	uint32_t				fps;
 	uint32_t				delta_time;
+	uint32_t				time_since_start;
 }							t_info;
 
 typedef struct				s_app
@@ -121,8 +122,8 @@ typedef enum				e_comp_id
 typedef enum				e_system_id
 {
 	system_render = 123,
-	system_fall = 111,
-	system_remove = 222,
+	system_forces = 111,
+	system_reset = 222,
 }							t_system_id;
 
 /*

@@ -6,25 +6,32 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 13:01:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 13:47:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
 
-static void					system_fall_handle(t_ecs_world *world,
+static void					system_forces_handle(t_ecs_world *world,
 							uint64_t entity_index)
 {
 	t_app			*app;
-	t_physics	*physics;
-	uint32_t		dt;
+	t_physics		*physics;
+	float			dt;
+	t_vel			forces;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_fall)].params;
-	dt = app->info.delta_time;
+	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
+	dt = (float)app->info.delta_time * 0.02;
 	physics = (t_physics*)hash_map_get(ecs_component_entities(world, comp_physics),
 		entity_index);
-	if (physics)
-		physics->position.y += physics->velocity.dy * dt;
+	if (!physics)
+		return ;
+	forces = (t_vel){.dx = 0, .dy = 0};
+	forces.dy += CONST_GRAVITY;
+	forces.dx += physics->velocity.dx * CONST_MOVEMENT;
+	forces.dy += physics->velocity.dy * CONST_MOVEMENT;
+	physics->position.x += forces.dx * dt / physics->mass;
+	physics->position.y += forces.dy * dt / physics->mass;
 }
 
 static void					system_render_handle(t_ecs_world *world,
@@ -33,14 +40,14 @@ static void					system_render_handle(t_ecs_world *world,
 
 	t_visuals		*render_specs;
 	t_window		*window;
-	t_physics	*physics;
+	t_physics		*physics;
 	int32_t			x_start;
 	int32_t			y_start;
 	int32_t			x;
 	int32_t			y;
 
 	window = ((t_app*)world->systems[
-		ecs_system_index(world, system_fall)].params)->window;
+		ecs_system_index(world, system_forces)].params)->window;
 	render_specs =
 		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
 			entity_index);
@@ -63,14 +70,14 @@ static void					system_render_handle(t_ecs_world *world,
 	}
 }
 
-static void					system_remove_handle(t_ecs_world *world,
+static void					system_reset_handle(t_ecs_world *world,
 							uint64_t entity_index)
 {
 	t_app			*app;
 	t_visuals		*render_specs;
 	t_physics	*physics;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_fall)].params;
+	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
 	render_specs =
 		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
 		entity_index);
@@ -94,15 +101,15 @@ void						systems_create(t_app *app)
 		.params = app
 	});
 	ecs_world_system_add(app->world, (t_system){
-		.system_id = system_fall,
+		.system_id = system_forces,
 		.components_mask = comp_physics,
-		.system_handle_func = system_fall_handle,
+		.system_handle_func = system_forces_handle,
 		.params = app
 	});
 	ecs_world_system_add(app->world, (t_system){
-		.system_id = system_remove,
+		.system_id = system_reset,
 		.components_mask = comp_physics | comp_vis,
-		.system_handle_func = system_remove_handle,
+		.system_handle_func = system_reset_handle,
 		.params = app
 	});
 }
@@ -113,5 +120,5 @@ void						systems_create(t_app *app)
 
 void						systems_params_update(t_app *app)
 {
-	ecs_system_update_params(app->world, system_fall, app);
+	ecs_system_update_params(app->world, system_forces, app);
 }

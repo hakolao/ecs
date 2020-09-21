@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 13:04:23 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:06:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define MAX_ENTITIES 10000
+# define MAX_ENTITIES 100000
 
 # define CONST_GRAVITY 9.81
 # define CONST_MOVEMENT 1.0
@@ -135,7 +135,7 @@ void						systems_params_update(t_app *app);
 /*
 ** Entities
 */
-void						entities_create(t_app *app);
+void						entities_create_up_to_max(t_app *app);
 
 /*
 ** Window

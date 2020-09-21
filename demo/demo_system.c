@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:03:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:05:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,7 @@ static void					system_reset_handle(t_ecs_world *world,
 		physics->position.y > app->window->height + render_specs->height / 2)
 	{
 		ecs_world_entity_remove(world, entity_index);
-		// Adds as many as has been already removed...
-		// entities_create(app);
+		entities_create_up_to_max(app);
 	}
 }
 

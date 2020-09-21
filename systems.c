@@ -6,11 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 14:20:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:54:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libecs.h"
+
+static t_bool	contains_system(uint64_t systems_group, uint64_t system)
+{
+	return ((system & systems_group) == system);
+}
 
 /*
 ** Adds a system to the world. These systems contain a handle function which
@@ -103,8 +108,7 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if ((world->systems[i].system_id & systems) ==
-				world->systems[i].system_id &&
+			if (contains_system(systems, world->systems[i].system_id) &&
 				world->systems[i].system_id != ECS_SYSTEM_EMPTY &&
 				ecs_world_entity_contains(world->entities[entity_index],
 				world->systems[i].components_mask))
@@ -154,4 +158,55 @@ void			ecs_system_update_params(t_ecs_world *world,
 		return ;
 	system_index = ecs_system_index(world, system_id);
 	world->systems[system_index].params = params;
+}
+
+void			ecs_systems_run_per_thread(void *params)
+{
+	uint64_t			i;
+	uint64_t			entity_index;
+	uint64_t			removed_systems;
+	t_ecs_world			*world;
+	t_system_parallel	*data;
+
+	data = (t_system_parallel*)params;
+	world = *data->world;
+	if (world->num_entities == 0)
+		return ;
+	entity_index = -1;
+	while (++entity_index < world->max_entities)
+	{
+		if (world->entities[entity_index] == 0 ||
+			entity_index % data->thread_index != 0 ||
+			(entity_index == 0 && data->thread_index != 0))
+			continue ;
+		i = -1;
+		removed_systems = 0;
+		while (++i < world->num_systems + removed_systems)
+		{
+			if (contains_system(data->systems, world->systems[i].system_id) &&
+				world->systems[i].system_id != ECS_SYSTEM_EMPTY &&
+				ecs_world_entity_contains(world->entities[entity_index],
+				world->systems[i].components_mask))
+				world->systems[i].system_handle_func(world, entity_index);
+			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
+				removed_systems++;
+		}
+	}
+}
+
+void			ecs_systems_run_parallel(int32_t num_threads,
+				t_ecs_world *world, uint64_t systems)
+{
+	pthread_t				threads[num_threads];
+	int						i;
+
+	i = 0;
+	while (++i < num_threads + 1)
+		if (pthread_create(&threads[i], NULL, (void*)ecs_systems_run_per_thread,
+			&(t_system_parallel){.systems = systems, .thread_index = i,
+				.world = &world}))
+			ft_dprintf(2, "Failed to create thread.\n");
+	i = -1;
+	while (++i < num_threads)
+		pthread_join(threads[i ], NULL);
 }

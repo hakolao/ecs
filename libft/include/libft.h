@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 01:17:50 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:30:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <pthread.h>
 # include "t_bool.h"
 # include "hash_map.h"
 
@@ -193,5 +194,8 @@ char			*ft_itoa_base_u64(uint64_t nb, uint64_t base);
 int				ft_dprintf(int fd, const char *format, ...);
 int				ft_sprintf(char *str, const char *format, ...);
 int				ft_printf(const char *format, ...);
+
+void			work_parallel(int num_threads, void *params,
+				void (*worker_f)(void *params));
 
 #endif

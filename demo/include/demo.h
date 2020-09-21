@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:06:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:39:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define MAX_ENTITIES 100000
+# define MAX_ENTITIES 1000000
 
 # define CONST_GRAVITY 9.81
 # define CONST_MOVEMENT 1.0

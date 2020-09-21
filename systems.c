@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 15:45:25 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 15:58:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,12 @@ void			ecs_systems_run_per_thread(void *params)
 		}
 	}
 }
+
+/*
+** Do not call this on systems that remove or add entities. The central
+** entity data in world should not change, because doing that in parallel
+** will cause unexpected bugs. Only run this on component updates.
+*/
 
 void			ecs_systems_run_parallel(int32_t num_threads,
 				t_ecs_world *world, uint64_t systems)

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:05:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:02:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,17 @@ static void					system_reset_handle(t_ecs_world *world,
 	if (physics && render_specs &&
 		physics->position.y > app->window->height + render_specs->height / 2)
 	{
-		ecs_world_entity_remove(world, entity_index);
-		entities_create_up_to_max(app);
+		physics->position.x =
+			(float)((render_specs->width / 2) + rand() % WIDTH) -
+			(float)(render_specs->width / 2);
+		physics->position.y =
+			(float)((float)render_specs->height / 2.0 + rand() % 30) -
+			(float)((float)render_specs->height / 2) - 150.0;
+		physics->mass = ft_abs((rand() / 2 * rand()) % 1000) * 0.01 + 1.0;
+		physics->mass = physics->mass == 0.0 ? physics->mass + 0.2 : physics->mass;
+		physics->inertia = 1.0;
+		physics->velocity.dx = 0.0;
+		physics->velocity.dy = 0.0;
 	}
 }
 

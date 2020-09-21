@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 16:25:56 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 12:18:23 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define FONT_SIZE 20
 
 # define MAX_ENTITIES 10000
+
+# define GRAVITY 9.81
 
 typedef struct				s_text_params
 {
@@ -54,11 +56,16 @@ typedef struct				s_window
 	void					*parent;
 }							t_window;
 
+typedef struct				s_info
+{
+	uint32_t				fps;
+	uint32_t				delta_time;
+}							t_info;
+
 typedef struct				s_app
 {
 	t_window				*window;
-	uint32_t				fps;
-	uint32_t				delta_time;
+	t_info					info;
 	t_ecs_world				*world;
 }							t_app;
 
@@ -78,13 +85,12 @@ typedef struct				s_velocity
 	float		dy;
 }							t_velocity;
 
-typedef struct				t_render
+typedef struct				t_visuals
 {
 	uint32_t	color;
 	uint32_t	width;
 	uint32_t	height;
-	t_window	**window;
-}							t_render;
+}							t_visuals;
 
 /*
 ** Component identifiers, should be powers of 2 and ULL for valid component
@@ -96,7 +102,7 @@ typedef enum				e_comp_id
 	comp_empty = 0ULL,
 	comp_pos = 1ULL,
 	comp_vel = 1ULL << 1,
-	comp_render = 1ULL << 2,
+	comp_vis = 1ULL << 2,
 }							t_comp_id;
 
 /*
@@ -107,7 +113,8 @@ typedef enum				e_comp_id
 typedef enum				e_system_id
 {
 	system_render = 123,
-	system_move = 111
+	system_fall = 111,
+	system_remove = 222,
 }							t_system_id;
 
 /*

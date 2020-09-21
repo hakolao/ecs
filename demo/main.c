@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:29:11 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 12:18:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ static void			main_loop(t_app *app)
 		}
 		clear_frame(app);
 		systems_params_update(app);
-		ecs_systems_run(app->world, system_move | system_render);
+		ecs_systems_run(app->world, system_fall | system_render);
 		draw_fps(app);
 		draw_frame(app);
-		app->delta_time = SDL_GetTicks() - time_since_start;
-		app->fps = capture_framerate(app->delta_time);
+		app->info.delta_time = SDL_GetTicks() - time_since_start;
+		app->info.fps = capture_framerate(app->info.delta_time);
 	}
 }
 
@@ -97,7 +97,8 @@ int					main(void)
 {
 	t_app	app;
 
-	app.fps = 0;
+	app.info.fps = 0;
+	app.info.delta_time = 0;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());
 	window_init(&app);

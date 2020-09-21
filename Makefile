@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/18 12:55:24 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/21 11:42:58 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ test: all
 DIR_DEMO = ./demo
 DEMO_SRCS =$(wildcard $(DIR_DEMO)/*.c)
 LIBSDL2 = $(DIR_DEMO)/SDL2
-DEMO_FLAGS = -rpath $(LIBSDL2) \
+DEMO_FLAGS =  -lpthread -O2 \
+				-rpath $(LIBSDL2) \
 				-framework SDL2 -F$(LIBSDL2)/ \
 				-framework SDL2_image -F$(LIBSDL2)/ \
 				-framework SDL2_ttf -F$(LIBSDL2)/ \

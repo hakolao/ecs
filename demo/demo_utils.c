@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 16:33:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 12:17:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void				draw_fps(t_app *app)
 	char	*fps_str;
 	char	*dt_str;
 
-	if (!(fps_str = ft_itoa_base_u32(app->fps, 10)) ||
-		!(dt_str = ft_itoa_base_u32(app->delta_time, 10)))
+	if (!(fps_str = ft_itoa_base_u32(app->info.fps, 10)) ||
+		!(dt_str = ft_itoa_base_u32(app->info.delta_time, 10)))
 		return ;
 	render_text(app, (t_text_params){
 		.text = fps_str, .font = FONT, .blend_ratio = 1.0,

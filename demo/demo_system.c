@@ -6,41 +6,35 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 14:16:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 12:17:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
 
-static void					system_movement_handle(t_ecs_world *world,
+static void					system_fall_handle(t_ecs_world *world,
 							uint64_t entity_index)
 {
-	void			*system_args;
+	t_app			*app;
 	t_position		*pos;
 	t_velocity		*vel;
 	uint32_t		dt;
 
-	system_args = world->systems[ecs_system_index(world, system_move)].params;
-	if (system_args != NULL)
-	{
-		dt = (uint32_t)(*(size_t*)system_args);
-		pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
-			entity_index);
-		vel = (t_velocity*)hash_map_get(ecs_component_entities(world, comp_vel),
-			entity_index);
-		if (pos && vel)
-		{
-			pos->x += vel->dx * dt;
-			pos->y += vel->dy * dt;
-		}
-	}
+	app = (t_app*)world->systems[ecs_system_index(world, system_fall)].params;
+	dt = app->info.delta_time;
+	pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
+		entity_index);
+	vel = (t_velocity*)hash_map_get(ecs_component_entities(world, comp_vel),
+		entity_index);
+	if (pos && vel)
+		pos->y += vel->dy * dt;
 }
 
 static void					system_render_handle(t_ecs_world *world,
 							uint64_t entity_index)
 {
 
-	t_render		*render_specs;
+	t_visuals		*render_specs;
 	t_window		*window;
 	t_position		*pos;
 	int32_t			x_start;
@@ -48,12 +42,13 @@ static void					system_render_handle(t_ecs_world *world,
 	int32_t			x;
 	int32_t			y;
 
+	window = ((t_app*)world->systems[
+		ecs_system_index(world, system_fall)].params)->window;
 	render_specs =
-		(t_render*)hash_map_get(ecs_component_entities(world, comp_render),
+		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
 			entity_index);
 	pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
 			entity_index);
-	window = (*render_specs->window);
 	x_start = pos->x - render_specs->width / 2;
 	y_start = pos->y - render_specs->height / 2;
 	y = y_start - 1;
@@ -71,6 +66,28 @@ static void					system_render_handle(t_ecs_world *world,
 	}
 }
 
+static void					system_remove_handle(t_ecs_world *world,
+							uint64_t entity_index)
+{
+	t_app			*app;
+	t_visuals		*render_specs;
+	t_position		*pos;
+
+	app = (t_app*)world->systems[ecs_system_index(world, system_fall)].params;
+	render_specs =
+		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
+		entity_index);
+	pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
+		entity_index);
+	if (pos && render_specs &&
+		pos->y > app->window->height + render_specs->height / 2)
+	{
+		ecs_world_entity_remove(world, entity_index);
+		ft_printf("Removed entity id: %d, entities: %d\n",
+			entity_index, world->num_entities);
+	}
+}
+
 /*
 ** Define systems & their param initial values
 */
@@ -79,15 +96,21 @@ void						systems_create(t_app *app)
 {
 	ecs_world_system_add(app->world, (t_system){
 		.system_id = system_render,
-		.components_mask = comp_render | comp_pos,
+		.components_mask = comp_vis | comp_pos,
 		.system_handle_func = system_render_handle,
-		.params = NULL
+		.params = app
 	});
 	ecs_world_system_add(app->world, (t_system){
-		.system_id = system_move,
+		.system_id = system_fall,
 		.components_mask = comp_pos | comp_vel,
-		.system_handle_func = system_movement_handle,
-		.params = (void*)&app->delta_time
+		.system_handle_func = system_fall_handle,
+		.params = app
+	});
+	ecs_world_system_add(app->world, (t_system){
+		.system_id = system_remove,
+		.components_mask = comp_pos | comp_vis,
+		.system_handle_func = system_remove_handle,
+		.params = app
 	});
 }
 
@@ -97,5 +120,5 @@ void						systems_create(t_app *app)
 
 void						systems_params_update(t_app *app)
 {
-	ecs_system_update_params(app->world, system_move, &app->delta_time);
+	ecs_system_update_params(app->world, system_fall, app);
 }

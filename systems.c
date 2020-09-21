@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 15:58:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:26:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,25 +203,22 @@ void			ecs_systems_run_parallel(int32_t num_threads,
 {
 	pthread_t				threads[num_threads];
 	int						i;
-	t_system_parallel		*data[num_threads];
+	t_system_parallel		data[num_threads];
 	
 	i = 0;
 	while (i < num_threads)
 	{
-		if (!(data[i] = malloc(sizeof(t_system_parallel))) &&
-			ft_dprintf(2, "Failed to malloc parallel system data\n"))
-			exit(1);
-		data[i]->num_threads = num_threads;
-		data[i]->systems = systems;
-		data[i]->thread_id = i;
-		data[i]->world = &world;
-		data[i]->min_entity_index = i * (world->num_entities / num_threads);
-		data[i]->max_entity_index = (i + 1) *
+		data[i].num_threads = num_threads;
+		data[i].systems = systems;
+		data[i].thread_id = i;
+		data[i].world = &world;
+		data[i].min_entity_index = i * (world->num_entities / num_threads);
+		data[i].max_entity_index = (i + 1) *
 			(world->num_entities / num_threads);
 		if (i == num_threads - 1)
-			data[i]->max_entity_index = world->num_entities;
+			data[i].max_entity_index = world->num_entities;
 		if (pthread_create(&threads[i], NULL, (void*)ecs_systems_run_per_thread,
-			data[i]))
+			&data[i]))
 			ft_dprintf(2, "Failed to create thread.\n");
 		i++;
 	}
@@ -229,7 +226,6 @@ void			ecs_systems_run_parallel(int32_t num_threads,
 	while (i < num_threads)
 	{
 		pthread_join(threads[i], NULL);
-		free(data[i]);
 		i++;
 	}
 }

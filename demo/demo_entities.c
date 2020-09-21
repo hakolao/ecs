@@ -6,18 +6,18 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:06:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:24:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
 
-static void					random_entity_create(t_app *app)
+static void					random_entity_create(t_app *app, uint32_t z_val)
 {
 	int32_t			size;
 	t_physics		physics;
 
-	size = 2;
+	size = ENTITY_SIZE;
 	physics.position.x =
 		(float)((size / 2) + rand() % WIDTH) - (float)(size / 2);
 	physics.position.y =
@@ -31,8 +31,8 @@ static void					random_entity_create(t_app *app)
 		&(t_component){.id = comp_physics, .size = sizeof(t_physics),
 			.data = &physics},
 		&(t_component){.id = comp_vis, .size = sizeof(t_visuals),
-			.data = &(t_visuals){.color = rand(),
-					.width = size, .height = size}});
+			.data = &(t_visuals){.color = rand(), .z_val = z_val,
+				.width = size, .height = size}});
 }
 
 /*
@@ -41,6 +41,9 @@ static void					random_entity_create(t_app *app)
 
 void						entities_create_up_to_max(t_app *app)
 {
+	int		z_val;
+
+	z_val = 0;
 	while (app->world->num_entities < MAX_ENTITIES)
-		random_entity_create(app);
+		random_entity_create(app, z_val++);
 }

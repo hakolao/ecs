@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:00:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 12:59:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:14:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ void			recreate_frame(t_app *app)
 	error_check(!(app->window->framebuffer =
 		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
 		"Failed to malloc framebuffer in resize");
+	free(app->window->zbuffer);
+	error_check(!(app->window->zbuffer =
+		malloc(sizeof(uint32_t) * app->window->width * app->window->height)),
+		"Failed to malloc framebuffer in resize");
+	ft_memset(app->window->zbuffer, INT32_MAX, sizeof(uint32_t) *
+		app->window->width * app->window->height);
 	error_check(app->window->frame == NULL, SDL_GetError());
 	if (app->window->font != NULL)
 		TTF_CloseFont(app->window->font);

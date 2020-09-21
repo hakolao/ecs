@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:02:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:24:15 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void					system_render_handle(t_ecs_world *world,
 	int32_t			y_start;
 	int32_t			x;
 	int32_t			y;
+	uint32_t		pixel_index;
 
 	window = ((t_app*)world->systems[
 		ecs_system_index(world, system_forces)].params)->window;
@@ -63,8 +64,13 @@ static void					system_render_handle(t_ecs_world *world,
 		{
 			if (y >= 0 && x >= 0 && y < window->height && x < window->width)
 			{
-				window->framebuffer[y * window->width + x] =
-					render_specs->color;
+				pixel_index = y * window->width + x;
+				if (render_specs->z_val <=
+					window->zbuffer[pixel_index])
+				{
+					window->framebuffer[pixel_index] = render_specs->color;
+					window->zbuffer[pixel_index] = render_specs->z_val;
+				}
 			}
 		}
 	}
@@ -75,7 +81,7 @@ static void					system_reset_handle(t_ecs_world *world,
 {
 	t_app			*app;
 	t_visuals		*render_specs;
-	t_physics	*physics;
+	t_physics		*physics;
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
 	render_specs =

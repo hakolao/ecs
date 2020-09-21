@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 15:59:57 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:24:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define FONT_SIZE 20
 
 # define MAX_ENTITIES 1000000
+# define ENTITY_SIZE 1
 
 # define CONST_GRAVITY 9.81
 # define CONST_MOVEMENT 1.0
@@ -48,6 +49,7 @@ typedef struct				s_window
 	SDL_Renderer			*renderer;
 	SDL_Texture				*frame;
 	uint32_t				*framebuffer;
+	uint32_t				*zbuffer;
 	TTF_Font				*font;
 	int32_t					width;
 	int32_t					height;
@@ -102,6 +104,7 @@ typedef struct				t_visuals
 	uint32_t	color;
 	uint32_t	width;
 	uint32_t	height;
+	uint32_t	z_val;
 }							t_visuals;
 
 /*

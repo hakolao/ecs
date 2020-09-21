@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:03:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 16:14:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void			clear_frame(t_app *app)
 		app->window->framebuffer[i + 1] = color;
 		app->window->framebuffer[i + 2] = color;
 		app->window->framebuffer[i + 3] = color;
+		app->window->zbuffer[i] = INT32_MAX;
+		app->window->zbuffer[i + 1] = INT32_MAX;
+		app->window->zbuffer[i + 2] = INT32_MAX;
+		app->window->zbuffer[i + 3] = INT32_MAX;
 		i += 4;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:14:17 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 14:11:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:04:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			entity_remove_component(t_ecs_world *world,
 
 	component_list_index =
 		ecs_component_index(world, component_id);
-	hash_map_delete(world->components_by_entity[component_list_index],
+	hash_map_delete_free(world->components_by_entity[component_list_index],
 		entity_index);
 }
 

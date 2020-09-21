@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:02:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 14:03:46 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void					system_reset_handle(t_ecs_world *world,
 	{
 		ecs_world_entity_remove(world, entity_index);
 		// Adds as many as has been already removed...
-		entities_create(app);
+		// entities_create(app);
 	}
 }
 

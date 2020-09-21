@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 21:13:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/21 21:29:39 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static void					system_forces_handle(t_ecs_world *world,
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
 	dt = (float)app->info.delta_time * 0.02;
-	physics = (t_physics*)hash_map_get(ecs_component_entities(world, comp_physics),
-		entity_index);
+	physics = (t_physics*)ecs_world_entity_component_get(world,
+		entity_index, comp_physics);
 	if (!physics || !app->is_gravity)
 		return ;
 	forces = (t_vel){.dx = 0, .dy = 0};
@@ -49,11 +49,10 @@ static void					system_render_handle(t_ecs_world *world,
 
 	window = ((t_app*)world->systems[
 		ecs_system_index(world, system_forces)].params)->window;
-	render_specs =
-		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
-			entity_index);
-	physics = (t_physics*)hash_map_get(ecs_component_entities(world, comp_physics),
-			entity_index);
+	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
+		entity_index, comp_vis);
+	physics = (t_physics*)ecs_world_entity_component_get(world,
+		entity_index, comp_physics);
 	x_start = physics->position.x - render_specs->width / 2;
 	y_start = physics->position.y - render_specs->height / 2;
 	y = y_start - 1;
@@ -84,11 +83,10 @@ static void					system_reset_handle(t_ecs_world *world,
 	t_physics		*physics;
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
-	render_specs =
-		(t_visuals*)hash_map_get(ecs_component_entities(world, comp_vis),
-		entity_index);
-	physics = (t_physics*)hash_map_get(ecs_component_entities(world, comp_physics),
-		entity_index);
+	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
+		entity_index, comp_vis);
+	physics = (t_physics*)ecs_world_entity_component_get(world,
+		entity_index, comp_physics);
 	if (physics && render_specs &&
 		physics->position.y > app->window->height + render_specs->height / 2)
 		init_entity_phyiscs(app, physics);

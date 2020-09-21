@@ -1,10 +1,12 @@
 # LibECS
+
 An entity component system written in C using a limited number of c libraries.
 Only `malloc`, `va_start`, `va_end`, `va_arg` are used except for the `demo`.
 
 Demo uses SDL2.
 
 ## Run
+
 ```
 git clone https://github.com/hakolao/ecs.git && cd ecs
 make demo # runs a visual demo, if you wish to edit parameters, go to demo/include/demo.h
@@ -14,6 +16,7 @@ make test # runs tests
 ![demopng](demo/assets/ecs.png)
 
 ## Use
+
 ```
 make # creates libecs.a that you an include in your libs
 ```
@@ -24,6 +27,7 @@ make # creates libecs.a that you an include in your libs
 
 Structs & enums must be defined to be used by the library functions. At least
 component ids & corresponding components, and system ids.
+
 ```c
 /*
 ** Demo components (to be used by each entity)
@@ -75,13 +79,15 @@ typedef enum e_system_id
 ```
 
 1. Create world initializes the world struct.
+
 ```c
 t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
 ```
 
 2. Create systems which must include components the system uses and system
-handle functions. See `demo/demo_system.c` on what the render handles could look
-like.
+   handle functions. See `demo/demo_system.c` on what the render handles could look
+   like.
+
 ```c
 static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
 {
@@ -94,10 +100,10 @@ static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
 	if (system_args != NULL)
 	{
 		dt = (uint32_t)(*(size_t*)system_args);
-		pos = (t_position*)hash_map_get(ecs_component_entities(world, comp_pos),
-			entity_index);
-		vel = (t_velocity*)hash_map_get(ecs_component_entities(world, comp_vel),
-			entity_index);
+		pos = (t_position*)ecs_world_entity_component_get(world,
+		entity_index, comp_pos);
+		vel = (t_velocity*)ecs_world_entity_component_get(world,
+		entity_index, comp_vel);
 		if (pos && vel)
 		{
 			pos->x += vel->dx * dt;
@@ -121,7 +127,8 @@ ecs_world_system_add(app->world, (t_system){
 ```
 
 3. Create entities with initial components they have. Components can be added
-afterwards as well.
+   afterwards as well.
+
 ```c
 void entities_create(t_app *app)
 {
@@ -152,6 +159,7 @@ ecs_systems_run(app->world, system_move | system_render);
 ```
 
 5. Update system params if needed, e.g. delta time. Though before ecs_systems_run.
+
 ```c
 ecs_system_update_params(app->world, system_move, &app->delta_time);
 ```

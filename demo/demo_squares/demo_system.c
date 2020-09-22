@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:24:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:29:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ static void					system_forces_handle(t_ecs_world *world,
 	t_physics		*physics;
 	float			dt;
 	t_vel			forces;
+	t_bool			is_gravity;
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
 	dt = (float)app->info.delta_time * 0.02;
 	physics = (t_physics*)ecs_world_entity_component_get(world,
 		entity_index, comp_physics);
-	if (!physics || !app->is_gravity)
+	is_gravity = *(t_bool*)app->data;
+	if (!physics || !is_gravity)
 		return ;
 	forces = (t_vel){.dx = 0, .dy = 0};
 	forces.dy += CONST_GRAVITY;

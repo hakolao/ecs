@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:26:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:27:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct				s_app
 	t_window				*window;
 	t_info					info;
 	t_ecs_world				*world;
-	t_bool					is_gravity;
 	void					*data;
 }							t_app;
 

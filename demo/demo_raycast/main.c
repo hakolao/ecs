@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:25:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:27:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int					main(void)
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
-	app.is_gravity = true;
 	data.num_triangles = NUM_TRIANGLES;
 	app.data = &data;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());

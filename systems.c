@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:57:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 16:28:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void			ecs_system_update_params(t_ecs_world *world,
 void			ecs_systems_run_per_thread(void *params)
 {
 	uint64_t			i;
-	uint64_t			entity_index;
+	int64_t				entity_index;
 	uint64_t			removed_systems;
 	t_ecs_world			*world;
 	t_system_parallel	*data;
@@ -172,7 +172,7 @@ void			ecs_systems_run_per_thread(void *params)
 	world = *data->world;
 	if (world->num_entities == 0 || data->num_threads == 0)
 		return ;
-	entity_index = data->min_entity_index - 1;
+	entity_index = (int64_t)data->min_entity_index - 1;
 	while (++entity_index < data->max_entity_index)
 	{
 		if (world->entities[entity_index] == 0)

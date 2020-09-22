@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 13:20:26 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 15:14:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void					system_zbuffer_handle(t_ecs_world *world,
 	uint32_t		pixel_index;
 
 	window = ((t_app*)world->systems[ecs_system_index(world,
-		system_forces)].params)->window;
+		system_zbuffer)].params)->window;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world, entity_index,
@@ -98,7 +98,7 @@ static void					system_render_handle(t_ecs_world *world,
 	uint32_t		pixel_index;
 
 	window = ((t_app*)world->systems[ecs_system_index(world,
-		system_forces)].params)->window;
+		system_render)].params)->window;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world, entity_index,
@@ -128,7 +128,7 @@ static void					system_reset_handle(t_ecs_world *world,
 	t_visuals		*render_specs;
 	t_physics		*physics;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
+	app = (t_app*)world->systems[ecs_system_index(world, system_reset)].params;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world,
@@ -176,5 +176,8 @@ void						systems_create(t_app *app)
 
 void						systems_params_update(t_app *app)
 {
+	ecs_system_update_params(app->world, system_zbuffer, app);
+	ecs_system_update_params(app->world, system_render, app);
 	ecs_system_update_params(app->world, system_forces, app);
+	ecs_system_update_params(app->world, system_reset, app);
 }

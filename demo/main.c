@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 21:15:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 12:47:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,18 @@ static void			recreate_after_resize(t_app *app)
 		SDL_PollEvent(NULL);
 }
 
+/*
+** Zbuffer check must happen before system_render, to prevent artifacts.
+*/
+
+static void			systems_run(t_app *app)
+{
+	systems_params_update(app);
+	ecs_systems_run_parallel(NUM_THREADS, app->world, system_zbuffer);
+	ecs_systems_run_parallel(NUM_THREADS, app->world,
+		system_forces | system_render | system_reset);
+}
+
 static void			main_loop(t_app *app)
 {
 	SDL_Event	event;
@@ -71,6 +83,7 @@ static void			main_loop(t_app *app)
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{
+		// SDL_GetPerformanceCounter();
 		app->info.time_since_start = SDL_GetTicks();
 		while (SDL_PollEvent(&event))
 		{
@@ -87,9 +100,7 @@ static void			main_loop(t_app *app)
 				recreate_after_resize(app);
 		}
 		clear_frame(app);
-		systems_params_update(app);
-		ecs_systems_run_parallel(NUM_THREADS, app->world,
-			system_forces | system_render | system_reset);
+		systems_run(app);
 		draw_fps(app);
 		draw_frame(app);
 		app->info.delta_time = SDL_GetTicks() - app->info.time_since_start;

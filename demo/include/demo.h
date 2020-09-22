@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 21:27:57 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 12:48:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef enum				e_comp_id
 typedef enum				e_system_id
 {
 	system_render = 123,
+	system_zbuffer = 1515,
 	system_forces = 111,
 	system_reset = 222,
 }							t_system_id;

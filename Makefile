@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/22 17:18:40 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/23 00:20:50 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,11 +77,15 @@ demo_squares: all
 	@/bin/rm -f main.o
 	@make clean
 	@make -C $(LIBFT) clean
-	
+
 DEMO_RC_SRCS = $(wildcard $(DIR_DEMO)/demo_raycast/*.c)
+LIBGMATRIX = ./demo/libgmatrix
 demo_raycast: all
 	@make -C $(LIBFT)
+	@make -C $(LIBGMATRIX)
 	$(CC) -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
+		-I$(LIBGMATRIX)/include \
+		-L$(LIBGMATRIX) -lgmatrix \
 		-I$(DIR_DEMO)/demo_raycast/include \
 		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
 	./demo_raycast

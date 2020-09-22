@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:27:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 00:32:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void			draw_frame(t_app *app)
 static void			recreate_after_resize(t_app *app)
 {
 	ecs_world_destroy(app->world);
-	app->world = ecs_world_create(NAME, 
+	app->world = ecs_world_create(NAME,
 		app->window->width * app->window->height +
 		((t_data*)app->data)->num_triangles);
 	recreate_frame(app);
@@ -77,7 +77,7 @@ static void			main_loop(t_app *app)
 	t_bool		is_running;
 
 	is_running = true;
-	app->world = ecs_world_create(NAME, 
+	app->world = ecs_world_create(NAME,
 		app->window->width * app->window->height +
 		((t_data*)app->data)->num_triangles);
 	ft_printf("Created world: %s\n", app->world->name);
@@ -92,9 +92,6 @@ static void			main_loop(t_app *app)
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
-			if ((event.type == SDL_KEYDOWN && event.key.repeat == false))
-				if (event.key.keysym.sym == SDLK_p)
-					app->is_gravity = !app->is_gravity;
 			// !Note Must be here so resize doesn't cause a segfault due to some
 			// !component data being dependent on window dimensions
 			// !(intentionally)

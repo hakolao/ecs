@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 15:14:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:24:15 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo.h"
+#include "demo_squares.h"
 
 /*
 ** Updates Fall (and sideways) forces & velocity of entities that have

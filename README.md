@@ -9,7 +9,7 @@ Demo uses SDL2.
 
 ```
 git clone https://github.com/hakolao/ecs.git && cd ecs
-make demo # runs a visual demo, if you wish to edit parameters, go to demo/include/demo.h
+make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo.h
 make test # runs tests
 ```
 

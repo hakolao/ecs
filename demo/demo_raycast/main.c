@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:24:18 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:25:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo_squares.h"
+#include "demo_raycast.h"
 
 /*
 ** Set 4 colors at a time for speed
@@ -49,10 +49,12 @@ static void			draw_frame(t_app *app)
 static void			recreate_after_resize(t_app *app)
 {
 	ecs_world_destroy(app->world);
-	app->world = ecs_world_create(NAME, MAX_ENTITIES);
+	app->world = ecs_world_create(NAME, 
+		app->window->width * app->window->height +
+		((t_data*)app->data)->num_triangles);
 	recreate_frame(app);
 	systems_create(app);
-	entities_create_up_to_max(app);
+	//ToDo: Create entities if needed!
 	app->window->resized = false;
 	while (app->window->is_hidden)
 		SDL_PollEvent(NULL);
@@ -66,8 +68,7 @@ static void			systems_run(t_app *app)
 {
 	systems_params_update(app);
 	ecs_systems_run_parallel(NUM_THREADS, app->world, system_zbuffer);
-	ecs_systems_run_parallel(NUM_THREADS, app->world,
-		system_forces | system_render | system_reset);
+	ecs_systems_run_parallel(NUM_THREADS, app->world, system_render);
 }
 
 static void			main_loop(t_app *app)
@@ -76,10 +77,12 @@ static void			main_loop(t_app *app)
 	t_bool		is_running;
 
 	is_running = true;
-	app->world = ecs_world_create(NAME, MAX_ENTITIES);
+	app->world = ecs_world_create(NAME, 
+		app->window->width * app->window->height +
+		((t_data*)app->data)->num_triangles);
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
-	entities_create_up_to_max(app);
+	//ToDo: Create entities
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{
@@ -127,10 +130,13 @@ static void			app_cleanup(t_app *app)
 int					main(void)
 {
 	t_app	app;
+	t_data	data;
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
 	app.is_gravity = true;
+	data.num_triangles = NUM_TRIANGLES;
+	app.data = &data;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());
 	window_init(&app);

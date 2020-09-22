@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   demo_window.c                                      :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:00:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 17:25:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:24:02 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo.h"
+#include "demo_common.h"
 
 static int		resize_callback(void *data, SDL_Event *event)
 {

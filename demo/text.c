@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   demo_text.c                                        :+:      :+:    :+:   */
+/*   text.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:09:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 18:52:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:23:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo.h"
+#include "demo_common.h"
 
 static SDL_Surface	*surface_from_font(t_app *app, t_text_params params)
 {

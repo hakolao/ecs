@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/22 17:03:02 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/22 17:18:40 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,21 +56,35 @@ test: all
 
 DIR_DEMO = ./demo
 LIBSDL2 = $(DIR_DEMO)/SDL2
+DEMO_SRCS = $(wildcard $(DIR_DEMO)/*.c)
 DEMO_FLAGS =  -lpthread -O2 \
 				-rpath $(LIBSDL2) \
 				-framework SDL2 -F$(LIBSDL2)/ \
 				-framework SDL2_image -F$(LIBSDL2)/ \
 				-framework SDL2_ttf -F$(LIBSDL2)/ \
 				-L$(LIBFT) -lft
-DEMO_INCLUDES = -I$(LIBSDL2)/SDL2.framework/Headers \
+DEMO_INCLUDES = -I$(DIR_DEMO)/include \
+				-I$(LIBSDL2)/SDL2.framework/Headers \
 				-I$(LIBSDL2)/SDL2_image.framework/Headers \
 				-I$(LIBSDL2)/SDL2_ttf.framework/Headers
-DEMO_SQUARE_SRCS =$(wildcard $(DIR_DEMO)/demo_squares/*.c)
+DEMO_SQUARE_SRCS = $(wildcard $(DIR_DEMO)/demo_squares/*.c)
 demo_squares: all
 	@make -C $(LIBFT)
-	$(CC) -o demo_squares $(DEMO_SQUARE_SRCS) -I$(DIR_DEMO)/demo_squares/include \
+	$(CC) -o demo_squares $(DEMO_SRCS) $(DEMO_SQUARE_SRCS) \
+		-I$(DIR_DEMO)/demo_squares/include \
 		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
 	./demo_squares
+	@/bin/rm -f main.o
+	@make clean
+	@make -C $(LIBFT) clean
+	
+DEMO_RC_SRCS = $(wildcard $(DIR_DEMO)/demo_raycast/*.c)
+demo_raycast: all
+	@make -C $(LIBFT)
+	$(CC) -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
+		-I$(DIR_DEMO)/demo_raycast/include \
+		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
+	./demo_raycast
 	@/bin/rm -f main.o
 	@make clean
 	@make -C $(LIBFT) clean
@@ -83,6 +97,7 @@ clean:
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@make -C $(LIBFT) fclean
+	@if [ -a demo_raycast ]; then rm demo_raycast; fi;
 	@if [ -a demo_squares ]; then rm demo_squares; fi;
 	@if [ -a test_run ]; then rm test_run; fi;
 

@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 13:24:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 17:24:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo.h"
+#include "demo_squares.h"
 
 void						init_entity(t_app *app, t_physics *physics,
 							t_visuals *visuals)

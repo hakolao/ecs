@@ -6,14 +6,18 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 21:04:53 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 13:24:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo.h"
 
-void						init_entity_phyiscs(t_app *app, t_physics *physics)
+void						init_entity(t_app *app, t_physics *physics,
+							t_visuals *visuals)
 {
+	uint32_t	size;
+
+	size = rand() % ENTITY_SIZE + 1;
 	physics->position.x = (float)(rand() % app->window->width);
 	physics->position.y = (float)(rand() % app->window->height) -
 		app->window->height;
@@ -22,21 +26,24 @@ void						init_entity_phyiscs(t_app *app, t_physics *physics)
 	physics->inertia = 1.0;
 	physics->velocity.dx = 0.0;
 	physics->velocity.dy = 0.0;
+	visuals->color = ((rand() % 255) << 24) | ((rand() % 255) << 16) |
+		((rand() % 255) << 8) | ((rand() % 255) << 24);
+	visuals->width = size;
+	visuals->height = size;
+	visuals->z_val = rand();
 }
 
-static void					random_entity_create(t_app *app, uint32_t z_val)
+static void					random_entity_create(t_app *app)
 {
-	int32_t			size;
 	t_physics		physics;
+	t_visuals		visuals;
 
-	size = ENTITY_SIZE;
-	init_entity_phyiscs(app, &physics);
+	init_entity(app, &physics, &visuals);
 	ecs_world_entity_add(app->world, 2,
 		&(t_component){.id = comp_physics, .size = sizeof(t_physics),
 			.data = &physics},
 		&(t_component){.id = comp_vis, .size = sizeof(t_visuals),
-			.data = &(t_visuals){.color = rand(), .z_val = z_val,
-				.width = size, .height = size}});
+			.data = &visuals});
 }
 
 /*
@@ -45,9 +52,6 @@ static void					random_entity_create(t_app *app, uint32_t z_val)
 
 void						entities_create_up_to_max(t_app *app)
 {
-	int		z_val;
-
-	z_val = 0;
 	while (app->world->num_entities < MAX_ENTITIES)
-		random_entity_create(app, z_val++);
+		random_entity_create(app);
 }

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 12:50:41 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 13:20:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static void					system_reset_handle(t_ecs_world *world,
 		entity_index, comp_physics);
 	if (physics && render_specs &&
 		physics->position.y > app->window->height + render_specs->height / 2)
-		init_entity_phyiscs(app, physics);
+		init_entity(app, physics, render_specs);
 }
 
 /*

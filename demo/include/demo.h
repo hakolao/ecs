@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 12:48:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 13:17:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,9 @@ typedef struct				s_window
 typedef struct				s_info
 {
 	uint32_t				fps;
-	uint32_t				delta_time;
-	uint32_t				time_since_start;
+	uint64_t				delta_time;
+	uint64_t				performance_start;
+	uint64_t				performance_end;
 }							t_info;
 
 typedef struct				s_app
@@ -143,7 +144,8 @@ void						systems_params_update(t_app *app);
 ** Entities
 */
 void						entities_create_up_to_max(t_app *app);
-void						init_entity_phyiscs(t_app *app, t_physics *physics);
+void						init_entity(t_app *app, t_physics *physics,
+							t_visuals *visuals);
 
 /*
 ** Window

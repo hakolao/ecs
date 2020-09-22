@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 12:47:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/22 13:13:30 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ static void			main_loop(t_app *app)
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{
-		// SDL_GetPerformanceCounter();
-		app->info.time_since_start = SDL_GetTicks();
+		app->info.performance_start = SDL_GetPerformanceCounter();
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
@@ -103,7 +102,11 @@ static void			main_loop(t_app *app)
 		systems_run(app);
 		draw_fps(app);
 		draw_frame(app);
-		app->info.delta_time = SDL_GetTicks() - app->info.time_since_start;
+		app->info.performance_end = SDL_GetPerformanceCounter();
+		app->info.delta_time =
+			(app->info.performance_end - app->info.performance_start)
+			* 1000.0 /
+			SDL_GetPerformanceFrequency();
 		app->info.fps = capture_framerate(app->info.delta_time);
 	}
 }

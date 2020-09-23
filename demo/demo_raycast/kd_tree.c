@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 14:21:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 14:39:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,23 +94,94 @@ static t_kd_node	*tree_node_create(t_tri_vec *triangles)
 	return (node);
 }
 
-t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth)
+void				split_triangles(t_tri_vec *triangles, t_box3d bbox,
+					t_tri_vec *left_tris, t_tri_vec *right_tris)
 {
 	t_vec3		mid_point;
 	int32_t		axis;
+	int			i;
+
+	get_mid_point(triangles, mid_point);
+	axis = get_longest_axis(bbox);
+	i = -1;
+	while (++i < (int)triangles->size)
+	{
+		if (axis == 0)
+		{
+			if (mid_point[0] >= triangles->triangles[i]->center[0])
+				triangle_vec_push(right_tris, triangles->triangles[i]);
+			else
+				triangle_vec_push(left_tris, triangles->triangles[i]);
+		}
+		else if (axis == 1)
+		{
+			if (mid_point[1] >= triangles->triangles[i]->center[1])
+				triangle_vec_push(right_tris, triangles->triangles[i]);
+			else
+				triangle_vec_push(left_tris, triangles->triangles[i]);
+		}
+		else if (axis == 2)
+		{
+			if (mid_point[2] >= triangles->triangles[i]->center[2])
+				triangle_vec_push(right_tris, triangles->triangles[i]);
+			else
+				triangle_vec_push(left_tris, triangles->triangles[i]);
+		}
+	}
+}
+
+int					calculate_matches(t_tri_vec *left_tris, t_tri_vec *right_tris)
+{
+	int		i;
+	int		j;
+	int		matches;
+
+	matches = 0;
+	i = -1;
+	while (++i < (int)left_tris->size)
+	{
+		j = -1;
+		while (++j < (int)right_tris->size)
+		{
+			if (left_tris->triangles[i] == right_tris->triangles[i])
+				matches++;
+		}
+	}
+	return (matches);
+}
+
+t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth)
+{
+
 	t_kd_node	*node;
+	t_tri_vec	*left_tris;
+	t_tri_vec	*right_tris;
+	int			matches;
 
 	node = tree_node_create(triangles);
-	if (triangles->size == 0)
+	if (triangles->size == 0 || triangles->size == 1)
 		return (node);
-	if (triangles->size == 1)
+	left_tris = triangle_vec_empty();
+	right_tris = triangle_vec_empty();
+	split_triangles(triangles, node->bounding_box, left_tris, right_tris);
+	if (left_tris->size == 0 && right_tris->size > 0)
 	{
-		node->left = tree_node_create(triangle_vec_empty());
-		node->right = tree_node_create(triangle_vec_empty());
-		return (node);
+		tri_vec_delete(left_tris);
+		left_tris = right_tris;
 	}
-	get_mid_point(triangles, mid_point);
-	axis = get_longest_axis(node->bounding_box);
+	if (right_tris->size == 0 && left_tris->size > 0)
+	{
+		tri_vec_delete(right_tris);
+		right_tris = left_tris;
+	}
+	matches = calculate_matches(left_tris, right_tris);
+	if ((float)matches / left_tris->size < 0.5 &&
+		(float)matches / right_tris->size < 0.5)
+	{
+		node->left = tree_create_recursive(left_tris, depth + 1);
+		node->right = tree_create_recursive(right_tris, depth + 1);
+	}
+	return (node);
 }
 
 t_kd_tree			*kd_tree_create(t_triangle **triangles,

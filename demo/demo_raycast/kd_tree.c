@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 14:39:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 15:42:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,13 @@ static t_kd_node	*tree_node_create(t_tri_vec *triangles)
 	return (node);
 }
 
-void				split_triangles(t_tri_vec *triangles, t_box3d bbox,
+void				split_triangles(t_tri_vec *triangles, uint32_t axis,
 					t_tri_vec *left_tris, t_tri_vec *right_tris)
 {
 	t_vec3		mid_point;
-	int32_t		axis;
 	int			i;
 
 	get_mid_point(triangles, mid_point);
-	axis = get_longest_axis(bbox);
 	i = -1;
 	while (++i < (int)triangles->size)
 	{
@@ -150,7 +148,8 @@ int					calculate_matches(t_tri_vec *left_tris, t_tri_vec *right_tris)
 	return (matches);
 }
 
-t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth)
+t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
+					uint32_t *num_nodes)
 {
 
 	t_kd_node	*node;
@@ -159,11 +158,13 @@ t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth)
 	int			matches;
 
 	node = tree_node_create(triangles);
+	node->uuid = (*num_nodes)++;
 	if (triangles->size == 0 || triangles->size == 1)
 		return (node);
+	node->axis = get_longest_axis(node->bounding_box);
 	left_tris = triangle_vec_empty();
 	right_tris = triangle_vec_empty();
-	split_triangles(triangles, node->bounding_box, left_tris, right_tris);
+	split_triangles(triangles, node->axis, left_tris, right_tris);
 	if (left_tris->size == 0 && right_tris->size > 0)
 	{
 		tri_vec_delete(left_tris);
@@ -178,13 +179,38 @@ t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth)
 	if ((float)matches / left_tris->size < 0.5 &&
 		(float)matches / right_tris->size < 0.5)
 	{
-		node->left = tree_create_recursive(left_tris, depth + 1);
-		node->right = tree_create_recursive(right_tris, depth + 1);
+		node->left = tree_create_recursive(left_tris, depth + 1, num_nodes);
+		node->right = tree_create_recursive(right_tris, depth + 1, num_nodes);
 	}
 	return (node);
 }
 
-t_kd_tree			*kd_tree_create(t_triangle **triangles,
+void				kd_tree_print(t_kd_node *root)
+{
+	if (root != NULL)
+	{
+		ft_printf("Triangles: %d\n", root->triangles->size);
+		ft_printf("uuid: %d\nbbox.center: [%0.2f %0.2f %0.2f]\n"
+				"axis: %d\n"
+				"bbox.min_xyz: [%0.2f %0.2f %0.2f]\n"
+				"bbox.max_xyz: [%0.2f %0.2f %0.2f]\n",
+				root->uuid,
+				root->bounding_box.center[0],
+				root->bounding_box.center[1],
+				root->bounding_box.center[2],
+				root->axis,
+				root->bounding_box.xyz_min[0],
+				root->bounding_box.xyz_min[1],
+				root->bounding_box.xyz_min[2],
+				root->bounding_box.xyz_max[0],
+				root->bounding_box.xyz_max[1],
+				root->bounding_box.xyz_max[2]);
+		kd_tree_print(root->left);
+		kd_tree_print(root->right);
+	}
+}
+
+t_kd_tree			*kd_tree_create(t_triangle *triangles,
 					uint32_t num_triangles)
 {
 	t_kd_tree		*tree;
@@ -193,8 +219,7 @@ t_kd_tree			*kd_tree_create(t_triangle **triangles,
 	triangle_vector = triangle_vec(triangles, num_triangles);
 	if (!(tree = malloc(sizeof(t_kd_tree))))
 		return (NULL);
-	tree->num_nodes = 0;
-	tree->root = tree_create_recursive(triangle_vector, 0);
-	tree->num_nodes++;
+	tree->root = tree_create_recursive(triangle_vector, 0, &tree->num_nodes);
+	kd_tree_print(tree->root);
 	return (tree);
 }

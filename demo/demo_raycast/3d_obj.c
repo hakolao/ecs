@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 13:20:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 15:22:02 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,19 @@ static void		obj_file_to_3d_obj(t_obj_result *read_obj, t_3d_object *obj)
 			v_i = read_obj->triangles[i][j][0] - 1;
 			// vt_i = read_obj->triangles[i][j][1] - 1;
 			// vn_i = read_obj->triangles[i][j][2] - 1;
+			if (obj->vertices[v_i] == NULL)
+				error_check(!(obj->vertices[v_i] =
+					malloc(sizeof(t_vertex))), "Failed to malloc vertex");
 			ml_vector3_copy(read_obj->v[v_i],
-				obj->vertices[v_i].pos);
-			obj->vertices[v_i].color = 0xFFFFFFFF;
+				obj->vertices[v_i]->pos);
+			obj->vertices[v_i]->color = 0xFFFFFFFF;
 		}
 		obj->triangles[i].vtc[0] =
-			&obj->vertices[read_obj->triangles[i][0][0] - 1];
+			obj->vertices[read_obj->triangles[i][0][0] - 1];
 		obj->triangles[i].vtc[1] =
-			&obj->vertices[read_obj->triangles[i][1][0] - 1];
+			obj->vertices[read_obj->triangles[i][1][0] - 1];
 		obj->triangles[i].vtc[2] =
-			&obj->vertices[read_obj->triangles[i][2][0] - 1];
+			obj->vertices[read_obj->triangles[i][2][0] - 1];
 		calculate_triangle_centroid(&obj->triangles[i]);
 	}
 }
@@ -61,15 +64,17 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 
 	error_check(!(obj = malloc(sizeof(*obj))), "Failed to malloc 3d obj");
 	error_check(!(obj->vertices =
-		malloc(sizeof(t_vertex) * read_obj->num_vertices)),
+		malloc(sizeof(t_vertex*) * read_obj->num_vertices)),
 		"Failed to malloc 3d obj vertices");
+	ft_memset(obj->vertices, 0,
+		sizeof(t_vertex*) * read_obj->num_vertices);
 	error_check(!(obj->triangles =
 		malloc(sizeof(t_triangle) * read_obj->num_triangles)),
 		"Failed to malloc 3d obj triangles");
 	obj_file_to_3d_obj(read_obj, obj);
 	obj->num_triangles = read_obj->num_triangles;
 	obj->num_vertices = read_obj->num_vertices;
-	obj->triangle_tree = kd_tree_create(&obj->triangles, obj->num_triangles);
+	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
 	return (obj);
 }
 

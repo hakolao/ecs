@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 21:50:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:06:52 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,9 @@ typedef struct				s_3d_object
 void						destroy_object(t_3d_object *object);
 t_3d_object					*create_3d_object(t_obj_result *read_obj);
 t_3d_object					*read_object_file(const char *filename);
-
+void						update_3d_object_kd_tree(t_3d_object *obj);
+void						transform_3d_object(t_3d_object *obj,
+							t_mat4 transform);
 
 /*
 ** Kd Tree functions

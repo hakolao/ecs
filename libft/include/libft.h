@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 11:15:20 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:16:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ char			*ft_itoa_base_32(int32_t nb, int32_t base);
 char			*ft_itoa_base_64(int64_t nb, int64_t base);
 char			*ft_itoa_base_u32(uint32_t nb, uint32_t base);
 char			*ft_itoa_base_u64(uint64_t nb, uint64_t base);
+double			ft_atod(char *str);
 
 /*
 ** Expose ft_printf functions via libft.h

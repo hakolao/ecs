@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:06:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 23:51:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ int							get_bounding_box_longest_axis(t_box3d bounding_box);
 void						get_bounding_box(t_tri_vec *triangles, t_box3d *res);
 t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
 							t_vec3 hit_point);
+t_bool						kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
+							t_vec3 out_intersection);
 
 /*
 ** Triangle vector

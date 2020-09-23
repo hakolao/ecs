@@ -6,24 +6,28 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 15:42:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:46:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "obj3d.h"
 #include "ft_printf.h"
 
-static void			get_bounding_box(t_tri_vec *triangles, t_box3d res)
+static void			get_bounding_box(t_tri_vec *triangles, t_box3d *res)
 {
 	int		i;
 	int		j;
 	float	min;
 	float	max;
 
+	ml_vector3_copy((t_vec3){FLT_MIN, FLT_MIN, FLT_MIN}, res->xyz_max);
+	ml_vector3_copy((t_vec3){FLT_MAX, FLT_MAX, FLT_MAX}, res->xyz_min);
 	if (triangles->size == 0)
 	{
-		ft_memset(res.xyz_min, 0, sizeof(t_vec3));
-		ft_memset(res.xyz_max, 0, sizeof(t_vec3));
+		ft_memset(res->xyz_min, 0, sizeof(t_vec3));
+		ft_memset(res->xyz_max, 0, sizeof(t_vec3));
+		ft_memset(res->center, 0, sizeof(t_vec3));
+		ft_memset(res->size, 0, sizeof(t_vec3));
 	}
 	i = -1;
 	while (++i < (int)triangles->size)
@@ -35,20 +39,20 @@ static void			get_bounding_box(t_tri_vec *triangles, t_box3d res)
 				triangles->triangles[i]->vtc[0]->pos[j],
 				triangles->triangles[i]->vtc[1]->pos[j],
 				triangles->triangles[i]->vtc[2]->pos[j]}, 3);
-			res.xyz_min[j] = res.xyz_min[j] < min ? res.xyz_min[j] : min;
+			res->xyz_min[j] = res->xyz_min[j] < min ? res->xyz_min[j] : min;
 			max = ft_max_double((double[3]){
 				triangles->triangles[i]->vtc[0]->pos[j],
 				triangles->triangles[i]->vtc[1]->pos[j],
 				triangles->triangles[i]->vtc[2]->pos[j]}, 3);
-			res.xyz_max[j] = res.xyz_max[j] > max ? res.xyz_max[j] : max;
+			res->xyz_max[j] = res->xyz_max[j] > max ? res->xyz_max[j] : max;
 		}
 	}
-	ml_vector3_copy((t_vec3){res.xyz_max[0] - res.xyz_min[0],
-		res.xyz_max[1] - res.xyz_min[1], res.xyz_max[2] - res.xyz_min[2],
-	}, res.size);
-	ml_vector3_copy((t_vec3){res.xyz_min[0] + res.size[0] / 2,
-		res.xyz_min[1] + res.size[1] / 2, res.xyz_min[2] + res.size[2] / 2,
-	}, res.center);
+	ml_vector3_copy((t_vec3){res->xyz_max[0] - res->xyz_min[0],
+		res->xyz_max[1] - res->xyz_min[1], res->xyz_max[2] - res->xyz_min[2],
+	}, res->size);
+	ml_vector3_copy((t_vec3){res->xyz_min[0] + res->size[0] / 2.,
+		res->xyz_min[1] + res->size[1] / 2., res->xyz_min[2] + res->size[2] / 2.,
+	}, res->center);
 }
 
 int					get_longest_axis(t_box3d bounding_box)
@@ -56,10 +60,13 @@ int					get_longest_axis(t_box3d bounding_box)
 	float	longest;
 	int		i;
 
-	longest = ft_max_double((double*)bounding_box.size, 3);
+	longest = ft_max_double((double[3]){
+		bounding_box.size[0], bounding_box.size[1], bounding_box.size[2]
+	}, 3);
 	i = -1;
 	while (++i < 3)
-		if (bounding_box.size[i] == longest)
+		if (bounding_box.size[i] - 0.00001 < longest &&
+			bounding_box.size[i] + 0.00001 > longest)
 			break ;
 	return (i);
 }
@@ -84,10 +91,7 @@ static t_kd_node	*tree_node_create(t_tri_vec *triangles)
 
 	if (!(node = malloc(sizeof(t_kd_node))))
 		return (NULL);
-	node->bounding_box = (t_box3d){.xyz_max = {FLT_MIN, FLT_MIN, FLT_MIN},
-		.xyz_min = {FLT_MAX, FLT_MAX, FLT_MAX}, .center = {0, 0, 0},
-		.size = {0, 0, 0}};
-	get_bounding_box(triangles, node->bounding_box);
+	get_bounding_box(triangles, &node->bounding_box);
 	node->triangles = triangles;
 	node->left = NULL;
 	node->right = NULL;

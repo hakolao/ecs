@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 15:23:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:31:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_tri_vec		*triangle_vec_empty(void)
 		exit(1);
 	vector->size = 0;
 	vector->capacity = TRI_VEC_INITIAL_CAPACITY;
-	vector->triangles = NULL;
 	return (vector);
 }
 

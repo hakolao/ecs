@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 00:28:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 10:57:36 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 
 # define MAX_TRIANGLES 1024
 
-typedef struct				s_triangle
-{
-	//ToDo
-}							t_triangle;
+typedef t_vec3			t_triangle[3];
 
 typedef struct	s_kd_node	t_kd_node;
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 21:48:50 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:15:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,12 @@ typedef union	u_float_dissector_ld {
 	long double			f;
 	t_float_bits_ld		b;
 }				t_float_dissector_ld;
+
+typedef struct	s_file_contents
+{
+	void				*buf;
+	uint32_t			size;
+}				t_file_contents;
 
 int				ft_isalnum(int c);
 int				ft_isalpha(int c);
@@ -194,5 +200,8 @@ char			*ft_itoa_base_u64(uint64_t nb, uint64_t base);
 int				ft_dprintf(int fd, const char *format, ...);
 int				ft_sprintf(char *str, const char *format, ...);
 int				ft_printf(const char *format, ...);
+
+void			destroy_file_contents(t_file_contents *f);
+t_file_contents	*read_file(const char *filename);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 00:32:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:44:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ static void			recreate_after_resize(t_app *app)
 {
 	ecs_world_destroy(app->world);
 	app->world = ecs_world_create(NAME,
-		app->window->width * app->window->height +
-		((t_data*)app->data)->num_triangles);
+		app->window->width * app->window->height);
 	recreate_frame(app);
 	systems_create(app);
 	//ToDo: Create entities if needed!
@@ -78,8 +77,7 @@ static void			main_loop(t_app *app)
 
 	is_running = true;
 	app->world = ecs_world_create(NAME,
-		app->window->width * app->window->height +
-		((t_data*)app->data)->num_triangles);
+		app->window->width * app->window->height);
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
 	//ToDo: Create entities
@@ -126,12 +124,11 @@ static void			app_cleanup(t_app *app)
 
 int					main(void)
 {
-	t_app	app;
-	t_data	data;
+	t_app		app;
+	t_demo_data	data;
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
-	data.num_triangles = NUM_TRIANGLES;
 	app.data = &data;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());

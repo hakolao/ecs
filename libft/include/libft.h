@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 11:16:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 11:48:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define BUFF_SIZE 50
 # define MAX_FD 65536
+# define FILE_READ_BUF 1024
 
 # include <string.h>
 # include <fcntl.h>
@@ -107,6 +108,7 @@ void			ft_putchar(char c);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *str, int fd);
 int				ft_atoi(const char *str);
+long long int	ft_atoi_long(const char *str);
 char			*ft_strstr(const char *haystack, const char *needle);
 char			*ft_strnstr(const char *haystack, const char *needle,
 				size_t len);
@@ -204,5 +206,7 @@ int				ft_printf(const char *format, ...);
 
 void			destroy_file_contents(t_file_contents *f);
 t_file_contents	*read_file(const char *filename);
+void			ft_scroll_over(char **str, char c);
+void			ft_scroll_to(char **str, char c);
 
 #endif

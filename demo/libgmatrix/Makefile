@@ -6,13 +6,13 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/08 23:54:37 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/23 11:47:27 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = clang
 NAME = libgmatrix.a
-LIBFT = ../libft
+LIBFT = ../../libft
 DIR_SRC = ./
 DIR_TESTS = ./tests
 DIR_OBJ = temp

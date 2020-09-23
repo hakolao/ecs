@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:17:32 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:19:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static void			main_loop(t_app *app)
 		app->window->width * app->window->height);
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
+	entity_rays_create(app);
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{

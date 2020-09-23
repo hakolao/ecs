@@ -6,13 +6,13 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:17:11 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:20:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
 
-void						entities_create_up_to_max(t_app *app)
+void						entity_rays_create(t_app *app)
 {
 	float	x_pos;
 	float	y_pos;
@@ -34,7 +34,7 @@ void						entities_create_up_to_max(t_app *app)
 			ray.origin[0] = 0;
 			ray.origin[1] = 0;
 			ray.origin[2] = 0;
-			ecs_world_entity_add(app->world, 1, (t_component){
+			ecs_world_entity_add(app->world, 1, &(t_component){
 				.data = &ray, .id = comp_ray, .size = sizeof(t_ray)});
 		}
 	}

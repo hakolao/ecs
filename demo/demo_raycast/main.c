@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:07:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:17:32 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static void			recreate_after_resize(t_app *app)
 static void			systems_run(t_app *app)
 {
 	systems_params_update(app);
-	ecs_systems_run_parallel(NUM_THREADS, app->world, system_zbuffer);
 	ecs_systems_run_parallel(NUM_THREADS, app->world, system_render);
 }
 
@@ -80,7 +79,6 @@ static void			main_loop(t_app *app)
 		app->window->width * app->window->height);
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
-	//ToDo: Create entities
 	ft_printf("Created %d entities\n", app->world->num_entities);
 	while (is_running)
 	{
@@ -90,9 +88,6 @@ static void			main_loop(t_app *app)
 			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN &&
 				event.key.keysym.sym == SDLK_ESCAPE))
 				is_running = false;
-			// !Note Must be here so resize doesn't cause a segfault due to some
-			// !component data being dependent on window dimensions
-			// !(intentionally)
 			if (app->window->resized)
 				recreate_after_resize(app);
 		}
@@ -103,8 +98,7 @@ static void			main_loop(t_app *app)
 		app->info.performance_end = SDL_GetPerformanceCounter();
 		app->info.delta_time =
 			(app->info.performance_end - app->info.performance_start)
-			* 1000.0 /
-			SDL_GetPerformanceFrequency();
+			* 1000.0 / SDL_GetPerformanceFrequency();
 		app->info.fps = capture_framerate(app->info.delta_time);
 	}
 }

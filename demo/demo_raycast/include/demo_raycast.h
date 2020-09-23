@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:12:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ typedef struct				s_demo_data
 typedef enum				e_comp_id
 {
 	comp_empty = 0ULL,
-	comp_triangle = 1ULL,
-	comp_ray = 1ULL << 1,
+	comp_ray = 1ULL,
 }							t_comp_id;
 
 /*
@@ -52,7 +51,6 @@ typedef enum				e_comp_id
 typedef enum				e_system_id
 {
 	system_render = 111,
-	system_zbuffer = 222,
 }							t_system_id;
 
 /*

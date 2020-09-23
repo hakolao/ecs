@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:18:36 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 21:50:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # define MAX_TRIANGLES 1024
 # define TRI_VEC_INITIAL_CAPACITY 10
+
+# define EPSILON 0.0000001
 
 typedef struct				s_ray
 {
@@ -129,6 +131,8 @@ void						kd_tree_split_triangles(t_tri_vec *triangles,
 void						get_kd_mid_point(t_tri_vec *triangles, t_vec3 res);
 int							get_bounding_box_longest_axis(t_box3d bounding_box);
 void						get_bounding_box(t_tri_vec *triangles, t_box3d *res);
+t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
+							t_vec3 hit_point);
 
 /*
 ** Triangle vector

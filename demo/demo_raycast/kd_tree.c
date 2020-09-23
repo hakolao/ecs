@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 17:46:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:54:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,4 +226,27 @@ t_kd_tree			*kd_tree_create(t_triangle *triangles,
 	tree->root = tree_create_recursive(triangle_vector, 0, &tree->num_nodes);
 	kd_tree_print(tree->root);
 	return (tree);
+}
+
+static void			node_destroy(t_kd_node *root)
+{
+	t_kd_node	*left;
+	t_kd_node	*right;
+	if (root)
+	{
+		tri_vec_delete(root->triangles);
+		left = root->left;
+		right = root->right;
+		free(root);
+		root = NULL;
+		node_destroy(left);
+		node_destroy(right);
+	}
+}
+
+void				kd_tree_destroy(t_kd_tree *tree)
+{
+	node_destroy(tree->root);
+	free(tree);
+	tree = NULL;
 }

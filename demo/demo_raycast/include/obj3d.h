@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 15:38:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:53:27 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_3d_object					*read_object_file(const char *filename);
 
 t_kd_tree					*kd_tree_create(t_triangle *triangles,
 							uint32_t num_triangles);
+void						kd_tree_destroy(t_kd_tree *tree);
 
 void						triangle_vec_push(t_tri_vec *vector,
 							t_triangle *triangle);

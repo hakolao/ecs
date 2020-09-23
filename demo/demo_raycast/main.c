@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 12:15:36 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:00:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ static void			main_loop(t_app *app)
 
 static void			app_cleanup(t_app *app)
 {
+	t_demo_data	*data;
+
+	data = (t_demo_data*)app->data;
+	destroy_object(data->object);
 	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
 	SDL_DestroyRenderer(app->window->renderer);

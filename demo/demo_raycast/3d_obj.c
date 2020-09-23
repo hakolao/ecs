@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 15:22:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 17:55:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 
 void			destroy_object(t_3d_object *object)
 {
+	kd_tree_destroy(object->triangle_tree);
 	free(object->triangles);
 	free(object->vertices);
 	free(object);

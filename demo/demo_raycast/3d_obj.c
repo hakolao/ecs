@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:07:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 23:26:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 {
 	t_3d_object	*obj;
 	t_mat4		translation;
+	t_mat4		scale;
 
 	error_check(!(obj = malloc(sizeof(*obj))), "Failed to malloc 3d obj");
 	error_check(!(obj->vertices =
@@ -75,8 +76,14 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 	obj_file_to_3d_obj(read_obj, obj);
 	obj->num_triangles = read_obj->num_triangles;
 	obj->num_vertices = read_obj->num_vertices;
-	ml_matrix4_translation(0, 0, 3, translation);
+	ml_matrix4_translation(0, 0, 100, translation);
+	ml_matrix4_id(scale);
+	scale[0][0] = 30;
+	scale[1][1] = 30;
+	scale[2][2] = 30;
+	transform_3d_object(obj, scale);
 	transform_3d_object(obj, translation);
+
 	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
 	return (obj);
 }

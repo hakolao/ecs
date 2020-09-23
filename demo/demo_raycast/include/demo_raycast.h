@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:19:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:43:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 typedef struct				s_demo_data
 {
 	t_3d_object				*object;
+	t_vec3					camera_pos;
+	float					fov;
 }							t_demo_data;
 
 /*
@@ -41,6 +43,7 @@ typedef enum				e_comp_id
 {
 	comp_empty = 0ULL,
 	comp_ray = 1ULL,
+	comp_pixel = 1ULL << 1,
 }							t_comp_id;
 
 /*

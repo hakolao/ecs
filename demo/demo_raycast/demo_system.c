@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:20:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 23:34:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,21 @@
 static void					system_render_handle(t_ecs_world *world,
 							uint64_t entity_index)
 {
-	(void)world;
-	(void)entity_index;
+	t_app			*app;
+	t_ray			*ray;
+	t_pixel			*pixel;
+	t_3d_object		*object;
+	t_vec3			hit_point;
+
+	app = (t_app*)world->systems[ecs_system_index(world, system_render)].params;
+	object = ((t_demo_data*)app->data)->object;
+	ray = (t_ray*)ecs_world_entity_component_get(world,
+		entity_index, comp_ray);
+	pixel = (t_pixel*)ecs_world_entity_component_get(world,
+		entity_index, comp_pixel);
+	if (kd_tree_ray_hit(object->triangle_tree->root, ray, 1000.0, hit_point))
+		app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
+			0x00FF00FF;
 }
 
 /*
@@ -27,7 +40,7 @@ void						systems_create(t_app *app)
 {
 	ecs_world_system_add(app->world, (t_system){
 		.system_id = system_render,
-		.components_mask = comp_ray,
+		.components_mask = comp_ray | comp_pixel,
 		.system_handle_func = system_render_handle,
 		.params = app
 	});

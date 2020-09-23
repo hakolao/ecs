@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:19:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 22:52:46 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void			recreate_after_resize(t_app *app)
 		app->window->width * app->window->height);
 	recreate_frame(app);
 	systems_create(app);
-	//ToDo: Create entities if needed!
+	entity_rays_create(app);
 	app->window->resized = false;
 	while (app->window->is_hidden)
 		SDL_PollEvent(NULL);
@@ -129,6 +129,8 @@ int					main(void)
 	app.info.fps = 0;
 	app.info.delta_time = 0;
 	data.object = read_object_file(OBJ_PATH);
+	ml_vector3_copy((t_vec3){0, 0, 0}, data.camera_pos);
+	data.fov = 45.0;
 	app.data = &data;
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());

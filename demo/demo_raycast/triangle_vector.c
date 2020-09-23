@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 17:31:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "obj3d.h"
+#include "kd_tree.h"
 
 t_tri_vec		*triangle_vec_empty(void)
 {

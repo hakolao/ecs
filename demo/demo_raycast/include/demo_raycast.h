@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 12:14:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "demo_common.h"
 # include "libgmatrix.h"
-# include "obj3d.h"
+# include "kd_tree.h"
 
 # define NUM_THREADS 8
 

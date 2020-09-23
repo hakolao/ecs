@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:06:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "obj3d.h"
+#include "kd_tree.h"
 #include "ft_printf.h"
 
 static t_kd_node	*tree_node_create(t_tri_vec *triangles)

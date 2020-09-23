@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   obj3d.h                                            :+:      :+:    :+:   */
+/*   kd_tree.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:06:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:18:36 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 
 # define MAX_TRIANGLES 1024
 # define TRI_VEC_INITIAL_CAPACITY 10
+
+typedef struct				s_ray
+{
+	t_vec3		dir;
+	t_vec3		origin;
+}							t_ray;
 
 typedef struct				s_vertex
 {

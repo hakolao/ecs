@@ -6,11 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:09:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "obj3d.h"
+#include "kd_tree.h"
 
 void				get_bounding_box(t_tri_vec *triangles, t_box3d *res)
 {

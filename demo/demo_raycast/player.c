@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 14:09:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 14:22:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 15:52:54 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void			move_player(t_demo_data *data, uint32_t delta_time, t_move dir)
 	}
 	else if (dir == move_backward)
 	{
-		ml_vector3_mul(data->player_forward, -data->player_speed * delta_time, add);
-		ml_vector3_sub(data->player_pos, add, new_pos);
+		ml_vector3_mul(data->player_forward, data->player_speed * delta_time, add);
+		ml_vector3_add(data->player_pos, add, new_pos);
 	}
 	else if (dir == move_strafe_left)
 	{

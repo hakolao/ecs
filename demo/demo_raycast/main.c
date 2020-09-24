@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 14:24:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 15:51:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ static void 		player_action_handle(t_app *app, SDL_Event event)
 		if (event.key.keysym.sym == SDLK_w)
 			move_player((t_demo_data*)app->data, app->info.delta_time, move_forward);
 		else if (event.key.keysym.sym == SDLK_a)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_right);
+			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_left);
 		else if (event.key.keysym.sym == SDLK_s)
 			move_player((t_demo_data*)app->data, app->info.delta_time, move_backward);
 		else if (event.key.keysym.sym == SDLK_d)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_left);
+			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_right);
 		else if (event.key.keysym.sym == SDLK_UP)
 			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){-1, 0, 0});
 		else if (event.key.keysym.sym == SDLK_DOWN)

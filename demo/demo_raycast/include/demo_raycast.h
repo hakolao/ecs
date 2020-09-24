@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 12:16:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:26:08 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 typedef struct				s_demo_data
 {
-	t_3d_object				*scene[MAX_OBJECTS];
+	t_3d_object				*objects[MAX_OBJECTS];
 	uint32_t				num_objects;
 	t_vec3					camera_pos;
 	float					fov;

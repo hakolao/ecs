@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 12:01:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:29:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,30 @@ static void					system_render_handle(t_ecs_world *world,
 	t_app			*app;
 	t_ray			*ray;
 	t_pixel			*pixel;
-	t_3d_object		*object;
-	t_vec3			hit_point;
+	t_demo_data		*data;
+	uint32_t		i;
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_render)].params;
-	object = ((t_demo_data*)app->data)->object;
+	data = (t_demo_data*)app->data;
 	ray = (t_ray*)ecs_world_entity_component_get(world,
 		entity_index, comp_ray);
 	pixel = (t_pixel*)ecs_world_entity_component_get(world,
 		entity_index, comp_pixel);
-	if (kd_tree_ray_hit(object->triangle_tree->root, ray, 1000.0, hit_point))
-		app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
-			0x00FF00FF;
-	// for (int32_t i = 0; i < ((t_demo_data*)app->data)->object->num_triangles; i++)
-	// {
-	// 	t_vec3 		hitp;
-	// 	if (kd_tree_triangle_hit(
-	// 		&((t_demo_data*)app->data)->object->triangles[i], &ray, hitp))
-	// 		app->window->framebuffer[y * app->window->width + x] =
-	// 			0xFF0000FF;
-	// }
+	i = -1;
+	while (++i < data->num_objects)
+	{
+		// if (kd_tree_ray_hit(data->scene[i]->triangle_tree->root, ray,
+		// 	1000.0, hit_point))
+		// 	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
+		// 		0x00FF00FF;
+		for (int32_t j = 0; j < data->objects[i]->num_triangles; j++)
+		{
+			t_vec3 		hitp;
+			if (kd_tree_triangle_hit(&data->objects[i]->triangles[j], ray, hitp))
+				app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
+					0xFF0000FF;
+		}
+	}
 }
 
 /*

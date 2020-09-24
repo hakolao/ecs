@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 12:06:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:18:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,6 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 	while (++i < obj->num_vertices)
 		ml_matrix4_mul_vec3(transform,
 			obj->vertices[i]->pos, obj->vertices[i]->pos);
-	update_3d_object_kd_tree(obj);
-}
-
-void			update_3d_object_kd_tree(t_3d_object *obj)
-{
 	if (obj->triangle_tree != NULL)
 		kd_tree_destroy(obj->triangle_tree);
 	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);

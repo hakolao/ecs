@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 18:13:18 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:12:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ static int			calculate_matches(t_tri_vec *left_tris,
 	{
 		j = -1;
 		while (++j < (int)right_tris->size)
-		{
-			if (left_tris->triangles[i] == right_tris->triangles[i])
+			if (left_tris->triangles[i] == right_tris->triangles[j])
 				matches++;
-		}
 	}
 	return (matches);
 }

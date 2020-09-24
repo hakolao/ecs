@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 13:44:39 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 19:00:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
 	return (false);
 }
 
-t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
-				t_vec3 hit_p)
+t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_vec3 hit_p)
 {
 	t_bool	hit_triangle;
 	int		i;
@@ -87,8 +86,8 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
 	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_p))
 	{
 		if (node->left || node->right)
-			return (kd_tree_ray_hit(node->left, ray, max_dist, hit_p) ||
-				kd_tree_ray_hit(node->right, ray, max_dist, hit_p));
+			return (kd_tree_ray_hit(node->left, ray, hit_p) || 
+				kd_tree_ray_hit(node->right, ray, hit_p));
 		i = -1;
 		while (++i < (int)node->triangles->size)
 			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit_p))

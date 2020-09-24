@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 23:34:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:01:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ static void					system_render_handle(t_ecs_world *world,
 	if (kd_tree_ray_hit(object->triangle_tree->root, ray, 1000.0, hit_point))
 		app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 			0x00FF00FF;
+	// for (int32_t i = 0; i < ((t_demo_data*)app->data)->object->num_triangles; i++)
+	// {
+	// 	t_vec3 		hitp;
+	// 	if (kd_tree_triangle_hit(
+	// 		&((t_demo_data*)app->data)->object->triangles[i], &ray, hitp))
+	// 		app->window->framebuffer[y * app->window->width + x] =
+	// 			0xFF0000FF;
+	// }
 }
 
 /*

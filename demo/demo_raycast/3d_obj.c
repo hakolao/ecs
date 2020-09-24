@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 23:26:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 11:56:30 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 	obj_file_to_3d_obj(read_obj, obj);
 	obj->num_triangles = read_obj->num_triangles;
 	obj->num_vertices = read_obj->num_vertices;
-	ml_matrix4_translation(0, 0, 100, translation);
+	ml_matrix4_translation(0, 0, -100, translation);
 	ml_matrix4_id(scale);
 	scale[0][0] = 30;
 	scale[1][1] = 30;

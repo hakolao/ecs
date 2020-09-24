@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:33:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ t_kd_tree			*kd_tree_create(t_triangle *triangles,
 	if (!(tree = malloc(sizeof(t_kd_tree))))
 		return (NULL);
 	tree->root = tree_create_recursive(triangle_vector, 0, &tree->num_nodes);
-	kd_tree_print(tree->root);
 	return (tree);
 }
 

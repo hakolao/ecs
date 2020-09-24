@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 21:52:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 13:08:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,31 @@
 
 static float	min(float n1, float n2)
 {
-	return (ft_min_double((double[2]){n1, n2}, 2));
+	return (n1 < n2 ? n1 : n2);
 }
 
 static float	max(float n1, float n2)
 {
-	return (ft_max_double((double[2]){n1, n2}, 2));
+	return (n1 > n2 ? n1 : n2);
 }
 
 t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray,
 				t_vec3 out_intersection)
 {
-	t_vec3		dir_frac;
-	float		t_min;
-	float		t_max;
-	float		t_options[6];
-	t_vec3		dir_dist;
+	float 	t[9];
+	t_vec3	dir_dist;
 
-	dir_frac[0] = 1.0f / (ray->dir[0] + 0.000001);
-	dir_frac[1] = 1.0f / (ray->dir[1] + 0.000001);
-	dir_frac[2] = 1.0f / (ray->dir[2] + 0.000001);
-	t_options[0] = (box->xyz_min[0] - ray->origin[0]) * dir_frac[0];
-	t_options[1] = (box->xyz_max[0] - ray->origin[0]) * dir_frac[0];
-	t_options[2] = (box->xyz_min[1] - ray->origin[1]) * dir_frac[1];
-	t_options[3] = (box->xyz_max[1] - ray->origin[1]) * dir_frac[1];
-	t_options[4] = (box->xyz_min[2] - ray->origin[2]) * dir_frac[2];
-	t_options[5] = (box->xyz_max[2] - ray->origin[2]) * dir_frac[2];
-	t_min = max(max(min(t_options[0], t_options[1]), min(t_options[2], t_options[3])),
-		min(t_options[4], t_options[5]));
-	t_max = min(min(max(t_options[0], t_options[1]), max(t_options[2], t_options[3])),
-		max(t_options[4], t_options[5]));
-	if (t_max < 0)
+	t[1] = (box->xyz_min[0] - ray->origin[0]) / ray->dir[0];
+	t[2] = (box->xyz_max[0] - ray->origin[0]) / ray->dir[0];
+	t[3] = (box->xyz_min[1] - ray->origin[1]) / ray->dir[1];
+	t[4] = (box->xyz_max[2] - ray->origin[1]) / ray->dir[1];
+	t[5] = (box->xyz_min[2] - ray->origin[2]) / ray->dir[2];
+	t[6] = (box->xyz_max[2] - ray->origin[2]) / ray->dir[2];
+	t[7] = max(max(min(t[1], t[2]), min(t[3], t[4])), min(t[5], t[6]));
+	t[8] = min(min(max(t[1], t[2]), max(t[3], t[4])), max(t[5], t[6]));
+	if ((t[8] < 0 || t[7] > t[8]))
 		return (false);
-	if (t_min > t_max)
-		return (false);
-	ml_vector3_mul(ray->dir, t_min, dir_dist);
+	ml_vector3_mul(ray->dir, t[7], dir_dist);
 	ml_vector3_add(ray->origin, dir_dist, out_intersection);
 	return (true);
 }
@@ -88,7 +78,7 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
 }
 
 t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
-				t_vec3 hit_point)
+				t_vec3 hit_p)
 {
 	t_bool	hit_triangle;
 	t_bool	hit_right;
@@ -98,25 +88,19 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
 	hit_triangle = false;
 	hit_right = false;
 	hit_left = false;
-	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_point))
+	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_p))
 	{
-		if (node->left)
-			hit_left = kd_tree_ray_hit(node->left, ray, max_dist, hit_point);
-		if (node->right)
-			hit_right = kd_tree_ray_hit(node->right, ray, max_dist, hit_point);
+		if (node->left || node->right)
+		{
+			hit_left = kd_tree_ray_hit(node->left, ray, max_dist, hit_p);
+			hit_right = kd_tree_ray_hit(node->right, ray, max_dist, hit_p);
 			return (hit_left || hit_right);
-	}
-	else
-	{
+		}
 		i = -1;
 		while (++i < (int)node->triangles->size)
-		{
-			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray,
-				hit_point))
+			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit_p))
 				hit_triangle = true;
-		}
-		if (hit_triangle)
-			return (true);
+		return (hit_triangle);
 	}
 	return (false);
 }

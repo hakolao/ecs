@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:27:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 13:28:30 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
 
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 640
+# define HEIGHT 360
 
 typedef struct				s_text_params
 {

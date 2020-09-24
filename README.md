@@ -11,7 +11,7 @@ Demo uses SDL2.
 git clone https://github.com/hakolao/ecs.git && cd ecs
 make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo_squares.h
 # Or if you're courageous, try the raycast (or raytrace) attempt
-make demo_raycast # A bit of a stretch to attempt with ECS (not pure)
+make demo_raycast # A bit of a stretch to attempt with ECS (not pure), WORK IN PROGRESS
 make test # runs tests
 ```
 

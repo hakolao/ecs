@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 13:28:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 17:22:45 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 typedef struct				s_text_params
 {
-	const char				*font;
 	const char				*text;
 	SDL_Color				text_color;
 	int						font_size;

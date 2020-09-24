@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 11:56:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:06:08 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ static void		obj_file_to_3d_obj(t_obj_result *read_obj, t_3d_object *obj)
 t_3d_object		*create_3d_object(t_obj_result *read_obj)
 {
 	t_3d_object	*obj;
-	t_mat4		translation;
-	t_mat4		scale;
 
 	error_check(!(obj = malloc(sizeof(*obj))), "Failed to malloc 3d obj");
 	error_check(!(obj->vertices =
@@ -76,14 +74,7 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 	obj_file_to_3d_obj(read_obj, obj);
 	obj->num_triangles = read_obj->num_triangles;
 	obj->num_vertices = read_obj->num_vertices;
-	ml_matrix4_translation(0, 0, -100, translation);
-	ml_matrix4_id(scale);
-	scale[0][0] = 30;
-	scale[1][1] = 30;
-	scale[2][2] = 30;
-	transform_3d_object(obj, scale);
-	transform_3d_object(obj, translation);
-
+	ml_matrix4_id(obj->transform);
 	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
 	return (obj);
 }
@@ -92,15 +83,18 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 {
 	int		i;
 
+	ml_matrix4_mul(obj->transform, transform, obj->transform);
 	i = -1;
 	while (++i < obj->num_vertices)
 		ml_matrix4_mul_vec3(transform,
 			obj->vertices[i]->pos, obj->vertices[i]->pos);
+	update_3d_object_kd_tree(obj);
 }
 
 void			update_3d_object_kd_tree(t_3d_object *obj)
 {
-	kd_tree_destroy(obj->triangle_tree);
+	if (obj->triangle_tree != NULL)
+		kd_tree_destroy(obj->triangle_tree);
 	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
 }
 

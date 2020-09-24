@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 23:51:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:02:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct				s_3d_object
 	t_triangle				*triangles;
 	int32_t					num_triangles;
 	t_kd_tree				*triangle_tree;
+	t_mat4					transform;
 }							t_3d_object;
 
 

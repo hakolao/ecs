@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 11:51:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:16:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static void			app_cleanup(t_app *app)
 	t_demo_data	*data;
 
 	data = (t_demo_data*)app->data;
-	destroy_object(data->object);
+	demo_scene_destroy(app);
 	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
 	SDL_DestroyRenderer(app->window->renderer);
@@ -128,10 +128,8 @@ int					main(void)
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
-	data.object = read_object_file(OBJ_PATH);
-	ml_vector3_copy((t_vec3){0, 0, 0}, data.camera_pos);
-	data.fov = 45.0;
 	app.data = &data;
+	demo_scene_create(&app);
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());
 	error_check(TTF_Init() == -1, TTF_GetError());
 	window_init(&app);

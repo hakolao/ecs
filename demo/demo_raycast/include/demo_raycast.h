@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 22:43:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 12:16:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@
 
 # define MAX_OBJ_TRIANGLES 1024
 
-# define OBJ_PATH "demo/assets/icosphere.obj"
+# define MAX_OBJECTS 10
+
+# define ICOSPHERE_PATH "demo/assets/icosphere.obj"
 
 typedef struct				s_demo_data
 {
-	t_3d_object				*object;
+	t_3d_object				*scene[MAX_OBJECTS];
+	uint32_t				num_objects;
 	t_vec3					camera_pos;
 	float					fov;
 }							t_demo_data;
@@ -68,5 +71,12 @@ void						systems_params_update(t_app *app);
 */
 
 void						entity_rays_create(t_app *app);
+
+/*
+** Scene
+*/
+
+void						demo_scene_create(t_app *app);
+void						demo_scene_destroy(t_app *app);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 13:27:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 14:15:29 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,20 @@ typedef struct				s_demo_data
 	uint32_t				num_objects;
 	t_vec3					camera_pos;
 	float					fov;
+	t_vec3					player_pos;
+	t_vec3					player_up;
+	t_vec3					player_forward;
+	float					player_speed;
+	float					player_rot_speed;
 }							t_demo_data;
+
+typedef enum				e_move
+{
+	move_forward,
+	move_backward,
+	move_strafe_left,
+	move_strafe_right
+}							t_move;
 
 /*
 ** Component identifiers, should be powers of 2 and ULL for valid component
@@ -78,5 +91,13 @@ void						entity_rays_create(t_app *app);
 
 void						demo_scene_create(t_app *app);
 void						demo_scene_destroy(t_app *app);
+
+/*
+** Player
+*/
+void						move_player(t_demo_data *data,
+							uint32_t delta_time, t_move dir);
+void						rotate_player(t_demo_data *data,
+							uint32_t delta_time, t_vec3 axes);
 
 #endif

@@ -9,7 +9,9 @@ Demo uses SDL2.
 
 ```
 git clone https://github.com/hakolao/ecs.git && cd ecs
-make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo.h
+make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo_squares.h
+# Or if you're courageous, try the raycast (or raytrace) attempt
+make demo_raycast # A bit of a stretch to attempt with ECS (not pure)
 make test # runs tests
 ```
 
@@ -18,8 +20,10 @@ make test # runs tests
 ## Use
 
 ```
-make # creates libecs.a that you an include in your libs
+make # creates libecs.a that you an include in your libs, include libecs.h at ./include
 ```
+
+Save space by deleting demo folder.
 
 ## Library usage
 
@@ -45,14 +49,6 @@ typedef struct s_velocity
 	float dy;
 } t_velocity;
 
-typedef struct t_render
-{
-	uint32_t color;
-	uint32_t width;
-	uint32_t height;
-	t_window **window;
-} t_render;
-
 /*
 ** Component identifiers, should be powers of 2 and ULL for valid component
 ** ids.
@@ -63,7 +59,6 @@ typedef enum e_comp_id
 	comp_empty = 0ULL,
 	comp_pos = 1ULL,
 	comp_vel = 1ULL << 1,
-	comp_render = 1ULL << 2,
 } t_comp_id;
 
 /*
@@ -73,7 +68,6 @@ typedef enum e_comp_id
 
 typedef enum e_system_id
 {
-	system_render = 123,
 	system_move = 111
 } t_system_id;
 ```
@@ -91,38 +85,22 @@ t_ecs_world *world = ecs_world_create("Demo world", MAX_ENTITIES);
 ```c
 static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
 {
-	void *system_args;
+	t_app *app;
 	t_position *pos;
 	t_velocity *vel;
-	uint32_t dt;
 
-	system_args = world->systems[ecs_system_index(world, system_move)].params;
-	if (system_args != NULL)
-	{
-		dt = (uint32_t)(*(size_t*)system_args);
-		pos = (t_position*)ecs_world_entity_component_get(world,
-		entity_index, comp_pos);
-		vel = (t_velocity*)ecs_world_entity_component_get(world,
-		entity_index, comp_vel);
-		if (pos && vel)
-		{
-			pos->x += vel->dx * dt;
-			pos->y += vel->dy * dt;
-		}
-	}
+	app = (t_app*)world->systems[ecs_system_index(world, system_move)].params;
+	pos = (t_position*)ecs_world_entity_component_get(world, entity_index, comp_pos);
+	vel = (t_velocity*)ecs_world_entity_component_get(world, entity_index, comp_vel);
+	pos->x += vel->dx * app->info.delta_time;
+	pos->y += vel->dy * app->info.delta_time;
 }
 
-ecs_world_system_add(app->world, (t_system){
-	.system_id = system_render,
-	.components_mask = comp_render | comp_pos,
-	.system_handle_func = system_render_handle,
-	.params = NULL
-});
 ecs_world_system_add(app->world, (t_system){
 	.system_id = system_move,
 	.components_mask = comp_pos | comp_vel,
 	.system_handle_func = system_movement_handle,
-	.params = (void*)&app->delta_time
+	.params = app
 });
 ```
 
@@ -152,14 +130,19 @@ void entities_create(t_app *app)
 }
 ```
 
-4. Run Systems (this would usually happen each game loop, but can be run only once too)
+4. Run Systems (this would usually happen each game loop, but can be run only once too).
+   Systems can be run parallel as well, however make sure to keep components decoupled in that case.
+   E.g if you modify z buffer while also coloring pixels, be sure to see some weird artifacts.
 
 ```c
-ecs_systems_run(app->world, system_move | system_render);
+// multiple systems inputted like: system_move | system_render
+ecs_systems_run(app->world, system_move);
+ecs_systems_run_parallel(NUM_THREADS, app->world, system_move);
 ```
 
 5. Update system params if needed, e.g. delta time. Though before ecs_systems_run.
+   You can pass anything, but via app in this example e.g. window & framebuffer can be accessed.
 
 ```c
-ecs_system_update_params(app->world, system_move, &app->delta_time);
+ecs_system_update_params(app->world, system_move, app);
 ```

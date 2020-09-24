@@ -3,6 +3,8 @@
 An entity component system written in C using a limited number of c libraries.
 Only `malloc`, `va_start`, `va_end`, `va_arg` are used except for the `demo`.
 
+The demo_squares has ran a million entities without trouble. Though it depends on the complexity of operations ran on them.
+
 Demo uses SDL2.
 
 ## Run

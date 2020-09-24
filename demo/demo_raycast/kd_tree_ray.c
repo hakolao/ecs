@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 13:08:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 13:44:39 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,14 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float max_dist,
 				t_vec3 hit_p)
 {
 	t_bool	hit_triangle;
-	t_bool	hit_right;
-	t_bool	hit_left;
 	int		i;
 
 	hit_triangle = false;
-	hit_right = false;
-	hit_left = false;
 	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_p))
 	{
 		if (node->left || node->right)
-		{
-			hit_left = kd_tree_ray_hit(node->left, ray, max_dist, hit_p);
-			hit_right = kd_tree_ray_hit(node->right, ray, max_dist, hit_p);
-			return (hit_left || hit_right);
-		}
+			return (kd_tree_ray_hit(node->left, ray, max_dist, hit_p) ||
+				kd_tree_ray_hit(node->right, ray, max_dist, hit_p));
 		i = -1;
 		while (++i < (int)node->triangles->size)
 			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit_p))

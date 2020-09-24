@@ -6,11 +6,15 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 13:05:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 13:37:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
+
+/*
+** ToDo: Make all objects one kd_tree instead of tree per object...
+*/
 
 void		demo_scene_create(t_app *app)
 {
@@ -27,11 +31,11 @@ void		demo_scene_create(t_app *app)
 	data->objects[0] = read_object_file(ICOSPHERE_PATH);
 	data->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, data->camera_pos);
-	data->fov = 45.0;
+	data->fov = 90.0;
 	ml_matrix4_id(scale);
-	scale[0][0] = 15;
-	scale[1][1] = 15;
-	scale[2][2] = 15;
+	scale[0][0] = 30;
+	scale[1][1] = 30;
+	scale[2][2] = 30;
 	ml_matrix4_translation(0, 0, -100, translate);
 	ml_matrix4_mul(translate, scale, transform);
 	transform_3d_object(data->objects[0], transform);

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 17:23:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 17:25:02 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void				draw_fps(t_app *app)
 		return ;
 	render_text(app, (t_text_params){
 		.text = fps_str, .blend_ratio = 1.0,
-		.font_size = FONT_SIZE, .xy = (int[2]){5, 5},
+		.xy = (int[2]){5, 5},
 		.text_color = (SDL_Color){255, 0, 0, 255}});
 	render_text(app, (t_text_params){
 		.text = dt_str, .blend_ratio = 1.0,
-		.font_size = FONT_SIZE, .xy = (int[2]){5, 5 + FONT_SIZE + 5},
+		.xy = (int[2]){5, 5 + FONT_SIZE + 5},
 		.text_color = (SDL_Color){255, 0, 0, 255}});
 	ft_strdel(&fps_str);
 	ft_strdel(&dt_str);

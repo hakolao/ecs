@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 12:33:57 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 18:13:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int			calculate_matches(t_tri_vec *left_tris,
 	return (matches);
 }
 
-t_kd_node			*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
+static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 					uint32_t *num_nodes)
 {
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 00:32:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 18:04:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ static void			main_loop(t_app *app)
 				is_running = false;
 			if ((event.type == SDL_KEYDOWN && event.key.repeat == false))
 				if (event.key.keysym.sym == SDLK_p)
-					*(t_bool*)app->data = !(*(t_bool*)app->data); //! Pauses gravity (found in common app->data)
-			// !Note Must be here so resize doesn't cause a segfault due to some
-			// !component data being dependent on window dimensions
-			// !(intentionally)
+					*(t_bool*)app->data = !(*(t_bool*)app->data);
 			if (app->window->resized)
 				recreate_after_resize(app);
 		}
@@ -104,8 +101,7 @@ static void			main_loop(t_app *app)
 		draw_frame(app);
 		app->info.performance_end = SDL_GetPerformanceCounter();
 		app->info.delta_time =
-			(app->info.performance_end - app->info.performance_start)
-			* 1000.0 /
+			(app->info.performance_end - app->info.performance_start) * 1000.0 /
 			SDL_GetPerformanceFrequency();
 		app->info.fps = capture_framerate(app->info.delta_time);
 	}

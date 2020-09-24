@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/24 18:11:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ int					get_bounding_box_longest_axis(t_box3d bounding_box)
 	}, 3);
 	i = -1;
 	while (++i < 3)
-		if (bounding_box.size[i] - 0.00001 < longest &&
-			bounding_box.size[i] + 0.00001 > longest)
+		if (bounding_box.size[i] == longest)
 			break ;
 	return (i);
 }
@@ -78,9 +77,9 @@ void				get_kd_mid_point(t_tri_vec *triangles, t_vec3 res)
 	i = -1;
 	while (++i < (int)triangles->size)
 	{
-		res[0] += triangles->triangles[i]->center[0] * 1.0 / triangles->size;
-		res[1] += triangles->triangles[i]->center[1] * 1.0 / triangles->size;
-		res[2] += triangles->triangles[i]->center[2] * 1.0 / triangles->size;
+		res[0] += triangles->triangles[i]->center[0] / triangles->size;
+		res[1] += triangles->triangles[i]->center[1] / triangles->size;
+		res[2] += triangles->triangles[i]->center[2] / triangles->size;
 	}
 }
 

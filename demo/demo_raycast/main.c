@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 15:51:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 16:12:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,25 @@ static void			draw_frame(t_app *app)
 	SDL_RenderPresent(app->window->renderer);
 }
 
-static void			recreate_after_resize(t_app *app)
+static void			app_init(t_app *app)
 {
-	ecs_world_destroy(app->world);
 	app->world = ecs_world_create(NAME,
 		app->window->width * app->window->height);
-	recreate_frame(app);
+	((t_demo_data*)app->data)->scale =
+		tan(ml_rad(((t_demo_data*)app->data)->fov * 0.5));
+ 	((t_demo_data*)app->data)->aspect_ratio =
+	 	app->window->width / (float)app->window->height;
+	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
 	entity_rays_create(app);
+	ft_printf("Created %d entities\n", app->world->num_entities);
+}
+
+static void			recreate_after_resize(t_app *app)
+{
+	ft_printf("Recreate after resize\n");
+	recreate_frame(app);
+	app_init(app);
 	app->window->resized = false;
 	while (app->window->is_hidden)
 		SDL_PollEvent(NULL);
@@ -89,6 +100,8 @@ static void 		player_action_handle(t_app *app, SDL_Event event)
 			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, 1, 0});
 		else if (event.key.keysym.sym == SDLK_LEFT)
 			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, -1, 0});
+		// ml_vector3_print(((t_demo_data*)app->data)->player_pos);
+		// ml_vector3_print(((t_demo_data*)app->data)->player_forward);
 	}
 }
 
@@ -98,12 +111,7 @@ static void			main_loop(t_app *app)
 	t_bool		is_running;
 
 	is_running = true;
-	app->world = ecs_world_create(NAME,
-		app->window->width * app->window->height);
-	ft_printf("Created world: %s\n", app->world->name);
-	systems_create(app);
-	entity_rays_create(app);
-	ft_printf("Created %d entities\n", app->world->num_entities);
+	app_init(app);
 	while (is_running)
 	{
 		app->info.performance_start = SDL_GetPerformanceCounter();

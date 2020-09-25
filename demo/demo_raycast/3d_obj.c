@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 14:46:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 15:00:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ t_3d_object		*create_3d_object(t_obj_result *read_obj)
 void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 {
 	int		i;
+	t_mat4	new_transform;
 
-	ml_matrix4_mul(obj->transform, transform, obj->transform);
+	ml_matrix4_mul(obj->transform, transform, new_transform);
+	ft_memcpy(obj->transform, new_transform, sizeof(t_mat4));
 	i = -1;
 	while (++i < obj->num_vertices)
 		ml_matrix4_mul_vec3(transform,

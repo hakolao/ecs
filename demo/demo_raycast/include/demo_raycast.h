@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 14:15:29 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 16:12:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ typedef struct				s_demo_data
 	uint32_t				num_objects;
 	t_vec3					camera_pos;
 	float					fov;
+	float					scale;
+	float					aspect_ratio;
 	t_vec3					player_pos;
 	t_vec3					player_up;
 	t_vec3					player_forward;
+	t_vec3					player_sideways;
 	float					player_speed;
 	float					player_rot_speed;
 }							t_demo_data;
@@ -84,6 +87,8 @@ void						systems_params_update(t_app *app);
 */
 
 void						entity_rays_create(t_app *app);
+void						entity_ray_update(t_app *app,
+							t_ray *ray, int x, int y);
 
 /*
 ** Scene

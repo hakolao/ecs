@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 19:00:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 14:43:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray,
 	t[1] = (box->xyz_min[0] - ray->origin[0]) / ray->dir[0];
 	t[2] = (box->xyz_max[0] - ray->origin[0]) / ray->dir[0];
 	t[3] = (box->xyz_min[1] - ray->origin[1]) / ray->dir[1];
-	t[4] = (box->xyz_max[2] - ray->origin[1]) / ray->dir[1];
+	t[4] = (box->xyz_max[1] - ray->origin[1]) / ray->dir[1];
 	t[5] = (box->xyz_min[2] - ray->origin[2]) / ray->dir[2];
 	t[6] = (box->xyz_max[2] - ray->origin[2]) / ray->dir[2];
 	t[7] = max(max(min(t[1], t[2]), min(t[3], t[4])), min(t[5], t[6]));
@@ -86,7 +86,7 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_vec3 hit_p)
 	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_p))
 	{
 		if (node->left || node->right)
-			return (kd_tree_ray_hit(node->left, ray, hit_p) || 
+			return (kd_tree_ray_hit(node->left, ray, hit_p) ||
 				kd_tree_ray_hit(node->right, ray, hit_p));
 		i = -1;
 		while (++i < (int)node->triangles->size)

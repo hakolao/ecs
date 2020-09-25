@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 13:21:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 14:39:05 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void			demo_scene_create(t_app *app)
 	data->objects[1] = read_object_file(ICOSPHERE_PATH);
 	data->num_objects = 2;
 	ml_vector3_copy((t_vec3){0, 0, 0}, data->camera_pos);
-	data->fov = 90.0;
+	data->fov = 100.0;
 	ml_matrix4_id(scale);
 	scale[0][0] = 30;
 	scale[1][1] = 30;

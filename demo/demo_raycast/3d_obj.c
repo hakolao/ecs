@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 13:22:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 14:46:05 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 	if (obj->triangle_tree != NULL)
 		kd_tree_destroy(obj->triangle_tree);
 	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
-	kd_tree_print(obj->triangle_tree->root);
 }
 
 void			destroy_object(t_3d_object *object)

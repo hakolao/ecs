@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 13:21:26 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 14:46:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void				kd_tree_split_triangles(t_tri_vec *triangles, uint32_t axis,
 		}
 	}
 }
-#include <stdio.h>
+
 void				kd_tree_print(t_kd_node *root)
 {
 	char	axes[4];
@@ -135,7 +135,7 @@ void				kd_tree_print(t_kd_node *root)
 	if (root != NULL)
 	{
 		ft_printf("Triangles: %d\n", root->triangles->size);
-		printf("uuid: %d\nbbox.center: [%0.2f %0.2f %0.2f]\n"
+		ft_printf("uuid: %d\nbbox.center: [%0.2f %0.2f %0.2f]\n"
 				"axis: %c\n"
 				"bbox.size: [%0.2f %0.2f %0.2f]\n"
 				"bbox.min_xyz: [%0.2f %0.2f %0.2f]\n"

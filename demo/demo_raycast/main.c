@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:30:29 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 18:33:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ static void 		player_action_handle(t_app *app, SDL_Event event)
 			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, -1, 0});
 		else if (event.key.keysym.sym == SDLK_LEFT)
 			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, 1, 0});
-		// ml_vector3_print(((t_demo_data*)app->data)->player_pos);
-		// ml_vector3_print(((t_demo_data*)app->data)->player_forward);
-		// apply_transforms_to_world((t_demo_data*)app->data);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 17:52:29 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 18:39:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,6 @@ typedef struct				s_3d_object
 	t_triangle				*triangles;
 	int32_t					num_triangles;
 	t_kd_tree				*triangle_tree;
-	t_mat4					translation;
-	t_mat4					rotation;
-	t_mat4					scale;
 }							t_3d_object;
 
 typedef enum				e_transform
@@ -125,8 +122,7 @@ void						destroy_object(t_3d_object *object);
 t_3d_object					*create_3d_object(t_obj_result *read_obj);
 t_3d_object					*read_object_file(const char *filename);
 void						update_3d_object_kd_tree(t_3d_object *obj);
-void						transform_3d_object(t_3d_object *obj,
-							t_mat4 transform, t_transform type);
+void						transform_3d_object(t_3d_object *obj, t_mat4 transform);
 
 /*
 ** Kd Tree functions

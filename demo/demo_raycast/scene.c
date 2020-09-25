@@ -6,25 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:27:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 18:46:39 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
-
-void			apply_transforms_to_world(t_demo_data *data)
-{
-	int		i;
-
-	i = -1;
-	while (++i < (int)data->num_objects)
-	{
-		transform_3d_object(data->objects[i], data->world_scale, trans_scale);
-		transform_3d_object(data->objects[i], data->world_rotation, trans_rotate);
-		transform_3d_object(data->objects[i], data->world_translation, trans_translate);
-		update_3d_object_kd_tree(data->objects[i]);
-	}
-}
 
 static void		init_scene_player(t_demo_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 16:07:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 16:59:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void						entity_ray_update(t_app *app,
 	ray->dir[1] = (1 - 2 * (y + 0.5) /
 		(float)app->window->height) * scale;
 	ray->dir[2] = -3.0;
-	ml_vector3_copy(data->player_pos, ray->origin);
+	ml_vector3_copy(data->camera_pos, ray->origin);
 	ml_vector3_sub(ray->dir, ray->origin, ray->dir);
 	ml_vector3_normalize(ray->dir, ray->dir);
 }

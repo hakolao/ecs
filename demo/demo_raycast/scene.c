@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 15:31:17 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 17:52:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void			demo_scene_create(t_app *app)
 	t_demo_data *data;
 	t_mat4		translate;
 	t_mat4		scale;
-	t_mat4		transform;
 	uint32_t	i;
 
 	data = (t_demo_data*)app->data;
@@ -49,11 +48,13 @@ void			demo_scene_create(t_app *app)
 	scale[1][1] = 30;
 	scale[2][2] = 30;
 	ml_matrix4_translation(0, 0, -200, translate);
-	ml_matrix4_mul(translate, scale, transform);
-	transform_3d_object(data->objects[0], transform);
+	transform_3d_object(data->objects[0], scale, trans_scale);
+	transform_3d_object(data->objects[0], translate, trans_translate);
 	ml_matrix4_translation(-50, 0, -200, translate);
-	ml_matrix4_mul(translate, scale, transform);
-	transform_3d_object(data->objects[1], transform);
+	transform_3d_object(data->objects[1], scale, trans_scale);
+	transform_3d_object(data->objects[1], translate, trans_translate);
+	update_3d_object_kd_tree(data->objects[0]);
+	update_3d_object_kd_tree(data->objects[1]);
 }
 
 void			demo_scene_destroy(t_app *app)

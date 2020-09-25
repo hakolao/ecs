@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 19:12:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 13:21:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 
 	node = tree_node_create(triangles);
 	node->uuid = (*num_nodes)++;
-	if (triangles->size == 0 || triangles->size == 1)
+	if ((triangles->size == 0 || triangles->size == 1) && (node->axis = 3))
 		return (node);
 	node->axis = get_bounding_box_longest_axis(node->bounding_box);
 	left_tris = triangle_vec_empty();
@@ -91,6 +91,7 @@ t_kd_tree			*kd_tree_create(t_triangle *triangles,
 	triangle_vector = triangle_vec(triangles, num_triangles);
 	if (!(tree = malloc(sizeof(t_kd_tree))))
 		return (NULL);
+	tree->num_nodes = 0;
 	tree->root = tree_create_recursive(triangle_vector, 0, &tree->num_nodes);
 	return (tree);
 }

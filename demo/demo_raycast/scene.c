@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 19:04:52 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 13:21:52 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void			demo_scene_create(t_app *app)
 	ml_matrix4_translation(-50, 0, -100, translate);
 	ml_matrix4_mul(translate, scale, transform);
 	transform_3d_object(data->objects[1], transform);
-	kd_tree_print(data->objects[0]->triangle_tree->root);
 }
 
 void			demo_scene_destroy(t_app *app)

@@ -6,11 +6,20 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 14:09:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 15:53:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/25 16:17:45 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
+
+static void		apply_transform_to_world(t_demo_data *data, t_mat4 transform)
+{
+	int		i;
+
+	i = -1;
+	while (++i < (int)data->num_objects)
+		transform_3d_object(data->objects[i], transform);
+}
 
 /*
 ** !Note: Diff axes have been switched to accommodate our chosen axes for the
@@ -27,10 +36,11 @@ void			rotate_player(t_demo_data *data, uint32_t delta_time, t_vec3 axes)
 	t_mat4	rotation;
 
 	ml_vector3_mul(axes, ml_rad(data->player_rot_speed * delta_time), axes);
-	ml_matrix4_rotation(axes[0], axes[1], axes[2], rotation);
+	ml_matrix4_rotation(-axes[0], -axes[1], -axes[2], rotation);
 	ml_matrix4_mul_vec3(rotation, data->player_forward, data->player_forward);
 	ml_matrix4_mul_vec3(rotation, data->player_up, data->player_up);
 	ml_matrix4_mul_vec3(rotation, data->player_sideways, data->player_sideways);
+	apply_transform_to_world(data, rotation);
 }
 
 void			move_player(t_demo_data *data, uint32_t delta_time, t_move dir)

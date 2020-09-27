@@ -6,16 +6,17 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:37:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:18:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
 
-static uint32_t				average_color(uint32_t *colors, uint32_t num_colors)
+static uint32_t				average_color(uint32_t *colors, float num_colors)
 {
 	int			i;
 	SDL_Color	color;
+	SDL_Color	new_color;
 	uint32_t	rgba[4];
 
 	i = -1;
@@ -30,11 +31,14 @@ static uint32_t				average_color(uint32_t *colors, uint32_t num_colors)
 		rgba[2] += color.b;
 		rgba[3] += color.a;
 	}
+	new_color = (SDL_Color){rgba[0] / num_colors, rgba[1] / num_colors,
+		rgba[2] / num_colors, rgba[3] / num_colors
+	};
 	return (rgba_to_u32((SDL_Color){
-		rgba[0] / num_colors,
-		rgba[1] / num_colors,
-		rgba[2] / num_colors,
-		rgba[3] / num_colors
+		255 * sqrt(new_color.r / 255.0),
+		255 * sqrt(new_color.g / 255.0),
+		255 * sqrt(new_color.b / 255.0),
+		255 * sqrt(new_color.a / 255.0)
 	}));
 }
 
@@ -53,8 +57,14 @@ static uint32_t				color_default(t_ray *ray)
 void						random_in_unit_sphere(t_vec3 res)
 {
 	ml_vector3_set(res, 0, 0, 0);
-	while (res[0] * res[0] + res[1] * res[1] + res[2] * res[2] >= 1.0)
-		ml_vector3_set(res, rand_d() - 1.0, rand_d() - 1.0, rand_d() - 1.0);
+	ml_vector3_set(res, rand_d() - 1.0, rand_d() - 1.0, rand_d() - 1.0);
+	while (2 * res[0] * res[0] +
+			2 * res[1] * res[1] +
+			2 * res[2] * res[2] >= 1.0)
+		ml_vector3_set(res,
+			rand_d() - 1.0,
+			rand_d() - 1.0,
+			rand_d() - 1.0);
 }
 
 /*

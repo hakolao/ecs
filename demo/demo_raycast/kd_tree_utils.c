@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:05:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 01:27:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,27 +100,9 @@ void				kd_tree_split_triangles(t_tri_vec *triangles, uint32_t axis,
 	i = -1;
 	while (++i < (int)triangles->size)
 	{
-		if (axis == 0)
-		{
-			if (mid_point[0] >= triangles->triangles[i]->center[0])
-				triangle_vec_push(right_tris, triangles->triangles[i]);
-			else
-				triangle_vec_push(left_tris, triangles->triangles[i]);
-		}
-		else if (axis == 1)
-		{
-			if (mid_point[1] >= triangles->triangles[i]->center[1])
-				triangle_vec_push(right_tris, triangles->triangles[i]);
-			else
-				triangle_vec_push(left_tris, triangles->triangles[i]);
-		}
-		else if (axis == 2)
-		{
-			if (mid_point[2] >= triangles->triangles[i]->center[2])
-				triangle_vec_push(right_tris, triangles->triangles[i]);
-			else
-				triangle_vec_push(left_tris, triangles->triangles[i]);
-		}
+		triangle_vec_push(mid_point[axis] >=
+			triangles->triangles[i]->center[axis] ? right_tris : left_tris,
+			triangles->triangles[i]);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:05:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:07:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,11 @@ void						move_player(t_demo_data *data,
 							uint32_t delta_time, t_move dir);
 void						rotate_player(t_demo_data *data,
 							uint32_t delta_time, t_vec3 axes);
+
+/*
+** Math utils
+*/
+
+double						rand_d();
 
 #endif

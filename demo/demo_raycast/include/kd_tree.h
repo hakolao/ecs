@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 20:32:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:22:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ void						kd_tree_split_triangles(t_tri_vec *triangles,
 void						get_kd_mid_point(t_tri_vec *triangles, t_vec3 res);
 int							get_bounding_box_longest_axis(t_box3d bounding_box);
 void						get_bounding_box(t_tri_vec *triangles, t_box3d *res);
-t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_hit *hit);
+t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray,
+							float t_max, t_hit *hit);
 t_bool						kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
 							t_hit *hit);
 

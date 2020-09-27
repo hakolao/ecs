@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 20:32:45 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:22:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,9 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray, t_hit *hit)
 	return (false);
 }
 
-t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_hit *hit)
+t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float t_max, t_hit *hit)
 {
 	t_bool	hit_triangle;
-	t_bool	hit_left;
-	t_bool	hit_right;
 	t_vec3	dir_add;
 	int		i;
 
@@ -83,21 +81,22 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_hit *hit)
 	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit))
 	{
 		if (node->left || node->right)
-		{
-			hit_left = kd_tree_ray_hit(node->left, ray, hit);
-			hit_right = kd_tree_ray_hit(node->right, ray, hit);
-			return (hit_left || hit_right);
-		}
+			return (kd_tree_ray_hit(node->left, ray, t_max, hit) ||
+					kd_tree_ray_hit(node->right, ray, t_max, hit));
 		i = -1;
 		while (++i < (int)node->triangles->size)
 		{
 			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit))
 			{
 				hit_triangle = true;
-				ml_vector3_mul(ray->dir, hit->t, dir_add);
-				ml_vector3_add(ray->origin, dir_add, hit->hit_point);
-				ml_vector3_copy(node->triangles->triangles[i]->normal,
-					hit->normal);
+				if (t_max > hit->t)
+				{
+					ml_vector3_mul(ray->dir, hit->t, dir_add);
+					ml_vector3_add(ray->origin, dir_add, hit->hit_point);
+					ml_vector3_copy(node->triangles->triangles[i]->normal,
+						hit->normal);
+					t_max = hit->t;
+				}
 			}
 		}
 		return (hit_triangle);

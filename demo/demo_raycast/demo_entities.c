@@ -6,16 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 20:52:25 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:07:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
-
-double						rand_d()
-{
-	return ((double)rand() / RAND_MAX);
-}
 
 void						entity_ray_update(t_app *app,
 							t_ray *ray, int x, int y)

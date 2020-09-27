@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:04:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:20:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ static void					system_render_handle(t_ecs_world *world,
 		j = -1;
 		while (++j < data->ray_samples)
 		{
-			if (kd_tree_ray_hit(data->objects[i]->triangle_tree->root, &rays[i], &hit))
+			if (kd_tree_ray_hit(data->objects[i]->triangle_tree->root, &rays[i],
+				FLT_MAX, &hit))
 			{
 				colors[j] = color_hit(&rays[i], &hit);
 			}

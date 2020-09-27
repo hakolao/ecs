@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:46:39 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 15:47:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ static void		init_scene_player(t_demo_data *data)
 	ft_memcpy(&data->player_sideways, &(t_vec3){1, 0, 0}, sizeof(t_vec3));
 	data->player_speed = 0.5f;
 	data->player_rot_speed = 0.1f;
+}
+
+static void		init_world_transform(t_demo_data *data)
+{
+	ml_matrix4_id(data->world_transform);
+	ml_matrix4_id(data->world_scale);
+	ml_matrix4_id(data->world_rotation);
+	data->world_scale[0][0] = 30;
+	data->world_scale[1][1] = 30;
+	data->world_scale[2][2] = 30;
+	ml_matrix4_translation(0, 0, -200, data->world_translation);
 }
 
 /*
@@ -37,17 +48,11 @@ void			demo_scene_create(t_app *app)
 	while (++i < MAX_OBJECTS)
 		data->objects[i] = NULL;
 	data->objects[0] = read_object_file(ICOSPHERE_PATH);
-	data->objects[1] = read_object_file(ICOSPHERE_PATH);
 	data->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, data->camera_pos);
 	data->fov = 90.0;
-	ml_matrix4_id(data->world_scale);
-	ml_matrix4_id(data->world_rotation);
-	data->world_scale[0][0] = 30;
-	data->world_scale[1][1] = 30;
-	data->world_scale[2][2] = 30;
-	ml_matrix4_translation(0, 0, -200, data->world_translation);
-	apply_transforms_to_world(data);
+	init_world_transform(data);
+	update_world_transform(data);
 }
 
 void			demo_scene_destroy(t_app *app)

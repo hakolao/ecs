@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:50:17 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 15:47:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct				s_demo_data
 	t_mat4					world_rotation;
 	t_mat4					world_translation;
 	t_mat4					world_scale;
+	t_mat4					world_transform;
 }							t_demo_data;
 
 typedef enum				e_move
@@ -99,7 +100,7 @@ void						entity_ray_update(t_app *app,
 
 void						demo_scene_create(t_app *app);
 void						demo_scene_destroy(t_app *app);
-void						apply_transforms_to_world(t_demo_data *data);
+void						update_world_transform(t_demo_data *data);
 
 /*
 ** Player

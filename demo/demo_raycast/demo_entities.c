@@ -6,18 +6,24 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:07:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:38:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
+
+void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray)
+{
+	ml_vector3_sub(dir, origin, ray->dir);
+	ml_vector3_normalize(ray->dir, ray->dir);
+}
 
 void						entity_ray_update(t_app *app,
 							t_ray *ray, int x, int y)
 {
 	float		scale;
 	float		aspect_ratio;
-	t_scene	*data;
+	t_scene		*data;
 
 	data = (t_scene*)app->data;
 	scale = data->scale;
@@ -28,8 +34,7 @@ void						entity_ray_update(t_app *app,
 		(float)app->window->height) * scale;
 	ray->dir[2] = 1.0;
 	ml_vector3_copy(data->camera_pos, ray->origin);
-	ml_vector3_sub(ray->dir, ray->origin, ray->dir);
-	ml_vector3_normalize(ray->dir, ray->dir);
+	set_ray(ray->dir, data->camera_pos, ray);
 }
 
 void						entity_rays_create(t_app *app)

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:14:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:37:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,32 @@ void						random_in_unit_sphere(t_vec3 res)
 		ml_vector3_set(res, rand_d() - 1.0, rand_d() - 1.0, rand_d() - 1.0);
 }
 
-static uint32_t				color(t_scene *data, t_ray *ray)
+/*
+** https://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf
+*/
+
+static uint32_t				color(t_kd_node *root, t_ray *ray)
 {
 	t_hit			hit;
 	t_vec3			target;
 	t_vec3			random;
-	// uint32_t		new_color;
+	t_ray			new_ray;
+	t_vec3			direction;
+	SDL_Color		new_color;
 
-	if (kd_tree_ray_hit(data->object_tree->root, ray, FLT_MAX, &hit))
+	if (kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
 	{
 		random_in_unit_sphere(random);
 		ml_vector3_add(hit.hit_point, hit.normal, target);
 		ml_vector3_add(target, random, target);
-		// new_color = color(object)
-		return (0xFF0000FF);
+		ml_vector3_sub(target, hit.hit_point, direction);
+		set_ray(direction, hit.hit_point, &new_ray);
+		new_color = u32_to_rgba(color(root, &new_ray));
+		new_color.r *= 0.5;
+		new_color.g *= 0.5;
+		new_color.b *= 0.5;
+		new_color.a *= 0.5;
+		return (rgba_to_u32(new_color));
 	}
 	return (color_default(ray));
 }
@@ -95,7 +107,7 @@ static void					system_render_handle(t_ecs_world *world,
 		entity_index, comp_pixel);
 	i = -1;
 	while (++i < data->ray_samples)
-		colors[i] = color(data, &rays[i]);
+		colors[i] = color(data->object_tree->root, &rays[i]);
 	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 		average_color(colors, data->ray_samples);
 }

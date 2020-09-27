@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:12:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:35:26 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,7 @@ void						rotate_player(t_scene *data,
 */
 
 double						rand_d();
+
+void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray);
 
 #endif

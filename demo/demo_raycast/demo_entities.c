@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:07:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:07:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void						entity_ray_update(t_app *app,
 {
 	float		scale;
 	float		aspect_ratio;
-	t_demo_data	*data;
+	t_scene	*data;
 
-	data = (t_demo_data*)app->data;
+	data = (t_scene*)app->data;
 	scale = data->scale;
 	aspect_ratio = data->aspect_ratio;
 	ray->dir[0] = (2 * (x + rand_d() + 0.5) /
@@ -37,7 +37,7 @@ void						entity_rays_create(t_app *app)
 	int		x;
 	int		y;
 	int		i;
-	t_ray	ray[((t_demo_data*)app->data)->ray_samples];
+	t_ray	ray[((t_scene*)app->data)->ray_samples];
 
 	y = -1;
 	while (++y < app->window->height)
@@ -46,7 +46,7 @@ void						entity_rays_create(t_app *app)
 		while (++x < app->window->width)
 		{
 			i = -1;
-			while (++i < ((t_demo_data*)app->data)->ray_samples)
+			while (++i < ((t_scene*)app->data)->ray_samples)
 				entity_ray_update(app, &ray[i], x, y);
 			ecs_world_entity_add(app->world, 2,
 				&(t_component){.data = &ray, .id = comp_ray,

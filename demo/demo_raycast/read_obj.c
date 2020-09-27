@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 17:03:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:16:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:13:23 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void					parse_obj_str(char *str, t_obj_content *obj)
 	}
 }
 
-t_3d_object				**read_objects_file(const char *filename)
+void				read_objects_to_scene(t_scene *scene, const char *filename)
 {
 	t_file_contents	*obj_file;
 	t_obj_content	obj_content;
@@ -165,5 +165,5 @@ t_3d_object				**read_objects_file(const char *filename)
 		error_check(!is_valid_obj(&obj_content.objects[i]),
 			"Invalid number of v, vt, vn or triangles");
 	destroy_file_contents(obj_file);
-	return (create_3d_objects(&obj_content));
+	obj_content_to_scene(scene, &obj_content);
 }

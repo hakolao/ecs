@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:20:47 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:14:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,29 @@ static uint32_t				color_default(t_ray *ray)
 		t));
 }
 
-static uint32_t				color_hit(t_ray *ray, t_hit *hit)
+void						random_in_unit_sphere(t_vec3 res)
 {
-	t_vec3	from_camera;
+	ml_vector3_set(res, 0, 0, 0);
+	while (res[0] * res[0] + res[1] * res[1] + res[2] * res[2] >= 1.0)
+		ml_vector3_set(res, rand_d() - 1.0, rand_d() - 1.0, rand_d() - 1.0);
+}
 
-	ml_vector3_sub(hit->hit_point, ray->origin, from_camera);
-	ml_vector3_normalize(from_camera, from_camera);
-	return (color_blend_u32(color_default(ray),
-		rgba_to_u32((SDL_Color){0, 0, 0, 255}),
-		from_camera[2]));
+static uint32_t				color(t_scene *data, t_ray *ray)
+{
+	t_hit			hit;
+	t_vec3			target;
+	t_vec3			random;
+	// uint32_t		new_color;
+
+	if (kd_tree_ray_hit(data->object_tree->root, ray, FLT_MAX, &hit))
+	{
+		random_in_unit_sphere(random);
+		ml_vector3_add(hit.hit_point, hit.normal, target);
+		ml_vector3_add(target, random, target);
+		// new_color = color(object)
+		return (0xFF0000FF);
+	}
+	return (color_default(ray));
 }
 
 static void					system_render_handle(t_ecs_world *world,
@@ -67,35 +81,21 @@ static void					system_render_handle(t_ecs_world *world,
 	t_app			*app;
 	t_ray			*rays;
 	t_pixel			*pixel;
-	t_demo_data		*data;
-	t_hit			hit;
-	uint32_t		i;
-	int32_t			j;
-	uint32_t		colors[((t_demo_data*)(
+	t_scene			*data;
+	int				i;
+	uint32_t		colors[((t_scene*)(
 		(t_app*)world->systems[ecs_system_index(world, system_render)].params
 	)->data)->ray_samples];
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_render)].params;
-	data = (t_demo_data*)app->data;
+	data = (t_scene*)app->data;
 	rays = (t_ray*)ecs_world_entity_component_get(world,
 		entity_index, comp_ray);
 	pixel = (t_pixel*)ecs_world_entity_component_get(world,
 		entity_index, comp_pixel);
 	i = -1;
-	while (++i < data->num_objects)
-	{
-		j = -1;
-		while (++j < data->ray_samples)
-		{
-			if (kd_tree_ray_hit(data->objects[i]->triangle_tree->root, &rays[i],
-				FLT_MAX, &hit))
-			{
-				colors[j] = color_hit(&rays[i], &hit);
-			}
-			else
-				colors[j] = color_default(&rays[i]);
-		}
-	}
+	while (++i < data->ray_samples)
+		colors[i] = color(data, &rays[i]);
 	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 		average_color(colors, data->ray_samples);
 }

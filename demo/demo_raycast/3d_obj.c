@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 20:12:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:25:02 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,39 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 	}
 }
 
-t_3d_object		**create_3d_objects(t_obj_content *read_obj)
+void		obj_content_to_scene(t_scene *scene, t_obj_content *obj)
 {
-	t_3d_object	**obj;
+	int			num_triangles;
 	int			i;
+	int			j;
 
-	error_check(!(obj = malloc(sizeof(*obj) * read_obj->num_objects)),
+	error_check(!(scene->objects =
+		malloc(sizeof(*scene->objects) * obj->num_objects)),
 		"Failed to malloc 3d obj");
 	i = -1;
-	while (++i < (int)read_obj->num_objects)
+	num_triangles = 0;
+	while (++i < (int)obj->num_objects)
 	{
-		error_check(!(obj[i] = malloc(sizeof(**obj))),
+		error_check(!(scene->objects[i] = malloc(sizeof(*scene->objects[i]))),
 			"Failed to malloc 3d obj");
-		error_check(!(obj[i]->vertices =
-			malloc(sizeof(t_vertex*) * read_obj->objects[i].num_vertices)),
+		error_check(!(scene->objects[i]->vertices =
+			malloc(sizeof(t_vertex*) * obj->objects[i].num_vertices)),
 			"Failed to malloc 3d obj vertices");
-		ft_memset(obj[i]->vertices, 0,
-			sizeof(t_vertex*) * read_obj->objects[i].num_vertices);
-		error_check(!(obj[i]->triangles =
-			malloc(sizeof(t_triangle) * read_obj->objects[i].num_triangles)),
+		ft_memset(scene->objects[i]->vertices, 0,
+			sizeof(t_vertex*) * obj->objects[i].num_vertices);
+		error_check(!(scene->objects[i]->triangles =
+			malloc(sizeof(t_triangle) * obj->objects[i].num_triangles)),
 			"Failed to malloc 3d obj triangles");
-		obj_file_to_3d_obj(&read_obj->objects[i], obj[i]);
-		obj[i]->num_triangles = read_obj->objects[i].num_triangles;
-		obj[i]->num_vertices = read_obj->objects[i].num_vertices;
-		obj[i]->triangle_tree = kd_tree_create(obj[i]->triangles, obj[i]->num_triangles);
+		obj_file_to_3d_obj(&obj->objects[i], scene->objects[i]);
+		scene->objects[i]->num_triangles = obj->objects[i].num_triangles;
+		scene->objects[i]->num_vertices = obj->objects[i].num_vertices;
+		num_triangles -= 1;
+		j = 0;
+		while (++num_triangles < (int)scene->num_triangles + scene->objects[i]->num_triangles)
+			scene->triangle_ref[num_triangles] = scene->objects[i]->triangles[j++];
+		scene->num_triangles += scene->objects[i]->num_triangles;
 	}
-	return (obj);
+	update_scene_triangle_tree(scene);
 }
 
 static void		update_triangle_normals(t_triangle *triangle)
@@ -110,16 +117,8 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 		update_triangle_normals(&obj->triangles[i]);
 }
 
-void			update_3d_object_kd_tree(t_3d_object *obj)
-{
-	if (obj->triangle_tree != NULL)
-		kd_tree_destroy(obj->triangle_tree);
-	obj->triangle_tree = kd_tree_create(obj->triangles, obj->num_triangles);
-}
-
 void			destroy_object(t_3d_object *object)
 {
-	kd_tree_destroy(object->triangle_tree);
 	free(object->triangles);
 	free(object->vertices);
 	free(object);

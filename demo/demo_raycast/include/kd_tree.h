@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:22:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:56:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,16 +128,6 @@ typedef struct				s_hit
 	t_vec3					normal;
 	t_vec3					hit_point;
 }							t_hit;
-
-/*
-** 3d Object functions
-*/
-
-void						destroy_object(t_3d_object *object);
-t_3d_object					**create_3d_objects(t_obj_content *read_obj);
-t_3d_object					**read_objects_file(const char *filename);
-void						update_3d_object_kd_tree(t_3d_object *obj);
-void						transform_3d_object(t_3d_object *obj, t_mat4 transform);
 
 /*
 ** Kd Tree functions

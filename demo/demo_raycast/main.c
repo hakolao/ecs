@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 20:47:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:07:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void			app_init(t_app *app)
 {
 	app->world = ecs_world_create(NAME,
 		app->window->width * app->window->height);
-	((t_demo_data*)app->data)->scale =
-		tan(ml_rad(((t_demo_data*)app->data)->fov * 0.5));
- 	((t_demo_data*)app->data)->aspect_ratio =
+	((t_scene*)app->data)->scale =
+		tan(ml_rad(((t_scene*)app->data)->fov * 0.5));
+ 	((t_scene*)app->data)->aspect_ratio =
 	 	app->window->width / (float)app->window->height;
 	ft_printf("Created world: %s\n", app->world->name);
 	systems_create(app);
@@ -85,21 +85,21 @@ static void 		player_action_handle(t_app *app, SDL_Event event)
 	if (event.type == SDL_KEYDOWN)
 	{
 		if (event.key.keysym.sym == SDLK_w)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_forward);
+			move_player((t_scene*)app->data, app->info.delta_time, move_forward);
 		else if (event.key.keysym.sym == SDLK_a)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_left);
+			move_player((t_scene*)app->data, app->info.delta_time, move_strafe_left);
 		else if (event.key.keysym.sym == SDLK_s)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_backward);
+			move_player((t_scene*)app->data, app->info.delta_time, move_backward);
 		else if (event.key.keysym.sym == SDLK_d)
-			move_player((t_demo_data*)app->data, app->info.delta_time, move_strafe_right);
+			move_player((t_scene*)app->data, app->info.delta_time, move_strafe_right);
 		else if (event.key.keysym.sym == SDLK_UP)
-			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){1, 0, 0});
+			rotate_player((t_scene*)app->data, app->info.delta_time, (t_vec3){1, 0, 0});
 		else if (event.key.keysym.sym == SDLK_DOWN)
-			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){-1, 0, 0});
+			rotate_player((t_scene*)app->data, app->info.delta_time, (t_vec3){-1, 0, 0});
 		else if (event.key.keysym.sym == SDLK_RIGHT)
-			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, -1, 0});
+			rotate_player((t_scene*)app->data, app->info.delta_time, (t_vec3){0, -1, 0});
 		else if (event.key.keysym.sym == SDLK_LEFT)
-			rotate_player((t_demo_data*)app->data, app->info.delta_time, (t_vec3){0, 1, 0});
+			rotate_player((t_scene*)app->data, app->info.delta_time, (t_vec3){0, 1, 0});
 	}
 }
 
@@ -136,9 +136,9 @@ static void			main_loop(t_app *app)
 
 static void			app_cleanup(t_app *app)
 {
-	t_demo_data	*data;
+	t_scene	*data;
 
-	data = (t_demo_data*)app->data;
+	data = (t_scene*)app->data;
 	demo_scene_destroy(app);
 	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
@@ -154,7 +154,7 @@ static void			app_cleanup(t_app *app)
 int					main(void)
 {
 	t_app		app;
-	t_demo_data	data;
+	t_scene	data;
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:07:38 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:12:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@
 
 # define RAY_SAMPLES 8
 
-typedef struct				s_demo_data
+typedef struct				s_scene
 {
 	t_3d_object				**objects;
 	uint32_t				num_objects;
+	t_kd_tree				*object_tree;
+	t_triangle				triangle_ref[MAX_OBJECTS * MAX_TRIANGLES];
+	uint32_t				num_triangles;
 	t_vec3					camera_pos;
 	float					fov;
 	float					scale;
@@ -44,7 +47,7 @@ typedef struct				s_demo_data
 	t_mat4					world_scale;
 	t_mat4					world_transform;
 	int						ray_samples;
-}							t_demo_data;
+}							t_scene;
 
 typedef enum				e_move
 {
@@ -97,14 +100,23 @@ void						entity_ray_update(t_app *app,
 
 void						demo_scene_create(t_app *app);
 void						demo_scene_destroy(t_app *app);
-void						update_world_transform(t_demo_data *data);
+void						update_world_transform(t_scene *data);
+void						update_scene_triangle_tree(t_scene *scene);
+/*
+** 3d Object functions
+*/
+
+void						destroy_object(t_3d_object *object);
+void						obj_content_to_scene(t_scene *scene, t_obj_content *obj);
+void						read_objects_to_scene(t_scene *scene, const char *filename);
+void						transform_3d_object(t_3d_object *obj, t_mat4 transform);
 
 /*
 ** Player
 */
-void						move_player(t_demo_data *data,
+void						move_player(t_scene *data,
 							uint32_t delta_time, t_move dir);
-void						rotate_player(t_demo_data *data,
+void						rotate_player(t_scene *data,
 							uint32_t delta_time, t_vec3 axes);
 
 /*

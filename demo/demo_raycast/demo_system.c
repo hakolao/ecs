@@ -6,11 +6,23 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 16:12:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:39:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
+
+static uint32_t				color(t_ray *ray)
+{
+	t_vec3	unit_dir;
+	float	t;
+
+	ml_vector3_normalize(ray->dir, unit_dir);
+	t = 0.5 * (unit_dir[1] + 1.0);
+	return (color_blend_u32(rgba_to_u32((SDL_Color){255, 255, 255, 255}),
+		rgba_to_u32((SDL_Color){0.5 * 255, 0.7 * 255, 1.0 * 255, 255}),
+		t));
+}
 
 static void					system_render_handle(t_ecs_world *world,
 							uint64_t entity_index)
@@ -28,6 +40,8 @@ static void					system_render_handle(t_ecs_world *world,
 		entity_index, comp_ray);
 	pixel = (t_pixel*)ecs_world_entity_component_get(world,
 		entity_index, comp_pixel);
+	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
+		color(ray);
 	i = -1;
 	while (++i < data->num_objects)
 	{

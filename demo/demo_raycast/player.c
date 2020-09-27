@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 14:09:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 16:15:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 18:16:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ void			rotate_player(t_demo_data *data, uint32_t delta_time, t_vec3 axes)
 
 	ml_vector3_mul(axes, ml_rad(data->player_rot_speed * delta_time), axes);
 	ml_matrix4_rotation(-axes[0], -axes[1], -axes[2], rotation);
-	ml_matrix4_mul_vec3(rotation, data->player_forward, data->player_forward);
-	ml_matrix4_mul_vec3(rotation, data->player_up, data->player_up);
-	ml_matrix4_mul_vec3(rotation, data->player_sideways, data->player_sideways);
 	ml_matrix4_mul(data->world_rotation, rotation, new_world_rotation);
 	ft_memcpy(data->world_rotation, new_world_rotation, sizeof(t_mat4));
 	update_world_transform(data);

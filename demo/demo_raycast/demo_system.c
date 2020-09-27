@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 23:18:47 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:31:15 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static uint32_t				average_color(uint32_t *colors, float num_colors)
 		rgba[2] / num_colors, rgba[3] / num_colors
 	};
 	return (rgba_to_u32((SDL_Color){
-		255 * sqrt(new_color.r / 255.0),
-		255 * sqrt(new_color.g / 255.0),
-		255 * sqrt(new_color.b / 255.0),
-		255 * sqrt(new_color.a / 255.0)
+		255 * sqrt((float)new_color.r / 255.0),
+		255 * sqrt((float)new_color.g / 255.0),
+		255 * sqrt((float)new_color.b / 255.0),
+		255 * sqrt((float)new_color.a / 255.0)
 	}));
 }
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:48:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:41:17 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "libgmatrix.h"
 
 # define MAX_OBJECTS 32
-# define MAX_TRIANGLES 2046
+# define MAX_TRIANGLES 16383
 # define TRI_VEC_INITIAL_CAPACITY 10
 
 # define EPSILON 0.0000001

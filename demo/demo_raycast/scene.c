@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:51:50 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:43:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void		init_world_transform(t_scene *scene)
 	scene->world_scale[0][0] = 30;
 	scene->world_scale[1][1] = 30;
 	scene->world_scale[2][2] = 30;
-	ml_matrix4_translation(0, -30.0, 200, scene->world_translation);
+	ml_matrix4_translation(0, 0.0, 130, scene->world_translation);
 }
 
 /*
@@ -43,7 +43,7 @@ void			demo_scene_create(t_app *app)
 
 	scene = (t_scene*)app->data;
 	init_scene_player(scene);
-	read_objects_to_scene(scene, ICOSPHERE_PATH);
+	read_objects_to_scene(scene, OBJ_PATH);
 	scene->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
 	scene->fov = 90.0;

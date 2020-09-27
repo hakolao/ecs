@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 17:03:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:12:14 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:13:45 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,13 @@ void					parse_obj_str(char *str, t_obj_content *obj)
 {
 	t_obj	*o;
 
+	ft_printf("Tryna parse\n");
 	ft_memset(obj, 0, sizeof(*obj));
 	while (*str)
 	{
 		while (*str != 'o' && *(str + 1) != ' ')
 			str++;
+		ft_printf("Found 'o'\n");
 		if (*str)
 		{
 			o = &obj->objects[obj->num_objects];
@@ -159,6 +161,7 @@ t_3d_object				**read_objects_file(const char *filename)
 	int				i;
 
 	error_check(!(obj_file = read_file(filename)), "Failed to read file");
+	ft_printf("Read file\n");
 	parse_obj_str((char*)obj_file->buf, &obj_content);
 	i = -1;
 	while (++i < (int)obj_content.num_objects)

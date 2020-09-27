@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 15:47:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:10:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void			demo_scene_create(t_app *app)
 	i = -1;
 	while (++i < MAX_OBJECTS)
 		data->objects[i] = NULL;
-	data->objects[0] = read_object_file(ICOSPHERE_PATH);
+	data->objects = read_objects_file(ICOSPHERE_PATH);
 	data->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, data->camera_pos);
 	data->fov = 90.0;
@@ -67,4 +67,5 @@ void			demo_scene_destroy(t_app *app)
 		destroy_object(data->objects[i]);
 		data->objects[i] = NULL;
 	}
+	free(data->objects);
 }

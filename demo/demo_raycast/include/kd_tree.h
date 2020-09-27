@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:39:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:12:15 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "t_bool.h"
 # include "libgmatrix.h"
 
+# define MAX_OBJECTS 32
 # define MAX_TRIANGLES 1024
 # define TRI_VEC_INITIAL_CAPACITY 10
 
@@ -63,7 +64,13 @@ typedef struct				s_obj_result
 	uint32_t		num_v_normals;
 	uint32_t		triangles[MAX_TRIANGLES][3][3];
 	uint32_t		num_triangles;
-}							t_obj_result;
+}							t_obj;
+
+typedef struct				s_obj_content
+{
+	uint32_t		num_objects;
+	t_obj	objects[MAX_OBJECTS];
+}							t_obj_content;
 
 typedef struct				s_tri_vec
 {
@@ -119,8 +126,8 @@ typedef enum				e_transform
 */
 
 void						destroy_object(t_3d_object *object);
-t_3d_object					*create_3d_object(t_obj_result *read_obj);
-t_3d_object					*read_object_file(const char *filename);
+t_3d_object					**create_3d_objects(t_obj_content *read_obj);
+t_3d_object					**read_objects_file(const char *filename);
 void						update_3d_object_kd_tree(t_3d_object *obj);
 void						transform_3d_object(t_3d_object *obj, t_mat4 transform);
 

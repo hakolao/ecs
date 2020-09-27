@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 15:47:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:09:50 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,11 @@
 
 # define NAME "Demo Raycast"
 
-# define NUM_TRIANGLES 5
-
-# define MAX_OBJ_TRIANGLES 1024
-
-# define MAX_OBJECTS 10
-
-# define ICOSPHERE_PATH "demo/assets/icosphere.obj"
+# define ICOSPHERE_PATH "demo/assets/random.obj"
 
 typedef struct				s_demo_data
 {
-	t_3d_object				*objects[MAX_OBJECTS];
+	t_3d_object				**objects;
 	uint32_t				num_objects;
 	t_vec3					camera_pos;
 	float					fov;

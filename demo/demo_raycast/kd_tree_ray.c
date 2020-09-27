@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:22:53 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 01:06:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,11 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float t_max, t_hit *hit)
 			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit))
 			{
 				hit_triangle = true;
-				if (t_max > hit->t)
-				{
-					ml_vector3_mul(ray->dir, hit->t, dir_add);
-					ml_vector3_add(ray->origin, dir_add, hit->hit_point);
-					ml_vector3_copy(node->triangles->triangles[i]->normal,
-						hit->normal);
-					t_max = hit->t;
-				}
+				ml_vector3_mul(ray->dir, hit->t, dir_add);
+				ml_vector3_add(ray->origin, dir_add, hit->hit_point);
+				ml_vector3_copy(node->triangles->triangles[i]->normal,
+					hit->normal);
+				t_max = hit->t;
 			}
 		}
 		return (hit_triangle);

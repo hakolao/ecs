@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 23:58:54 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 00:32:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ static void		update_triangle_normals(t_triangle *triangle)
 	t_vec3	ab;
 	t_vec3	ac;
 
-	ml_vector3_sub(triangle->vtc[0]->pos, triangle->vtc[1]->pos, ab);
-	ml_vector3_sub(triangle->vtc[0]->pos, triangle->vtc[2]->pos, ac);
+	ml_vector3_sub(triangle->vtc[1]->pos, triangle->vtc[0]->pos, ab);
+	ml_vector3_sub(triangle->vtc[2]->pos, triangle->vtc[0]->pos, ac);
 	ml_vector3_cross(ab, ac, triangle->normal);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 23:31:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 00:59:46 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,30 @@ static uint32_t				color_default(t_ray *ray)
 
 void						random_in_unit_sphere(t_vec3 res)
 {
+	t_vec3	orig;
+	t_vec3	rand;
+	float	p_sqrd;
+
 	ml_vector3_set(res, 0, 0, 0);
-	ml_vector3_set(res, rand_d() - 1.0, rand_d() - 1.0, rand_d() - 1.0);
-	while (2 * res[0] * res[0] +
-			2 * res[1] * res[1] +
-			2 * res[2] * res[2] >= 1.0)
-		ml_vector3_set(res,
-			rand_d() - 1.0,
-			rand_d() - 1.0,
-			rand_d() - 1.0);
+	ml_vector3_set(orig, 1.0, 1.0, 1.0);
+	ml_vector3_set(rand, rand_d(), rand_d(), rand_d());
+	ml_vector3_mul(rand, 2.0, rand);
+	ml_vector3_sub(rand, orig, res);
+	p_sqrd = 2 * res[0] * res[0] + 2 * res[1] * res[1] + 2 * res[2] * res[2];
+	while (p_sqrd >= 1.0)
+	{
+		ml_vector3_set(rand, rand_d(), rand_d(), rand_d());
+		ml_vector3_mul(rand, 2.0, rand);
+		ml_vector3_sub(rand, orig, res);
+		p_sqrd = 2 * res[0] * res[0] + 2 * res[1] * res[1] + 2 * res[2] * res[2];
+	}
 }
 
 /*
 ** https://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf
 */
 
-static uint32_t				color(t_kd_node *root, t_ray *ray)
+static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 {
 	t_hit			hit;
 	t_vec3			target;
@@ -80,14 +88,14 @@ static uint32_t				color(t_kd_node *root, t_ray *ray)
 	t_vec3			direction;
 	SDL_Color		new_color;
 
-	if (kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
+	if (bounces < MAX_BOUNCES && kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
 	{
 		random_in_unit_sphere(random);
 		ml_vector3_add(hit.hit_point, hit.normal, target);
 		ml_vector3_add(target, random, target);
 		ml_vector3_sub(target, hit.hit_point, direction);
 		set_ray(direction, hit.hit_point, &new_ray);
-		new_color = u32_to_rgba(color(root, &new_ray));
+		new_color = u32_to_rgba(color(root, &new_ray, bounces + 1));
 		new_color.r *= 0.5;
 		new_color.g *= 0.5;
 		new_color.b *= 0.5;
@@ -117,7 +125,7 @@ static void					system_render_handle(t_ecs_world *world,
 		entity_index, comp_pixel);
 	i = -1;
 	while (++i < data->ray_samples)
-		colors[i] = color(data->object_tree->root, &rays[i]);
+		colors[i] = color(data->object_tree->root, &rays[i], 0);
 	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 		average_color(colors, data->ray_samples);
 }

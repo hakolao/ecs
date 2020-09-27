@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:48:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 00:17:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray)
 {
-	ml_vector3_sub(dir, origin, ray->dir);
+	ml_vector3_set(ray->dir, dir[0], dir[1], dir[2]);
+	ml_vector3_set(ray->origin, origin[0], origin[1], origin[2]);
 	ml_vector3_normalize(ray->dir, ray->dir);
 }
 
@@ -33,7 +34,7 @@ void						entity_ray_update(t_app *app,
 	ray->dir[1] = (1 - 2 * (y + rand_d() + 0.5) /
 		(float)app->window->height) * scale;
 	ray->dir[2] = 3.0;
-	ml_vector3_copy(data->camera_pos, ray->origin);
+	ml_vector3_sub(ray->dir, data->camera_pos, ray->dir);
 	set_ray(ray->dir, data->camera_pos, ray);
 }
 

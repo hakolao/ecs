@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:25:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 22:47:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 			obj->vertices[i]->pos, obj->vertices[i]->pos);
 	j = -1;
 	while (++j < obj->num_triangles)
-		update_triangle_normals(&obj->triangles[i]);
+		update_triangle_normals(&obj->triangles[j]);
 }
 
 void			destroy_object(t_3d_object *object)

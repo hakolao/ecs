@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 23:41:17 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:52:17 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct				s_vertex
 {
 	t_vec4					pos;
 	uint32_t				color;
+	t_vec2					uv;
 }							t_vertex;
 
 typedef struct				s_box3d
@@ -112,7 +113,8 @@ typedef struct				s_3d_object
 	int32_t					num_vertices;
 	t_triangle				*triangles;
 	int32_t					num_triangles;
-	t_kd_tree				*triangle_tree;
+	t_vec2					*uvs;
+	int32_t					num_uvs;
 }							t_3d_object;
 
 typedef enum				e_transform

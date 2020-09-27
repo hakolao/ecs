@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:47:38 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 23:58:54 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 	int		i;
 	int		j;
 	int		v_i;
-	// int		vt_i;
+	int		vt_i;
 	// int		vn_i;
 
 	i = -1;
@@ -39,14 +39,13 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 		while (++j < 3)
 		{
 			v_i = read_obj->triangles[i][j][0] - 1;
-			// vt_i = read_obj->triangles[i][j][1] - 1;
-			// vn_i = read_obj->triangles[i][j][2] - 1;
+			vt_i = read_obj->triangles[i][j][1] - 1;
 			if (obj->vertices[v_i] == NULL)
 				error_check(!(obj->vertices[v_i] =
 					malloc(sizeof(t_vertex))), "Failed to malloc vertex");
-			ml_vector3_copy(read_obj->v[v_i],
-				obj->vertices[v_i]->pos);
+			ml_vector3_copy(read_obj->v[v_i], obj->vertices[v_i]->pos);
 			obj->vertices[v_i]->color = 0xFFFFFFFF;
+			ml_vector2_copy(read_obj->vt[vt_i], obj->vertices[v_i]->uv);
 		}
 		obj->triangles[i].vtc[0] =
 			obj->vertices[read_obj->triangles[i][0][0] - 1];
@@ -81,6 +80,9 @@ void		obj_content_to_scene(t_scene *scene, t_obj_content *obj)
 		error_check(!(scene->objects[i]->triangles =
 			malloc(sizeof(t_triangle) * obj->objects[i].num_triangles)),
 			"Failed to malloc 3d obj triangles");
+		error_check(!(scene->objects[i]->uvs =
+			malloc(sizeof(t_vec2) * obj->objects[i].num_v_text_coords)),
+			"Failed to malloc 3d obj uvs");
 		obj_file_to_3d_obj(&obj->objects[i], scene->objects[i]);
 		scene->objects[i]->num_triangles = obj->objects[i].num_triangles;
 		scene->objects[i]->num_vertices = obj->objects[i].num_vertices;

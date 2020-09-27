@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 18:33:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:47:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int					main(void)
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;
+	data.ray_samples = RAY_SAMPLES;
 	app.data = &data;
 	demo_scene_create(&app);
 	error_check(SDL_Init(SDL_INIT_VIDEO) != 0, SDL_GetError());

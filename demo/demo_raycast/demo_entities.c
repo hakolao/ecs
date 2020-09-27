@@ -6,11 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 16:59:53 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:52:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
+
+double						rand_d()
+{
+	return ((double)rand() / RAND_MAX);
+}
 
 void						entity_ray_update(t_app *app,
 							t_ray *ray, int x, int y)
@@ -22,11 +27,11 @@ void						entity_ray_update(t_app *app,
 	data = (t_demo_data*)app->data;
 	scale = data->scale;
 	aspect_ratio = data->aspect_ratio;
-	ray->dir[0] = (2 * (x + 0.5) /
+	ray->dir[0] = (2 * (x + rand_d() + 0.5) /
 		(float)app->window->width - 1) * aspect_ratio * scale;
-	ray->dir[1] = (1 - 2 * (y + 0.5) /
+	ray->dir[1] = (1 - 2 * (y + rand_d() + 0.5) /
 		(float)app->window->height) * scale;
-	ray->dir[2] = -3.0;
+	ray->dir[2] = 1.0;
 	ml_vector3_copy(data->camera_pos, ray->origin);
 	ml_vector3_sub(ray->dir, ray->origin, ray->dir);
 	ml_vector3_normalize(ray->dir, ray->dir);
@@ -36,7 +41,8 @@ void						entity_rays_create(t_app *app)
 {
 	int		x;
 	int		y;
-	t_ray	ray;
+	int		i;
+	t_ray	ray[((t_demo_data*)app->data)->ray_samples];
 
 	y = -1;
 	while (++y < app->window->height)
@@ -44,12 +50,14 @@ void						entity_rays_create(t_app *app)
 		x = -1;
 		while (++x < app->window->width)
 		{
-			entity_ray_update(app, &ray, x, y);
+			i = -1;
+			while (++i < ((t_demo_data*)app->data)->ray_samples)
+				entity_ray_update(app, &ray[i], x, y);
 			ecs_world_entity_add(app->world, 2,
 				&(t_component){.data = &ray, .id = comp_ray,
-					.size = sizeof(t_ray)},
+					.size = sizeof(ray)},
 				&(t_component){.data = &(t_pixel){.x = x, .y = y},
-					.id = comp_pixel, .size = sizeof(t_ray)});
+					.id = comp_pixel, .size = sizeof(t_pixel)});
 		}
 	}
 }

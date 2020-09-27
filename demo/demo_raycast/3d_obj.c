@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:12:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:12:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,28 @@ t_3d_object		**create_3d_objects(t_obj_content *read_obj)
 	return (obj);
 }
 
+static void		update_triangle_normals(t_triangle *triangle)
+{
+	t_vec3	ab;
+	t_vec3	ac;
+
+	ml_vector3_sub(triangle->vtc[0]->pos, triangle->vtc[1]->pos, ab);
+	ml_vector3_sub(triangle->vtc[0]->pos, triangle->vtc[2]->pos, ac);
+	ml_vector3_cross(ab, ac, triangle->normal);
+}
+
 void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 {
 	int		i;
+	int		j;
 
 	i = -1;
 	while (++i < obj->num_vertices)
 		ml_matrix4_mul_vec3(transform,
 			obj->vertices[i]->pos, obj->vertices[i]->pos);
+	j = -1;
+	while (++j < obj->num_triangles)
+		update_triangle_normals(&obj->triangles[i]);
 }
 
 void			update_3d_object_kd_tree(t_3d_object *obj)

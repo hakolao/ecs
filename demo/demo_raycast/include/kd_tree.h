@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:45:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:32:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct				s_triangle
 {
 	t_vertex				*vtc[3];
 	t_vec3					center;
+	t_vec3					normal;
 }							t_triangle;
 
 /*
@@ -121,6 +122,13 @@ typedef enum				e_transform
 	trans_scale
 }							t_transform;
 
+typedef struct				s_hit
+{
+	float					t;
+	t_vec3					normal;
+	t_vec3					hit_point;
+}							t_hit;
+
 /*
 ** 3d Object functions
 */
@@ -145,9 +153,9 @@ void						kd_tree_split_triangles(t_tri_vec *triangles,
 void						get_kd_mid_point(t_tri_vec *triangles, t_vec3 res);
 int							get_bounding_box_longest_axis(t_box3d bounding_box);
 void						get_bounding_box(t_tri_vec *triangles, t_box3d *res);
-t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float *t);
+t_bool						kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_hit *hit);
 t_bool						kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
-							float *t);
+							t_hit *hit);
 
 /*
 ** Triangle vector

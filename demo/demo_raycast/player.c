@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 14:09:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:25:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:05:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void			update_world_transform(t_demo_data *data)
 	t_mat4			inverse;
 
 	ml_matrix4_inverse(data->world_transform, inverse);
-	ml_matrix4_mul(data->world_translation, data->world_scale, tmp);
-	ml_matrix4_mul(data->world_rotation, tmp, transform);
+	ml_matrix4_mul(data->world_scale, data->world_rotation, tmp);
+	ml_matrix4_mul(data->world_translation, tmp, transform);
 	i = -1;
 	while (++i < (int)data->num_objects)
 	{

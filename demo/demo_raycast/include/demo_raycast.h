@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:09:50 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 21:05:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define NAME "Demo Raycast"
 
 # define ICOSPHERE_PATH "demo/assets/random.obj"
+
+# define RAY_SAMPLES 8
 
 typedef struct				s_demo_data
 {
@@ -41,6 +43,7 @@ typedef struct				s_demo_data
 	t_mat4					world_translation;
 	t_mat4					world_scale;
 	t_mat4					world_transform;
+	int						ray_samples;
 }							t_demo_data;
 
 typedef enum				e_move

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:14:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 20:27:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ static void		init_world_transform(t_demo_data *data)
 	ml_matrix4_id(data->world_transform);
 	ml_matrix4_id(data->world_scale);
 	ml_matrix4_id(data->world_rotation);
-	data->world_scale[0][0] = 30;
-	data->world_scale[1][1] = 30;
-	data->world_scale[2][2] = 30;
-	ml_matrix4_translation(0, 0, -200, data->world_translation);
+	ml_matrix4_translation(0, 0, 2, data->world_translation);
 }
 
 /*

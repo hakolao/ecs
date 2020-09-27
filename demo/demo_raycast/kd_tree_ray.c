@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/25 16:32:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:46:39 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ static float	max(float n1, float n2)
 	return (n1 > n2 ? n1 : n2);
 }
 
-t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray,
-				t_vec3 out_intersection)
+t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray, float *t_out)
 {
 	float 	t[9];
-	t_vec3	dir_dist;
 
 	t[1] = (box->xyz_min[0] - ray->origin[0]) / ray->dir[0];
 	t[2] = (box->xyz_max[0] - ray->origin[0]) / ray->dir[0];
@@ -38,17 +36,14 @@ t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray,
 	t[8] = min(min(max(t[1], t[2]), max(t[3], t[4])), max(t[5], t[6]));
 	if ((t[8] < 0 || t[7] > t[8]))
 		return (false);
-	ml_vector3_mul(ray->dir, t[7], dir_dist);
-	ml_vector3_add(ray->origin, dir_dist, out_intersection);
+	*t_out = t[7];
 	return (true);
 }
 
-t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
-				t_vec3 out_intersection)
+t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray, float *t)
 {
 	t_vec3	edge1;
 	t_vec3	edge2;
-	t_vec3	dir_dist;
 	t_vec3	hsq[3];
 	float	afuvt[5];
 
@@ -70,14 +65,13 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
 	afuvt[4] = afuvt[1] * ml_vector3_dot(edge2, hsq[2]);
 	if (afuvt[4] > EPSILON)
 	{
-		ml_vector3_mul(ray->dir, afuvt[4], dir_dist);
-		ml_vector3_add(ray->origin, dir_dist, out_intersection);
+		*t = afuvt[4];
 		return (true);
 	}
 	return (false);
 }
 
-t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_vec3 hit_p)
+t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float *t)
 {
 	t_bool	hit_triangle;
 	t_bool	hit_left;
@@ -85,17 +79,17 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, t_vec3 hit_p)
 	int		i;
 
 	hit_triangle = false;
-	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit_p))
+	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, t))
 	{
 		if (node->left || node->right)
 		{
-			hit_left = kd_tree_ray_hit(node->left, ray, hit_p);
-			hit_right = kd_tree_ray_hit(node->right, ray, hit_p);
+			hit_left = kd_tree_ray_hit(node->left, ray, t);
+			hit_right = kd_tree_ray_hit(node->right, ray, t);
 			return (hit_left || hit_right);
 		}
 		i = -1;
 		while (++i < (int)node->triangles->size)
-			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, hit_p))
+			if (kd_tree_triangle_hit(node->triangles->triangles[i], ray, t))
 				hit_triangle = true;
 		return (hit_triangle);
 	}

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 19:39:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/27 19:45:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void					system_render_handle(t_ecs_world *world,
 	t_ray			*ray;
 	t_pixel			*pixel;
 	t_demo_data		*data;
-	t_vec3			hit_point;
+	float			t;
 	uint32_t		i;
 
 	app = (t_app*)world->systems[ecs_system_index(world, system_render)].params;
@@ -45,7 +45,7 @@ static void					system_render_handle(t_ecs_world *world,
 	i = -1;
 	while (++i < data->num_objects)
 	{
-		if (kd_tree_ray_hit(data->objects[i]->triangle_tree->root, ray, hit_point))
+		if (kd_tree_ray_hit(data->objects[i]->triangle_tree->root, ray, &t))
 		{
 			app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 				0x0000FFFF;

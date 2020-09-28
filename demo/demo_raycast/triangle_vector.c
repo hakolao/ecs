@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 14:52:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 19:02:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void			triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
 	uint32_t	new_capacity;
 	int			i;
 
-	if (vector->size < vector->capacity)
+	if (vector->size < vector->capacity - 1)
 		vector->triangles[vector->size++] = triangle;
 	else
 	{

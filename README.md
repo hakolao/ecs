@@ -1,19 +1,14 @@
 # LibECS
 
 An entity component system written in C using a limited number of c libraries.
-Only `malloc`, `va_start`, `va_end`, `va_arg` are used except for the `demo`.
-
-The demo_squares has ran a million entities without trouble. Though it depends on the complexity of operations ran on them.
-
-Demo uses SDL2.
 
 ## Run
 
 ```
 git clone https://github.com/hakolao/ecs.git && cd ecs
 make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo_squares.h
-# Or if you're courageous, try the raycast (or raytrace) attempt
-make demo_raycast # A bit of a stretch to attempt with ECS (not pure), WORK IN PROGRESS
+# Or if you're courageous, try the simple raytrace attempt:
+make demo_raycast # Just an attempt to place rays as entities to the world...
 make test # runs tests
 ```
 

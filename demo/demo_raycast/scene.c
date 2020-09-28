@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:55:14 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 01:33:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void			demo_scene_create(t_app *app)
 	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
 	scene->fov = 90.0;
 	ml_matrix4_id(scene->world_scale);
-	ml_matrix4_id(scene->world_rotation);
+	ml_matrix4_rotation_x(ml_rad(25.0), scene->world_rotation);
+	update_world_rotation(scene, scene->world_rotation);
 	ml_matrix4_id(scene->world_translation);
 	ml_matrix4_id(scene->world_scale);
 	scene->world_scale[0][0] = 15;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:54:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 01:30:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 # define NAME "Demo Raycast"
 
-// # define OBJ_PATH "demo/assets/f16.obj"
-# define OBJ_PATH "demo/assets/random.obj"
+# define OBJ_PATH "demo/assets/f16.obj"
+// # define OBJ_PATH "demo/assets/random.obj"
 // # define OBJ_PATH "demo/assets/icosphere.obj"
 
 # define RAY_SAMPLES 4

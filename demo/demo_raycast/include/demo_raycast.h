@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 14:51:36 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 16:13:14 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # define OBJ_PATH "demo/assets/random.obj"
 // # define OBJ_PATH "demo/assets/icosphere.obj"
 
-# define RAY_SAMPLES 1
-# define MAX_BOUNCES 8
+# define RAY_SAMPLES 4
+# define MAX_BOUNCES 4
 
 typedef struct				s_scene
 {
@@ -48,7 +48,6 @@ typedef struct				s_scene
 	t_mat4					world_rotation;
 	t_mat4					world_translation;
 	t_mat4					world_scale;
-	t_mat4					world_transform;
 	int						ray_samples;
 }							t_scene;
 
@@ -103,7 +102,9 @@ void						entity_ray_update(t_app *app,
 
 void						demo_scene_create(t_app *app);
 void						demo_scene_destroy(t_app *app);
-void						update_world_transform(t_scene *data);
+void						update_world_rotation(t_scene *scene, t_mat4 new_rotation);
+void						update_world_translation(t_scene *scene, t_mat4	translation);
+void						update_world_scale(t_scene *scene, t_mat4 new_scale);
 void						update_scene_triangle_tree(t_scene *scene);
 /*
 ** 3d Object functions

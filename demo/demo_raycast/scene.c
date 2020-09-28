@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 14:49:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 16:12:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,6 @@ static void		init_scene_player(t_scene *scene)
 	ft_memcpy(&scene->player_sideways, &(t_vec3){1, 0, 0}, sizeof(t_vec3));
 	scene->player_speed = 0.5f;
 	scene->player_rot_speed = 0.1f;
-}
-
-static void		init_world_transform(t_scene *scene)
-{
-	ml_matrix4_id(scene->world_transform);
-	ml_matrix4_id(scene->world_scale);
-	ml_matrix4_id(scene->world_rotation);
-	scene->world_scale[0][0] = 30;
-	scene->world_scale[1][1] = 30;
-	scene->world_scale[2][2] = 30;
-	ml_matrix4_translation(0, -30.0, 130, scene->world_translation);
 }
 
 /*
@@ -47,8 +36,17 @@ void			demo_scene_create(t_app *app)
 	scene->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
 	scene->fov = 90.0;
-	init_world_transform(scene);
-	update_world_transform(scene);
+	ml_matrix4_id(scene->world_scale);
+	ml_matrix4_id(scene->world_rotation);
+	ml_matrix4_id(scene->world_translation);
+	ml_matrix4_id(scene->world_scale);
+	scene->world_scale[0][0] = 15;
+	scene->world_scale[1][1] = 15;
+	scene->world_scale[2][2] = 15;
+	update_world_scale(scene, scene->world_scale);
+	ml_matrix4_translation(0, -30.0, -350, scene->world_translation);
+	update_world_translation(scene, scene->world_translation);
+	update_scene_triangle_tree(scene);
 }
 
 void			demo_scene_destroy(t_app *app)

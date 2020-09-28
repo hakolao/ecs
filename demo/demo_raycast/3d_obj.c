@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 16:59:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:18:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 		obj->triangles[i].vtc[2] =
 			obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1];
 		calculate_triangle_centroid(&obj->triangles[i]);
+		obj->triangles[i].is_single_sided = SINGLE_SIDED;
 	}
 }
 

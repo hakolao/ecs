@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:01:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:18:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,17 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray, t_hit *hit)
 {
 	t_vec3	edge1;
 	t_vec3	edge2;
+	t_vec3	n;
 	t_vec3	hsq[3];
 	float	afuvt[5];
 
 	ml_vector3_sub(triangle->vtc[1]->pos, triangle->vtc[0]->pos, edge1);
 	ml_vector3_sub(triangle->vtc[2]->pos, triangle->vtc[0]->pos, edge2);
 	ml_vector3_cross(ray->dir, edge2, hsq[0]);
+	ml_vector3_cross(edge1, edge2, n);
+	ml_vector3_normalize(n, n);
+	if (ml_vector3_dot(ray->dir, n) > 0 && triangle->is_single_sided)
+		return (false);
 	afuvt[0] = ml_vector3_dot(edge1, hsq[0]);
 	if (afuvt[0] > -EPSILON && afuvt[0] < EPSILON)
 		return (false);

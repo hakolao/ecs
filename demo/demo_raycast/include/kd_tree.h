@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:03:53 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:17:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define TRI_VEC_INITIAL_CAPACITY 10
 
 # define EPSILON 0.0000001
+
+# define SINGLE_SIDED 1
 
 typedef struct				s_ray
 {
@@ -51,6 +53,7 @@ typedef struct				s_triangle
 	t_vertex				*vtc[3];
 	t_vec3					center;
 	t_vec3					normal;
+	t_bool					is_single_sided;
 }							t_triangle;
 
 /*

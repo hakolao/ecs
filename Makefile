@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/28 14:28:32 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/28 15:23:01 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ LIBGMATRIX = ./demo/libgmatrix
 demo_raycast: all
 	@make -C $(LIBFT)
 	@make -C $(LIBGMATRIX)
-	$(CC) -g -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
+	$(CC) -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
 		-I$(LIBGMATRIX)/include \
 		-L$(LIBGMATRIX) -lgmatrix \
 		-I$(DIR_DEMO)/demo_raycast/include \

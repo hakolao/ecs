@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 16:12:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 00:01:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray)
 	ml_vector3_set(ray->dir, dir[0], dir[1], dir[2]);
 	ml_vector3_set(ray->origin, origin[0], origin[1], origin[2]);
 	ml_vector3_normalize(ray->dir, ray->dir);
+	ml_vector3_set(ray->dir_inv, 1.0 / dir[0], 1.0 / dir[1], 1.0 / dir[2]);
 }
 
 void						entity_ray_update(t_app *app,

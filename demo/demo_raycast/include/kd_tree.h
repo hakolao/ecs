@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:56:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 00:00:29 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct				s_ray
 {
 	t_vec3		dir;
 	t_vec3		origin;
+	t_vec3		dir_inv;
 }							t_ray;
 
 typedef struct				s_vertex

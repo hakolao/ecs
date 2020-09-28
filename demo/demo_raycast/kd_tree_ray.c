@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:18:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 00:07:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ t_bool			kd_tree_bounding_box_hit(t_box3d *box, t_ray *ray, t_hit *hit)
 {
 	float 	t[9];
 
-	t[1] = (box->xyz_min[0] - ray->origin[0]) / ray->dir[0];
-	t[2] = (box->xyz_max[0] - ray->origin[0]) / ray->dir[0];
-	t[3] = (box->xyz_min[1] - ray->origin[1]) / ray->dir[1];
-	t[4] = (box->xyz_max[1] - ray->origin[1]) / ray->dir[1];
-	t[5] = (box->xyz_min[2] - ray->origin[2]) / ray->dir[2];
-	t[6] = (box->xyz_max[2] - ray->origin[2]) / ray->dir[2];
+	t[1] = (box->xyz_min[0] - ray->origin[0]) * ray->dir_inv[0];
+	t[2] = (box->xyz_max[0] - ray->origin[0]) * ray->dir_inv[0];
+	t[3] = (box->xyz_min[1] - ray->origin[1]) * ray->dir_inv[1];
+	t[4] = (box->xyz_max[1] - ray->origin[1]) * ray->dir_inv[1];
+	t[5] = (box->xyz_min[2] - ray->origin[2]) * ray->dir_inv[2];
+	t[6] = (box->xyz_max[2] - ray->origin[2]) * ray->dir_inv[2];
 	t[7] = max(max(min(t[1], t[2]), min(t[3], t[4])), min(t[5], t[6]));
 	t[8] = min(min(max(t[1], t[2]), max(t[3], t[4])), max(t[5], t[6]));
-	if ((t[8] < 0 || t[7] > t[8]))
+	if (t[8] < 0 || t[7] > t[8])
 		return (false);
 	hit->t = t[7];
 	return (true);

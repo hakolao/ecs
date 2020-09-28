@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 16:34:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 16:59:09 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static void		calculate_triangle_centroid(t_triangle *triangle)
 {
-		ml_vector3_copy((t_vec3){
-			(triangle->vtc[0]->pos[0] + triangle->vtc[1]->pos[0] +
-			triangle->vtc[2]->pos[0]) / 3.0,
-			(triangle->vtc[0]->pos[1] + triangle->vtc[1]->pos[1] +
-			triangle->vtc[2]->pos[1]) / 3.0,
-			(triangle->vtc[0]->pos[2] + triangle->vtc[1]->pos[2] +
-			triangle->vtc[2]->pos[2]) / 3.0,
-		}, triangle->center);
+	ml_vector3_copy((t_vec3){
+		(triangle->vtc[0]->pos[0] + triangle->vtc[1]->pos[0] +
+		triangle->vtc[2]->pos[0]) / 3.0,
+		(triangle->vtc[0]->pos[1] + triangle->vtc[1]->pos[1] +
+		triangle->vtc[2]->pos[1]) / 3.0,
+		(triangle->vtc[0]->pos[2] + triangle->vtc[1]->pos[2] +
+		triangle->vtc[2]->pos[2]) / 3.0,
+	}, triangle->center);
 }
 
 static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)

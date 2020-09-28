@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 01:06:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:01:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_bool			kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray, t_hit *hit)
 	if (afuvt[2] < 0.0 || afuvt[2] > 1.0)
 		return (false);
 	ml_vector3_cross(hsq[1], edge1, hsq[2]);
-	afuvt[3] = afuvt[1] *  ml_vector3_dot(ray->dir, hsq[2]);
+	afuvt[3] = afuvt[1] * ml_vector3_dot(ray->dir, hsq[2]);
 	if (afuvt[3] < 0.0 || afuvt[2] + afuvt[3] > 1.0)
 		return (false);
 	afuvt[4] = afuvt[1] * ml_vector3_dot(edge2, hsq[2]);
@@ -75,14 +75,19 @@ t_bool			kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float t_max, t_hit *hit)
 {
 	t_bool	hit_triangle;
 	t_vec3	dir_add;
+	t_bool	hits_right;
+	t_bool	hits_left;
 	int		i;
 
 	hit_triangle = false;
 	if (kd_tree_bounding_box_hit(&node->bounding_box, ray, hit))
 	{
 		if (node->left || node->right)
-			return (kd_tree_ray_hit(node->left, ray, t_max, hit) ||
-					kd_tree_ray_hit(node->right, ray, t_max, hit));
+		{
+			hits_left = kd_tree_ray_hit(node->left, ray, t_max, hit);
+			hits_right = kd_tree_ray_hit(node->right, ray, t_max, hit);
+			return (hits_left || hits_right);
+		}
 		i = -1;
 		while (++i < (int)node->triangles->size)
 		{

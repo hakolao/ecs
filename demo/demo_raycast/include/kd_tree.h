@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 23:52:17 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:53:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 # define MAX_OBJECTS 32
 # define MAX_TRIANGLES 16383
+# define MAX_VERTICES 16383
 # define TRI_VEC_INITIAL_CAPACITY 10
 
 # define EPSILON 0.0000001
@@ -56,15 +57,15 @@ typedef struct				s_triangle
 ** Struct to hold .obj file data (which is transformed into a 3d object)
 */
 
-typedef struct				s_obj_result
+typedef struct				s_obj
 {
-	t_vec3			v[MAX_TRIANGLES];
+	t_vec3			*v;
 	uint32_t		num_vertices;
-	t_vec2			vt[MAX_TRIANGLES];
+	t_vec2			*vt;
 	uint32_t		num_v_text_coords;
-	t_vec3			vn[MAX_TRIANGLES];
+	t_vec3			*vn;
 	uint32_t		num_v_normals;
-	uint32_t		triangles[MAX_TRIANGLES][3][3];
+	uint32_t		*triangles;
 	uint32_t		num_triangles;
 }							t_obj;
 
@@ -135,7 +136,7 @@ typedef struct				s_hit
 ** Kd Tree functions
 */
 
-t_kd_tree					*kd_tree_create(t_triangle *triangles,
+t_kd_tree					*kd_tree_create(t_triangle **triangles,
 							uint32_t num_triangles);
 void						kd_tree_destroy(t_kd_tree *tree);
 void						kd_tree_print(t_kd_node *root);
@@ -157,7 +158,7 @@ t_bool						kd_tree_triangle_hit(t_triangle *triangle, t_ray *ray,
 void						triangle_vec_push(t_tri_vec *vector,
 							t_triangle *triangle);
 t_tri_vec					*triangle_vec_empty(void);
-t_tri_vec					*triangle_vec(t_triangle *triangles,
+t_tri_vec					*triangle_vec(t_triangle **triangles,
 							uint32_t num_triangles);
 void						tri_vec_delete(t_tri_vec *vector);
 

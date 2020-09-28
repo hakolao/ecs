@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 18:13:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:52:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_tri_vec		*triangle_vec_empty(void)
 	return (vector);
 }
 
-t_tri_vec		*triangle_vec(t_triangle *triangles, uint32_t num_triangles)
+t_tri_vec		*triangle_vec(t_triangle **triangles, uint32_t num_triangles)
 {
 	t_tri_vec	*vector;
 	uint32_t	capacity;
@@ -40,7 +40,7 @@ t_tri_vec		*triangle_vec(t_triangle *triangles, uint32_t num_triangles)
 		exit(1);
 	i = -1;
 	while (++i < (int)num_triangles)
-		vector->triangles[i] = &triangles[i];
+		vector->triangles[i] = triangles[i];
 	vector->size = num_triangles;
 	vector->capacity = capacity;
 	return (vector);

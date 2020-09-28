@@ -154,7 +154,7 @@ static void			app_cleanup(t_app *app)
 int					main(void)
 {
 	t_app		app;
-	t_scene	data;
+	t_scene		data;
 
 	app.info.fps = 0;
 	app.info.delta_time = 0;

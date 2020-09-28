@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 17:03:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 22:13:23 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:36:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static t_bool			is_valid_obj(t_obj *obj)
 		j = -1;
 		while (++j < 3)
 		{
-			max_v_index = max_v_index > obj->triangles[i][j][0] ?
-				max_v_index : obj->triangles[i][j][0];
-			max_vt_index = max_vt_index > obj->triangles[i][j][1] ?
-				max_vt_index : obj->triangles[i][j][1];
-			max_vn_index = max_vn_index > obj->triangles[i][j][2] ?
-				max_vn_index : obj->triangles[i][j][2];
+			max_v_index = max_v_index > obj->triangles[i * 9 + j * 3 + 0] ?
+				max_v_index : obj->triangles[i * 9 + j * 3 + 0];
+			max_vt_index = max_vt_index > obj->triangles[i * 9 + j * 3 + 1] ?
+				max_vt_index : obj->triangles[i * 9 + j * 3 + 1];
+			max_vn_index = max_vn_index > obj->triangles[i * 9 + j * 3 + 2] ?
+				max_vn_index : obj->triangles[i * 9 + j * 3 + 2];
 		}
 	}
 	return (max_v_index == obj->num_vertices &&
@@ -76,7 +76,7 @@ void					read_obj_vec2_line(char **str, t_vec3 res)
 	ft_scroll_over(str, '\n');
 }
 
-void					read_obj_triangle_line(char **str, uint32_t triangle[3][3])
+void					read_obj_triangle_line(char **str, uint32_t *triangle)
 {
 	char	*tmp;
 	tmp = *str;
@@ -84,23 +84,23 @@ void					read_obj_triangle_line(char **str, uint32_t triangle[3][3])
 		tmp++;
 	if (*tmp != '\n')
 		error_check(true, "Invalid characters in triangle data");
-	triangle[0][0] = ft_atoi(*str);
+	*(triangle + 0) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[0][1] = ft_atoi(*str);
+	*(triangle + 1) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[0][2] = ft_atoi(*str);
+	*(triangle + 2) = ft_atoi(*str);
 	ft_scroll_over(str, ' ');
-	triangle[1][0] = ft_atoi(*str);
+	*(triangle + 3) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[1][1] = ft_atoi(*str);
+	*(triangle + 4) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[1][2] = ft_atoi(*str);
+	*(triangle + 5) = ft_atoi(*str);
 	ft_scroll_over(str, ' ');
-	triangle[2][0] = ft_atoi(*str);
+	*(triangle + 6) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[2][1] = ft_atoi(*str);
+	*(triangle + 7) = ft_atoi(*str);
 	ft_scroll_over(str, '/');
-	triangle[2][2] = ft_atoi(*str);
+	*(triangle + 8) = ft_atoi(*str);
 	tmp = *str;
 	while (ft_isdigit(*tmp))
 		tmp++;
@@ -122,6 +122,15 @@ void					parse_obj_str(char *str, t_obj_content *obj)
 		if (*str)
 		{
 			o = &obj->objects[obj->num_objects];
+			error_check(!(o->v = malloc(sizeof(t_vec3) * MAX_VERTICES)),
+				"Failed to malloc obj vs");
+			error_check(!(o->vt = malloc(sizeof(t_vec2) * MAX_VERTICES)),
+				"Failed to malloc obj v textures");
+			error_check(!(o->vn = malloc(sizeof(t_vec3) * MAX_VERTICES)),
+				"Failed to malloc obj v normals");
+			error_check(!(o->triangles =
+				malloc(sizeof(uint32_t) * 9 * MAX_TRIANGLES)),
+				"Failed to malloc obj triangles");
 			while (*str)
 			{
 				if (*str == 'v' && *(str + 1) == ' ')
@@ -142,7 +151,8 @@ void					parse_obj_str(char *str, t_obj_content *obj)
 				else if (*str == 'f' && *(str + 1) == ' ')
 				{
 					str += 2;
-					read_obj_triangle_line(&str, o->triangles[o->num_triangles++]);
+					read_obj_triangle_line(&str, o->triangles + o->num_triangles * 9);
+					o->num_triangles++;
 				}
 				else
 					str++;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 01:31:06 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:51:36 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct				s_scene
 	t_3d_object				**objects;
 	uint32_t				num_objects;
 	t_kd_tree				*object_tree;
-	t_triangle				triangle_ref[MAX_OBJECTS * MAX_TRIANGLES];
+	t_triangle				*triangle_ref[MAX_TRIANGLES];
 	uint32_t				num_triangles;
 	t_vec3					camera_pos;
 	float					fov;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 01:15:20 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:52:21 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 	return (node);
 }
 
-t_kd_tree			*kd_tree_create(t_triangle *triangles,
+t_kd_tree			*kd_tree_create(t_triangle **triangles,
 					uint32_t num_triangles)
 {
 	t_kd_tree		*tree;

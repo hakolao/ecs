@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 01:26:45 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:51:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 		j = -1;
 		while (++j < 3)
 		{
-			v_i = read_obj->triangles[i][j][0] - 1;
-			vt_i = read_obj->triangles[i][j][1] - 1;
+			v_i = read_obj->triangles[i * 9 + j * 3 + 0] - 1;
+			vt_i = read_obj->triangles[i * 9 + j * 3 + 1] - 1;
 			if (obj->vertices[v_i] == NULL)
 				error_check(!(obj->vertices[v_i] =
 					malloc(sizeof(t_vertex))), "Failed to malloc vertex");
@@ -48,11 +48,11 @@ static void		obj_file_to_3d_obj(t_obj *read_obj, t_3d_object *obj)
 			ml_vector2_copy(read_obj->vt[vt_i], obj->vertices[v_i]->uv);
 		}
 		obj->triangles[i].vtc[0] =
-			obj->vertices[read_obj->triangles[i][0][0] - 1];
+			obj->vertices[read_obj->triangles[i * 9 + 0 * 3 + 0] - 1];
 		obj->triangles[i].vtc[1] =
-			obj->vertices[read_obj->triangles[i][1][0] - 1];
+			obj->vertices[read_obj->triangles[i * 9 + 1 * 3 + 0] - 1];
 		obj->triangles[i].vtc[2] =
-			obj->vertices[read_obj->triangles[i][2][0] - 1];
+			obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1];
 		calculate_triangle_centroid(&obj->triangles[i]);
 	}
 }
@@ -84,12 +84,16 @@ void		obj_content_to_scene(t_scene *scene, t_obj_content *obj)
 			malloc(sizeof(t_vec2) * obj->objects[i].num_v_text_coords)),
 			"Failed to malloc 3d obj uvs");
 		obj_file_to_3d_obj(&obj->objects[i], scene->objects[i]);
+		free(obj->objects[i].v);
+		free(obj->objects[i].vt);
+		free(obj->objects[i].vn);
+		free(obj->objects[i].triangles);
 		scene->objects[i]->num_triangles = obj->objects[i].num_triangles;
 		scene->objects[i]->num_vertices = obj->objects[i].num_vertices;
 		num_triangles -= 1;
 		j = 0;
 		while (++num_triangles < (int)scene->num_triangles + scene->objects[i]->num_triangles)
-			scene->triangle_ref[num_triangles] = scene->objects[i]->triangles[j++];
+			scene->triangle_ref[num_triangles] = &scene->objects[i]->triangles[j++];
 		scene->num_triangles += scene->objects[i]->num_triangles;
 	}
 	update_scene_triangle_tree(scene);

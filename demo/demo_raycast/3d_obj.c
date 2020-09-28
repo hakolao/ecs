@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 11:35:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 14:51:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 16:34:43 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,12 @@ void			transform_3d_object(t_3d_object *obj, t_mat4 transform)
 
 void			destroy_object(t_3d_object *object)
 {
+	int		i;
+
 	free(object->triangles);
+	i = -1;
+	while (++i < object->num_vertices)
+		free(object->vertices[i]);
 	free(object->vertices);
 	free(object);
 	object = NULL;

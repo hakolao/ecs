@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:22:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:53:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@ static t_kd_node	*tree_node_create(t_tri_vec *triangles)
 	return (node);
 }
 
-static int			calculate_matches(t_tri_vec *left_tris,
-					t_tri_vec *right_tris)
-{
-	int		i;
-	int		j;
-	int		matches;
-
-	matches = 0;
-	i = -1;
-	while (++i < (int)left_tris->size)
-	{
-		j = -1;
-		while (++j < (int)right_tris->size)
-			if (left_tris->triangles[i] == right_tris->triangles[j])
-				matches++;
-	}
-	return (matches);
-}
-
 static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 					uint32_t *num_nodes)
 {
@@ -52,7 +33,6 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 	t_kd_node	*node;
 	t_tri_vec	*left_tris;
 	t_tri_vec	*right_tris;
-	int			matches;
 
 	node = tree_node_create(triangles);
 	node->uuid = (*num_nodes)++;
@@ -62,19 +42,14 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 	left_tris = triangle_vec_empty();
 	right_tris = triangle_vec_empty();
 	kd_tree_split_triangles(triangles, node->axis, left_tris, right_tris);
-	if (left_tris->size == 0 && right_tris->size > 0)
+	if ((left_tris->size < MIN_KD_NODE_NUM_TRIANGLES ||
+		right_tris->size < MIN_KD_NODE_NUM_TRIANGLES))
 	{
 		tri_vec_delete(left_tris);
-		left_tris = right_tris;
-	}
-	if (right_tris->size == 0 && left_tris->size > 0)
-	{
 		tri_vec_delete(right_tris);
-		right_tris = left_tris;
+		return (node);
 	}
-	matches = calculate_matches(left_tris, right_tris);
-	if ((float)matches / left_tris->size < 0.5 &&
-		(float)matches / right_tris->size < 0.5)
+	if (depth < MAX_KD_TREE_DEPTH)
 	{
 		node->left = tree_create_recursive(left_tris, depth + 1, num_nodes);
 		node->right = tree_create_recursive(right_tris, depth + 1, num_nodes);

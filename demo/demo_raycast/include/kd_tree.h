@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 18:17:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/28 18:41:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define EPSILON 0.0000001
 
 # define SINGLE_SIDED 1
+# define MAX_KD_TREE_DEPTH 10
+# define MIN_KD_NODE_NUM_TRIANGLES 2
 
 typedef struct				s_ray
 {

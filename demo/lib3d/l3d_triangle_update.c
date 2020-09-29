@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   l3d_rand.c                                         :+:      :+:    :+:   */
+/*   l3d_triangle_update.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 16:20:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 22:26:01 by ohakola          ###   ########.fr       */
+/*   Created: 2020/09/29 22:30:39 by ohakola           #+#    #+#             */
+/*   Updated: 2020/09/29 22:31:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
 
+
 /*
-** Just a simple random number between 0.0 and 1.0
+** Updates triangle values
 */
 
-double			l3d_rand_d()
+void				l3d_triangle_update(t_triangle *triangle)
 {
-	return ((double)rand() / RAND_MAX);
+	l3d_triangle_centroid_update(triangle);
+	l3d_triangle_normal_update(triangle);
 }

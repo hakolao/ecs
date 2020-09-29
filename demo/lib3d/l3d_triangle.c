@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:55:40 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:45:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 22:33:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Calculates & sets triangle's center. The center of mass to be more specific.
 */
 
-void				l3d_triangle_centroid(t_triangle *triangle)
+void				l3d_triangle_centroid_update(t_triangle *triangle)
 {
 	ml_vector3_copy((t_vec3){
 		(triangle->vtc[0]->pos[0] + triangle->vtc[1]->pos[0] +
@@ -79,4 +79,19 @@ void				l3d_triangle_normal_update(t_triangle *triangle)
 	ml_vector3_sub(triangle->vtc[1]->pos, triangle->vtc[0]->pos, ab);
 	ml_vector3_sub(triangle->vtc[2]->pos, triangle->vtc[0]->pos, ac);
 	ml_vector3_cross(ab, ac, triangle->normal);
+}
+
+/*
+** Sets triangle values
+*/
+
+void				l3d_triangle_set(t_triangle *triangle,
+					t_vertex *vtc1, t_vertex *vtc2, t_vertex *vtc3)
+{
+	triangle->is_single_sided = L3D_SINGLE_SIDED;
+	triangle->vtc[0] = vtc1;
+	triangle->vtc[1] = vtc2;
+	triangle->vtc[2] = vtc3;
+	l3d_triangle_centroid_update(triangle);
+	l3d_triangle_normal_update(triangle);
 }

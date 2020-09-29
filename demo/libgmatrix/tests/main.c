@@ -6,22 +6,24 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:13:18 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:48:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mu_test.h"
+#include "oh_test.h"
 #include "tests.h"
 
 int g_tests_run = 0;
 t_test_state g_test_states[MAX_TESTS];
 
-static void all_tests() {
-	mu_run_test(test_vector_ops);
-	mu_run_test(test_matrix_ops);
+static void		all_tests(void)
+{
+	mu_run_test(test_vector_ops1);
+	mu_run_test(test_vector_ops2);
 }
 
-int main(void) {
+int				main(void)
+{
 	t_bool				success;
 	int					failures;
 	int					i;
@@ -39,10 +41,9 @@ int main(void) {
 		}
 	}
 	ft_printf("===========\n");
-	if (!success) {
+	if (!success)
 		ft_printf("%d out of %d TESTS FAILED\n", failures, g_tests_run);
-	} else {
+	else
 		ft_printf("ALL %d TESTS PASSED\n", g_tests_run);
-	}
-	return !success;
+	return (!success);
 }

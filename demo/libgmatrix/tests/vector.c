@@ -6,15 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:36:50 by ohakola           #+#    #+#             */
-/*   Updated: 2020/08/16 20:15:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:47:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libgmatrix.h"
-#include "mu_test.h"
+#include "oh_test.h"
 #include "libft.h"
 
-const char *test_vector_ops() {
+const char		*test_vector_ops1(void)
+{
 	t_vec3	res;
 	t_vec3	v;
 	t_vec3	v2;
@@ -36,7 +37,17 @@ const char *test_vector_ops() {
 	v2[2] = 5;
 	mag = ml_vector3_mag(v2);
 	mu_assert("error, mag != what it should",
-			 round(mag * 1000.0) / 1000.0 == 7.071000);
+		round(mag * 1000.0) / 1000.0 == 7.071000);
+	return (0);
+}
+
+const char		*test_vector_ops2(void)
+{
+	t_vec3	res;
+	t_vec3	v;
+	t_vec3	v2;
+	float	dot;
+
 	v[0] = 2;
 	v[1] = 1;
 	v[2] = 3;

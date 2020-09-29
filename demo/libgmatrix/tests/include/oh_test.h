@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mu_test.h                                          :+:      :+:    :+:   */
+/*   oh_test.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:15:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:13:18 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:21:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MU_TEST_H
-# define MU_TEST_H
+#ifndef OH_TEST_H
+# define OH_TEST_H
 
 # include "libft.h"
 # include "test_state.h"
@@ -21,24 +21,11 @@
 /*
 ** Modified version of
 ** http://www.jera.com/techinfo/jtns/jtn002.html
-** using vector and a TestState struct.
+** using a TestState struct to better output results.
 */
 
-#define mu_assert(message, test) \
-	do { \
-		if (!(test)) return message; \
-	} while (0)
-#define mu_run_test(test) \
-	do { \
-		const char *message = test(); \
-		g_tests_run++; \
-		t_test_state state = \
-			test_state_create(message ? false : true, \
-				message, g_tests_run - 1); \
-		g_test_states[g_tests_run - 1] = state; \
-		ft_printf(" test: %d: %s\n", state.id, \
-			state.success ? "Success" : state.result); \
-	} while (0)
+# define OH_ASSERT(message, test) { if (!(test)) return message; }
+# define OH_RUN_TEST(test) { update_test_state(test); }
 
 extern int g_tests_run;
 extern t_test_state g_test_states[MAX_TESTS];

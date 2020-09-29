@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 01:33:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:20:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,8 @@ static void		init_scene_player(t_scene *scene)
 	scene->player_rot_speed = 0.1f;
 }
 
-/*
-** ToDo: Make all objects one kd_tree instead of tree per object...
-*/
-
-void			demo_scene_create(t_app *app)
+static void		demo_scene_set_transforms(t_scene *scene)
 {
-	t_scene *scene;
-
-	scene = (t_scene*)app->data;
-	init_scene_player(scene);
-	read_objects_to_scene(scene, OBJ_PATH);
-	scene->num_objects = 1;
-	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
-	scene->fov = 90.0;
 	ml_matrix4_id(scene->world_scale);
 	ml_matrix4_rotation_x(ml_rad(25.0), scene->world_rotation);
 	update_world_rotation(scene, scene->world_rotation);
@@ -47,7 +35,48 @@ void			demo_scene_create(t_app *app)
 	update_world_scale(scene, scene->world_scale);
 	ml_matrix4_translation(0, -30.0, -350, scene->world_translation);
 	update_world_translation(scene, scene->world_translation);
-	update_scene_triangle_tree(scene);
+}
+
+static void		demo_scene_set_triangle_refs(t_scene *scene)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		num_triangles;
+
+	i = -1;
+	num_triangles = 0;
+	k = 0;
+	while (++i < (int)scene->num_objects)
+	{
+		j = -1;
+		while (++j < scene->objects[i]->num_triangles)
+		{
+			scene->triangle_ref[k] = &scene->objects[i]->triangles[j];
+			num_triangles++;
+			k++;
+		}
+	}
+	scene->num_triangles = num_triangles;
+}
+
+/*
+** ToDo: Make all objects one kd_tree instead of tree per object...
+*/
+
+void			demo_scene_create(t_app *app)
+{
+	t_scene *scene;
+
+	scene = (t_scene*)app->data;
+	init_scene_player(scene);
+	scene->objects = l3d_read_obj(OBJ_PATH, &scene->num_objects);
+	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
+	scene->fov = 90.0;
+	demo_scene_set_transforms(scene);
+	demo_scene_set_triangle_refs(scene);
+	l3d_kd_tree_update(scene->object_tree, scene->triangle_ref,
+		scene->num_triangles);
 }
 
 void			demo_scene_destroy(t_app *app)
@@ -57,19 +86,11 @@ void			demo_scene_destroy(t_app *app)
 
 	scene = (t_scene*)app->data;
 	i = -1;
-	kd_tree_destroy(scene->object_tree);
+	l3d_kd_tree_destroy(scene->object_tree);
 	while (++i < scene->num_objects)
 	{
-		destroy_object(scene->objects[i]);
+		l3d_3d_object_destroy(scene->objects[i]);
 		scene->objects[i] = NULL;
 	}
 	free(scene->objects);
-}
-
-void			update_scene_triangle_tree(t_scene *scene)
-{
-	if (scene->object_tree != NULL)
-		kd_tree_destroy(scene->object_tree);
-	scene->object_tree =
-		kd_tree_create(scene->triangle_ref, scene->num_triangles);
 }

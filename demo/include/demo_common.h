@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 17:25:06 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:16:49 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void						render_text(t_app *app, t_text_params params);
 /*
 ** Utils
 */
-void						error_check(int test, const char *message);
+
 void						draw_fps(t_app *app);
 uint32_t					capture_framerate(uint32_t time_since_start);
 

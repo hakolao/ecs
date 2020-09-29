@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 14:43:04 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/23 11:49:08 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/29 15:16:19 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -133,7 +133,8 @@ SOURCES = ft_atoi.c \
 		ft_rand.c \
 		read_file.c \
 		ft_atod.c \
-		ft_scroll.c
+		ft_scroll.c \
+		ft_error.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))

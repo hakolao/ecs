@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/28 15:23:01 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/29 16:23:29 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,12 +79,16 @@ demo_squares: all
 
 DEMO_RC_SRCS = $(wildcard $(DIR_DEMO)/demo_raycast/*.c)
 LIBGMATRIX = ./demo/libgmatrix
+LIB3D = ./demo/lib3d
 demo_raycast: all
 	@make -C $(LIBFT)
 	@make -C $(LIBGMATRIX)
+	@make -C $(LIB3D)
 	$(CC) -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
 		-I$(LIBGMATRIX)/include \
+		-I$(LIB3D)/include \
 		-L$(LIBGMATRIX) -lgmatrix \
+		-L$(LIB3D) -l3d \
 		-I$(DIR_DEMO)/demo_raycast/include \
 		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
 	./demo_raycast
@@ -96,11 +100,13 @@ clean:
 	@/bin/rm -rf $(DIR_OBJ)
 	@make -C $(LIBFT) clean
 	@make -C $(LIBGMATRIX) clean
+	@make -C $(LIB3D) clean
 
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@make -C $(LIBFT) fclean
 	@make -C $(LIBGMATRIX) fclean
+	@make -C $(LIB3D) fclean
 	@if [ -a demo_raycast ]; then rm demo_raycast; fi;
 	@if [ -a demo_squares ]; then rm demo_squares; fi;
 	@if [ -a test_run ]; then rm test_run; fi;

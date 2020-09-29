@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 01:30:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:22:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "demo_common.h"
 # include "libgmatrix.h"
-# include "kd_tree.h"
+# include "lib3d.h"
 
 # define NUM_THREADS 8
 
@@ -33,7 +33,7 @@ typedef struct				s_scene
 	t_3d_object				**objects;
 	uint32_t				num_objects;
 	t_kd_tree				*object_tree;
-	t_triangle				*triangle_ref[MAX_TRIANGLES];
+	t_triangle				*triangle_ref[L3D_MAX_TRIANGLES];
 	uint32_t				num_triangles;
 	t_vec3					camera_pos;
 	float					fov;
@@ -106,14 +106,14 @@ void						update_world_rotation(t_scene *scene, t_mat4 new_rotation);
 void						update_world_translation(t_scene *scene, t_mat4	translation);
 void						update_world_scale(t_scene *scene, t_mat4 new_scale);
 void						update_scene_triangle_tree(t_scene *scene);
+
 /*
 ** 3d Object functions
 */
 
-void						destroy_object(t_3d_object *object);
+void						l3d_3d_object_destroy(t_3d_object *object);
 void						obj_content_to_scene(t_scene *scene, t_obj_content *obj);
 void						read_objects_to_scene(t_scene *scene, const char *filename);
-void						transform_3d_object(t_3d_object *obj, t_mat4 transform);
 
 /*
 ** Player
@@ -127,8 +127,6 @@ void						rotate_player(t_scene *data,
 ** Math utils
 */
 
-double						rand_d();
-
-void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray);
+double						l3d_rand_d();
 
 #endif

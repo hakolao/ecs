@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/23 11:48:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:16:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,5 +208,7 @@ void			destroy_file_contents(t_file_contents *f);
 t_file_contents	*read_file(const char *filename);
 void			ft_scroll_over(char **str, char c);
 void			ft_scroll_to(char **str, char c);
+
+void			error_check(int test, const char *message);
 
 #endif

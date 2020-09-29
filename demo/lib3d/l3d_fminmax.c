@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math_utils.c                                       :+:      :+:    :+:   */
+/*   l3d_fminmax.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/27 21:07:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/27 21:07:17 by ohakola          ###   ########.fr       */
+/*   Created: 2020/09/29 15:01:27 by ohakola           #+#    #+#             */
+/*   Updated: 2020/09/29 15:23:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "demo_raycast.h"
+#include "lib3d.h"
 
-double						rand_d()
+float	l3d_fmin(float n1, float n2)
 {
-	return ((double)rand() / RAND_MAX);
+	return (n1 < n2 ? n1 : n2);
+}
+
+float	l3d_fmax(float n1, float n2)
+{
+	return (n1 > n2 ? n1 : n2);
 }

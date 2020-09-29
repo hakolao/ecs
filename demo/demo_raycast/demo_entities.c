@@ -6,19 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 00:01:42 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:22:03 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_raycast.h"
-
-void						set_ray(t_vec3 dir, t_vec3 origin, t_ray *ray)
-{
-	ml_vector3_set(ray->dir, dir[0], dir[1], dir[2]);
-	ml_vector3_set(ray->origin, origin[0], origin[1], origin[2]);
-	ml_vector3_normalize(ray->dir, ray->dir);
-	ml_vector3_set(ray->dir_inv, 1.0 / dir[0], 1.0 / dir[1], 1.0 / dir[2]);
-}
 
 void						entity_ray_update(t_app *app,
 							t_ray *ray, int x, int y)
@@ -30,13 +22,13 @@ void						entity_ray_update(t_app *app,
 	data = (t_scene*)app->data;
 	scale = data->scale;
 	aspect_ratio = data->aspect_ratio;
-	ray->dir[0] = (2 * (x + rand_d() + 0.5) /
+	ray->dir[0] = (2 * (x + l3d_rand_d() + 0.5) /
 		(float)app->window->width - 1) * aspect_ratio * scale;
-	ray->dir[1] = (1 - 2 * (y + rand_d() + 0.5) /
+	ray->dir[1] = (1 - 2 * (y + l3d_rand_d() + 0.5) /
 		(float)app->window->height) * scale;
 	ray->dir[2] = -3.0;
 	ml_vector3_sub(ray->dir, data->camera_pos, ray->dir);
-	set_ray(ray->dir, data->camera_pos, ray);
+	l3d_set_ray(ray->dir, data->camera_pos, ray);
 }
 
 void						entity_rays_create(t_app *app)

@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   triangle_vector.c                                  :+:      :+:    :+:   */
+/*   l3d_triangle_vector.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 19:02:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:33:27 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "kd_tree.h"
+#include "lib3d.h"
 
-t_tri_vec		*triangle_vec_empty(void)
+t_tri_vec		*l3d_triangle_vec_empty(void)
 {
 	t_tri_vec	*vector;
 
 	if ((!(vector = malloc(sizeof(t_tri_vec))) ||
 		!(vector->triangles = malloc(sizeof(t_triangle*) *
-			TRI_VEC_INITIAL_CAPACITY))) &&
+			L3D_TRI_VEC_INITIAL_CAPACITY))) &&
 		ft_dprintf(2, "Failed to malloc triangle vector\n"))
 		exit(1);
 	vector->size = 0;
-	vector->capacity = TRI_VEC_INITIAL_CAPACITY;
+	vector->capacity = L3D_TRI_VEC_INITIAL_CAPACITY;
 	return (vector);
 }
 
-t_tri_vec		*triangle_vec(t_triangle **triangles, uint32_t num_triangles)
+t_tri_vec		*l3d_triangle_vec(t_triangle **triangles, uint32_t num_triangles)
 {
 	t_tri_vec	*vector;
 	uint32_t	capacity;
 	int			i;
 
-	capacity = num_triangles > TRI_VEC_INITIAL_CAPACITY ?
-		num_triangles + TRI_VEC_INITIAL_CAPACITY : TRI_VEC_INITIAL_CAPACITY;
+	capacity = num_triangles > L3D_TRI_VEC_INITIAL_CAPACITY ?
+		num_triangles + L3D_TRI_VEC_INITIAL_CAPACITY : L3D_TRI_VEC_INITIAL_CAPACITY;
 	if ((!(vector = malloc(sizeof(t_tri_vec))) ||
 		!(vector->triangles = malloc(sizeof(t_triangle*) * capacity))) &&
 		ft_dprintf(2, "Failed to malloc triangle vector\n"))
@@ -46,7 +46,7 @@ t_tri_vec		*triangle_vec(t_triangle **triangles, uint32_t num_triangles)
 	return (vector);
 }
 
-void			triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
+void			l3d_triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
 {
 	t_triangle	*temp[vector->size];
 	uint32_t	new_capacity;
@@ -72,7 +72,7 @@ void			triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
 	}
 }
 
-void			tri_vec_delete(t_tri_vec *vector)
+void			l3d_triangle_vec_delete(t_tri_vec *vector)
 {
 	free(vector->triangles);
 	free(vector);

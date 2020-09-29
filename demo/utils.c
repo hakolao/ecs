@@ -6,20 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:54:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 17:25:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 15:16:59 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "demo_common.h"
-
-void				error_check(int test, const char *message)
-{
-	if (test)
-	{
-		ft_dprintf(2, "%s\n", message);
-		exit(1);
-	}
-}
 
 uint32_t			capture_framerate(uint32_t delta_time)
 {

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 00:59:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 16:21:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ void						random_in_unit_sphere(t_vec3 res)
 
 	ml_vector3_set(res, 0, 0, 0);
 	ml_vector3_set(orig, 1.0, 1.0, 1.0);
-	ml_vector3_set(rand, rand_d(), rand_d(), rand_d());
+	ml_vector3_set(rand, l3d_rand_d(), l3d_rand_d(), l3d_rand_d());
 	ml_vector3_mul(rand, 2.0, rand);
 	ml_vector3_sub(rand, orig, res);
 	p_sqrd = 2 * res[0] * res[0] + 2 * res[1] * res[1] + 2 * res[2] * res[2];
 	while (p_sqrd >= 1.0)
 	{
-		ml_vector3_set(rand, rand_d(), rand_d(), rand_d());
+		ml_vector3_set(rand, l3d_rand_d(), l3d_rand_d(), l3d_rand_d());
 		ml_vector3_mul(rand, 2.0, rand);
 		ml_vector3_sub(rand, orig, res);
 		p_sqrd = 2 * res[0] * res[0] + 2 * res[1] * res[1] + 2 * res[2] * res[2];
@@ -88,7 +88,7 @@ static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 	t_vec3			direction;
 	SDL_Color		new_color;
 
-	if (bounces < MAX_BOUNCES && kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
+	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
 	{
 		random_in_unit_sphere(random);
 		ml_vector3_add(hit.hit_point, hit.normal, target);

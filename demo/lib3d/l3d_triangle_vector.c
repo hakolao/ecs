@@ -6,11 +6,15 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 15:33:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:47:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
+
+/*
+** Creates an empty triangle vector.
+*/
 
 t_tri_vec		*l3d_triangle_vec_empty(void)
 {
@@ -25,6 +29,12 @@ t_tri_vec		*l3d_triangle_vec_empty(void)
 	vector->capacity = L3D_TRI_VEC_INITIAL_CAPACITY;
 	return (vector);
 }
+
+/*
+** Creates a triangle vector data struct out of a triangle pointer array.
+** If num triangles is larger than initial vector capactiy, allocates
+** num triangles + initial vector capacity.
+*/
 
 t_tri_vec		*l3d_triangle_vec(t_triangle **triangles, uint32_t num_triangles)
 {
@@ -45,6 +55,11 @@ t_tri_vec		*l3d_triangle_vec(t_triangle **triangles, uint32_t num_triangles)
 	vector->capacity = capacity;
 	return (vector);
 }
+
+/*
+** Pushes triangle pointer to the triangle vector. If capacity is reached,
+** allocates more capacity to the vector.
+*/
 
 void			l3d_triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
 {

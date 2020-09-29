@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:38:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:44:16 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,9 @@ void						l3d_triangle_vec_delete(t_tri_vec *vector);
 ** Triangles
 */
 
-void						l3d_triangles_midpoint(t_tri_vec *triangles, t_vec3 res);
+void						l3d_triangles_midpoint(t_triangle **triangles,
+							uint32_t num_triangles, t_vec3 res);
+void						l3d_triangle_vec_midpoint(t_tri_vec *triangles, t_vec3 res);
 void						l3d_triangle_centroid(t_triangle *triangle);
 void						l3d_triangle_normal_update(t_triangle *triangle);
 

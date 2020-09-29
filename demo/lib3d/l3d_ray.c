@@ -6,11 +6,19 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 15:33:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 22:17:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
+
+/*
+** Fast branchless bounding box ray hit test.
+** Returns true if ray hits the bounding box. If hit occurs, save distance to
+** hit record's t variable (to be used in calculating hit vector).
+** https://gamedev.stackexchange.com/questions/18436/
+** https://tavianator.com/2011/ray_box.html
+*/
 
 t_bool			l3d_bounding_box_ray_hit(t_box3d *box, t_ray *ray, t_hit *hit)
 {
@@ -22,48 +30,67 @@ t_bool			l3d_bounding_box_ray_hit(t_box3d *box, t_ray *ray, t_hit *hit)
 	t[4] = (box->xyz_max[1] - ray->origin[1]) * ray->dir_inv[1];
 	t[5] = (box->xyz_min[2] - ray->origin[2]) * ray->dir_inv[2];
 	t[6] = (box->xyz_max[2] - ray->origin[2]) * ray->dir_inv[2];
-	t[7] = l3d_fmax(l3d_fmax(l3d_fmin(t[1], t[2]), l3d_fmin(t[3], t[4])), l3d_fmin(t[5], t[6]));
-	t[8] = l3d_fmin(l3d_fmin(l3d_fmax(t[1], t[2]), l3d_fmax(t[3], t[4])), l3d_fmax(t[5], t[6]));
+	t[7] = l3d_fmax(l3d_fmax(l3d_fmin(t[1], t[2]), l3d_fmin(t[3], t[4])),
+		l3d_fmin(t[5], t[6]));
+	t[8] = l3d_fmin(l3d_fmin(l3d_fmax(t[1], t[2]), l3d_fmax(t[3], t[4])),
+		l3d_fmax(t[5], t[6]));
 	if (t[8] < 0 || t[7] > t[8])
 		return (false);
 	hit->t = t[7];
 	return (true);
 }
 
-t_bool			l3d_triangle_ray_hit(t_triangle *triangle, t_ray *ray, t_hit *hit)
+/*
+** A tradeoff with readability & 42 norms. I refuse to set temp structs for just
+** this function, because it'll only bloat the header files. In this case
+** bundled arrays are better to beautify the api of triangle_ray_hit function.
+*/
+
+static t_bool	l3d_determine_triangle_hit(t_vec3 edges_hsq[5],
+				t_triangle *triangle, t_ray *ray, t_hit *hit)
 {
-	t_vec3	edge1;
-	t_vec3	edge2;
-	t_vec3	n;
-	t_vec3	hsq[3];
 	float	afuvt[5];
 
-	ml_vector3_sub(triangle->vtc[1]->pos, triangle->vtc[0]->pos, edge1);
-	ml_vector3_sub(triangle->vtc[2]->pos, triangle->vtc[0]->pos, edge2);
-	ml_vector3_cross(ray->dir, edge2, hsq[0]);
-	ml_vector3_cross(edge1, edge2, n);
-	ml_vector3_normalize(n, n);
-	if (ml_vector3_dot(ray->dir, n) > 0 && triangle->is_single_sided)
-		return (false);
-	afuvt[0] = ml_vector3_dot(edge1, hsq[0]);
+	afuvt[0] = ml_vector3_dot(edges_hsq[0], edges_hsq[2]);
 	if (afuvt[0] > -L3D_EPSILON && afuvt[0] < L3D_EPSILON)
 		return (false);
 	afuvt[1] = 1.0 / afuvt[0];
-	ml_vector3_sub(ray->origin, triangle->vtc[0]->pos, hsq[1]);
-	afuvt[2] = afuvt[1] * ml_vector3_dot(hsq[1], hsq[0]);
+	ml_vector3_sub(ray->origin, triangle->vtc[0]->pos, edges_hsq[3]);
+	afuvt[2] = afuvt[1] * ml_vector3_dot(edges_hsq[3], edges_hsq[2]);
 	if (afuvt[2] < 0.0 || afuvt[2] > 1.0)
 		return (false);
-	ml_vector3_cross(hsq[1], edge1, hsq[2]);
-	afuvt[3] = afuvt[1] * ml_vector3_dot(ray->dir, hsq[2]);
+	ml_vector3_cross(edges_hsq[3], edges_hsq[0], edges_hsq[4]);
+	afuvt[3] = afuvt[1] * ml_vector3_dot(ray->dir, edges_hsq[4]);
 	if (afuvt[3] < 0.0 || afuvt[2] + afuvt[3] > 1.0)
 		return (false);
-	afuvt[4] = afuvt[1] * ml_vector3_dot(edge2, hsq[2]);
+	afuvt[4] = afuvt[1] * ml_vector3_dot(edges_hsq[1], edges_hsq[4]);
 	if (afuvt[4] > L3D_EPSILON)
 	{
 		hit->t = afuvt[4];
 		return (true);
 	}
 	return (false);
+}
+
+/*
+** https://en.wikipedia.org/wiki/Möller–Trumbore_intersection_algorithm
+** Returns true if ray hits triangle. A single sidedness test is tested first
+** (back-face culling). False is returned if triangle is single sided.
+** Hit distance is saved to hit record hit->t.
+*/
+
+t_bool			l3d_triangle_ray_hit(t_triangle *triangle, t_ray *ray,
+				t_hit *hit)
+{
+	t_vec3	edges_hsq[5];
+
+	ml_vector3_sub(triangle->vtc[1]->pos, triangle->vtc[0]->pos, edges_hsq[0]);
+	ml_vector3_sub(triangle->vtc[2]->pos, triangle->vtc[0]->pos, edges_hsq[1]);
+	ml_vector3_cross(ray->dir, edges_hsq[1], edges_hsq[2]);
+	if (ml_vector3_dot(ray->dir, triangle->normal) > 0 &&
+		triangle->is_single_sided)
+		return (false);
+	return (l3d_determine_triangle_hit(edges_hsq, triangle, ray, hit));
 }
 
 t_bool			l3d_kd_tree_ray_hit(t_kd_node *node, t_ray *ray, float t_max, t_hit *hit)

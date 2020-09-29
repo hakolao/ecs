@@ -6,19 +6,33 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:03:24 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:29:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:31:35 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
 
-static void			bounding_box_null(t_box3d *res)
+/*
+** Initializes bounding box before finding min maxes (or nulls it if triangle
+** size is 0)
+*/
+
+static void			init_bounding_box(t_box3d *res, t_tri_vec *triangles)
 {
-	ft_memset(res->xyz_min, 0, sizeof(t_vec3));
-	ft_memset(res->xyz_max, 0, sizeof(t_vec3));
-	ft_memset(res->center, 0, sizeof(t_vec3));
-	ft_memset(res->size, 0, sizeof(t_vec3));
+	ml_vector3_copy((t_vec3){INT32_MIN, INT32_MIN, INT32_MIN}, res->xyz_max);
+	ml_vector3_copy((t_vec3){INT32_MAX, INT32_MAX, INT32_MAX}, res->xyz_min);
+	if (triangles->size == 0)
+	{
+		ft_memset(res->xyz_min, 0, sizeof(t_vec3));
+		ft_memset(res->xyz_max, 0, sizeof(t_vec3));
+		ft_memset(res->center, 0, sizeof(t_vec3));
+		ft_memset(res->size, 0, sizeof(t_vec3));
+	}
 }
+
+/*
+** Set's bounding box's size and center
+*/
 
 static void			bounding_box_size_and_center_set(t_box3d *res)
 {
@@ -30,6 +44,11 @@ static void			bounding_box_size_and_center_set(t_box3d *res)
 	}, res->center);
 }
 
+/*
+** Sets bounding box of triangle vector (list of triangles) by finding
+** max xyzs and min xyzs
+*/
+
 void				l3d_bounding_box_set(t_tri_vec *triangles, t_box3d *res)
 {
 	int		i;
@@ -37,10 +56,7 @@ void				l3d_bounding_box_set(t_tri_vec *triangles, t_box3d *res)
 	float	min;
 	float	max;
 
-	ml_vector3_copy((t_vec3){INT32_MIN, INT32_MIN, INT32_MIN}, res->xyz_max);
-	ml_vector3_copy((t_vec3){INT32_MAX, INT32_MAX, INT32_MAX}, res->xyz_min);
-	if (triangles->size == 0)
-		bounding_box_null(res);
+	init_bounding_box(res, triangles);
 	i = -1;
 	while (++i < (int)triangles->size)
 	{
@@ -60,13 +76,17 @@ void				l3d_bounding_box_set(t_tri_vec *triangles, t_box3d *res)
 	bounding_box_size_and_center_set(res);
 }
 
+/*
+** Returns the longes axis of a bounding box.
+*/
+
 t_axis				l3d_bounding_box_longest_axis(t_box3d bounding_box)
 {
 	float	longest;
 	int		i;
 
-	longest = (float)ft_max_double((double[3]){
-		bounding_box.size[0], bounding_box.size[1], bounding_box.size[2]}, 3);
+	longest = l3d_fmax(bounding_box.size[0],
+		l3d_fmax(bounding_box.size[1], bounding_box.size[2]));
 	i = -1;
 	while (++i < 3)
 		if (bounding_box.size[i] == longest)

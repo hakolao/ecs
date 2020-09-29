@@ -1,46 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   l3d_obj_read_utils.c                               :+:      :+:    :+:   */
+/*   l3d_obj_read_utils1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:35:00 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:28:04 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:07:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d_internals.h"
 
-t_bool				l3d_is_valid_obj(t_obj *obj)
-{
-	int				i;
-	int				j;
-	uint32_t		max_v_index;
-	uint32_t		max_vt_index;
-	uint32_t		max_vn_index;
-
-	i = -1;
-	max_v_index = 0;
-	max_vt_index = 0;
-	max_vn_index = 0;
-	while (++i < (int)obj->num_triangles)
-	{
-		j = -1;
-		while (++j < 3)
-		{
-			max_v_index = max_v_index > obj->triangles[i * 9 + j * 3 + 0] ?
-				max_v_index : obj->triangles[i * 9 + j * 3 + 0];
-			max_vt_index = max_vt_index > obj->triangles[i * 9 + j * 3 + 1] ?
-				max_vt_index : obj->triangles[i * 9 + j * 3 + 1];
-			max_vn_index = max_vn_index > obj->triangles[i * 9 + j * 3 + 2] ?
-				max_vn_index : obj->triangles[i * 9 + j * 3 + 2];
-		}
-	}
-	return (max_v_index == obj->num_vertices &&
-			max_vt_index == obj->num_v_text_coords &&
-			max_vn_index == obj->num_v_normals );
-}
+/*
+** Parses a vec 3 line from string ref and scrolls the str
+** forward along the way.
+*/
 
 void					l3d_read_obj_vec3_line(char **str, t_vec3 res)
 {
@@ -60,6 +35,11 @@ void					l3d_read_obj_vec3_line(char **str, t_vec3 res)
 	ft_scroll_over(str, '\n');
 }
 
+/*
+** Parses a vec 2 line from string ref and scrolls the str
+** forward along the way.
+*/
+
 void					l3d_read_obj_vec2_line(char **str, t_vec3 res)
 {
 	char	*tmp;
@@ -75,6 +55,11 @@ void					l3d_read_obj_vec2_line(char **str, t_vec3 res)
 	res[1] = ft_atod(*str);
 	ft_scroll_over(str, '\n');
 }
+
+/*
+** Parses a triangulated face line from string ref and scrolls the str
+** forward along the way.
+*/
 
 void					l3d_read_obj_triangle_line(char **str, uint32_t *triangle)
 {
@@ -104,36 +89,56 @@ void					l3d_read_obj_triangle_line(char **str, uint32_t *triangle)
 	ft_scroll_over(str, '\n');
 }
 
+/*
+** Parses a single obj from obj str ref and scroll the string to
+*/
+
+void					l3d_obj_parse_single_obj(char **str, t_obj *obj,
+						uint32_t *num_objects)
+{
+	l3d_obj_content_allocate(obj);
+	while (**str)
+	{
+		if (**str == 'v' && *(*str + 1) == ' ' &&
+			(*str += 2))
+			l3d_read_obj_vec3_line(str, obj->v[obj->num_vertices++]);
+		else if (**str == 'v' && *(*str + 1) == 't' && *(*str + 2) == ' ' &&
+			(*str += 3))
+			l3d_read_obj_vec2_line(str, obj->vt[obj->num_v_text_coords++]);
+		else if (**str == 'v' && *(*str + 1) == 'n' && *(*str + 2) == ' ' &&
+			(*str += 3))
+			l3d_read_obj_vec3_line(str, obj->vn[obj->num_v_normals++]);
+		else if (**str == 'f' && *(*str + 1) == ' ' &&
+			(*str += 2))
+		{
+			l3d_read_obj_triangle_line(str,
+				obj->triangles + obj->num_triangles * 9);
+			obj->num_triangles++;
+		}
+		else
+			(*str)++;
+		if (**str == 'o' && *(*str + 1) == ' ')
+			break ;
+	}
+	(*num_objects)++;
+}
+
+/*
+** Parses obj data from obj string saving all objects into t_obj_content*
+*/
+
 void					l3d_obj_str_parse(char *str, t_obj_content *result)
 {
-	t_obj	*o;
-
 	ft_memset(result, 0, sizeof(*result));
 	while (*str)
 	{
-		while (*str != 'o' && *(str + 1) != ' ')
+		while (!(*str == 'o' && *(str + 1) == ' '))
 			str++;
+		str++;
 		if (*str)
 		{
-			o = &result->objects[result->num_objects];
-			l3d_obj_content_allocate(o);
-			while (*str)
-			{
-				if (*str == 'v' && *(str + 1) == ' ' && (str += 2))
-					l3d_read_obj_vec3_line(&str, o->v[o->num_vertices++]);
-				else if (*str == 'v' && *(str + 1) == 't' && *(str + 2) == ' ' && (str += 3))
-					l3d_read_obj_vec2_line(&str, o->vt[o->num_v_text_coords++]);
-				else if (*str == 'v' && *(str + 1) == 'n' && *(str + 2) == ' ' && (str += 3))
-					l3d_read_obj_vec3_line(&str, o->vn[o->num_v_normals++]);
-				else if (*str == 'f' && *(str + 1) == ' ' && (str += 2))
-				{
-					l3d_read_obj_triangle_line(&str, o->triangles + o->num_triangles * 9);
-					o->num_triangles++;
-				}
-				else
-					str++;
-			}
-			result->num_objects++;
+			l3d_obj_parse_single_obj(&str,
+				&result->objects[result->num_objects], &result->num_objects);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:27:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 22:37:06 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:08:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ void					l3d_obj_content_free(t_obj *o)
 
 /*
 ** Transforms a single obj data struct into t_3d_object.
+** @prev_i = previous object's max indices to adjust for multi-object
+** read...
 */
 
-static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
+static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj,
+						uint32_t prev_i[3])
 {
 	int		i;
 	int		j;
@@ -58,8 +61,8 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
 		j = -1;
 		while (++j < 3)
 		{
-			v_i = read_obj->triangles[i * 9 + j * 3 + 0] - 1;
-			vt_i = read_obj->triangles[i * 9 + j * 3 + 1] - 1;
+			v_i = read_obj->triangles[i * 9 + j * 3 + 0] - 1 - prev_i[0];
+			vt_i = read_obj->triangles[i * 9 + j * 3 + 1] - 1 - prev_i[1];
 			if (obj->vertices[v_i] == NULL)
 				error_check(!(obj->vertices[v_i] =
 					malloc(sizeof(t_vertex))), "Failed to malloc vertex");
@@ -68,9 +71,9 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
 			ml_vector2_copy(read_obj->vt[vt_i], obj->vertices[v_i]->uv);
 		}
 		l3d_triangle_set(&obj->triangles[i],
-			obj->vertices[read_obj->triangles[i * 9 + 0 * 3 + 0] - 1],
-			obj->vertices[read_obj->triangles[i * 9 + 1 * 3 + 0] - 1],
-			obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1]);
+		obj->vertices[read_obj->triangles[i * 9 + 0 * 3 + 0] - 1 - prev_i[0]],
+		obj->vertices[read_obj->triangles[i * 9 + 1 * 3 + 0] - 1 - prev_i[0]],
+		obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1 - prev_i[0]]);
 	}
 }
 
@@ -93,7 +96,11 @@ static t_3d_object		**l3d_3d_object_from_obj(t_obj_content *obj,
 	{
 		l3d_objects[i] = l3d_3d_object_create(obj->objects[i].num_vertices,
 			obj->objects[i].num_triangles, obj->objects[i].num_v_text_coords);
-		obj_to_3d_object(&obj->objects[i], l3d_objects[i]);
+		obj_to_3d_object(&obj->objects[i], l3d_objects[i],
+			i == 0 ? (uint32_t[3]){0, 0, 0} :
+			(uint32_t[3]){obj->objects[i - 1].num_vertices,
+				obj->objects[i - 1].num_v_text_coords,
+				obj->objects[i - 1].num_v_normals});
 		l3d_objects[i]->num_triangles = obj->objects[i].num_triangles;
 		l3d_objects[i]->num_vertices = obj->objects[i].num_vertices;
 		l3d_obj_content_free(&obj->objects[i]);
@@ -104,7 +111,8 @@ static t_3d_object		**l3d_3d_object_from_obj(t_obj_content *obj,
 
 /*
 ** Reads obj file and outputs a list of t_3d_objects saving their number
-** into inputted num_objects ref.
+** into inputted num_objects ref. Invalid obj content will exit, so NULL
+** is not returned.
 */
 
 t_3d_object				**l3d_read_obj(const char *filename,
@@ -112,14 +120,11 @@ t_3d_object				**l3d_read_obj(const char *filename,
 {
 	t_file_contents	*obj_file;
 	t_obj_content	obj_content;
-	int				i;
 
 	error_check(!(obj_file = read_file(filename)), "Failed to read file");
 	l3d_obj_str_parse((char*)obj_file->buf, &obj_content);
-	i = -1;
-	while (++i < (int)obj_content.num_objects)
-		error_check(!l3d_is_valid_obj(&obj_content.objects[i]),
-			"Invalid number of v, vt, vn or triangles");
+	if (!l3d_is_valid_obj_content(&obj_content))
+		return (NULL);
 	destroy_file_contents(obj_file);
 	return (l3d_3d_object_from_obj(&obj_content, num_objects));
 }

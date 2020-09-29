@@ -6,14 +6,14 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:47:27 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:40:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
 
-void				l3d_kd_tree_split_triangles(t_tri_vec *triangles, t_axis axis,
-					t_tri_vec *left_tris, t_tri_vec *right_tris)
+void				l3d_kd_tree_split_triangles(t_tri_vec *triangles,
+					t_axis axis, t_tri_vec *left_tris, t_tri_vec *right_tris)
 {
 	t_vec3		mid_point;
 	int			i;

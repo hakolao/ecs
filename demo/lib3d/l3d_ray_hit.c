@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:10:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 22:25:36 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:35:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 t_bool			l3d_bounding_box_ray_hit(t_box3d *box, t_ray *ray, t_hit *hit)
 {
-	float 	t[9];
+	float	t[9];
 
 	t[1] = (box->xyz_min[0] - ray->origin[0]) * ray->dir_inv[0];
 	t[2] = (box->xyz_max[0] - ray->origin[0]) * ray->dir_inv[0];

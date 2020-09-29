@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:35:00 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:22:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:41:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void					l3d_read_obj_vec2_line(char **str, t_vec3 res)
 ** forward along the way.
 */
 
-void					l3d_read_obj_triangle_line(char **str, uint32_t *triangle)
+void					l3d_read_obj_triangle_line(char **str,
+						uint32_t *triangle)
 {
 	char	*tmp;
 	int		i;

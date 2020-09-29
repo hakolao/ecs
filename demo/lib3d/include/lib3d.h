@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 22:37:56 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:39:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define L3D_MAX_KD_TREE_DEPTH 10
 # define L3D_MIN_KD_NODE_NUM_TRIANGLES 2
 # define L3D_TRI_VEC_INITIAL_CAPACITY 10
-
 
 # define L3D_MAX_OBJECTS 32
 # define L3D_MAX_TRIANGLES 16383
@@ -53,39 +52,39 @@ typedef struct				s_obj_content
 
 typedef struct				s_ray
 {
-	t_vec3		dir;
-	t_vec3		origin;
-	t_vec3		dir_inv;
+	t_vec3			dir;
+	t_vec3			origin;
+	t_vec3			dir_inv;
 }							t_ray;
 
 typedef struct				s_hit
 {
-	float					t;
-	t_vec3					normal;
-	t_vec3					hit_point;
+	float			t;
+	t_vec3			normal;
+	t_vec3			hit_point;
 }							t_hit;
 
 typedef struct				s_vertex
 {
-	t_vec4					pos;
-	uint32_t				color;
-	t_vec2					uv;
+	t_vec4			pos;
+	uint32_t		color;
+	t_vec2			uv;
 }							t_vertex;
 
 typedef struct				s_box3d
 {
-	t_vec3					center;
-	t_vec3					size;
-	float					xyz_min[3];
-	float					xyz_max[3];
+	t_vec3			center;
+	t_vec3			size;
+	float			xyz_min[3];
+	float			xyz_max[3];
 }							t_box3d;
 
 typedef struct				s_triangle
 {
-	t_vertex				*vtc[3];
-	t_vec3					center;
-	t_vec3					normal;
-	t_bool					is_single_sided;
+	t_vertex		*vtc[3];
+	t_vec3			center;
+	t_vec3			normal;
+	t_bool			is_single_sided;
 }							t_triangle;
 
 /*
@@ -94,12 +93,12 @@ typedef struct				s_triangle
 
 typedef struct				s_3d_object
 {
-	t_vertex				**vertices;
-	int32_t					num_vertices;
-	t_triangle				*triangles;
-	int32_t					num_triangles;
-	t_vec2					*uvs;
-	int32_t					num_uvs;
+	t_vertex		**vertices;
+	int32_t			num_vertices;
+	t_triangle		*triangles;
+	int32_t			num_triangles;
+	t_vec2			*uvs;
+	int32_t			num_uvs;
 }							t_3d_object;
 
 typedef enum				e_axis
@@ -112,26 +111,27 @@ typedef enum				e_axis
 
 typedef struct				s_tri_vec
 {
-	t_triangle	**triangles;
-	uint32_t	size;
-	uint32_t	capacity;
+	t_triangle		**triangles;
+	uint32_t		size;
+	uint32_t		capacity;
 }							t_tri_vec;
 
-typedef struct	s_kd_node	t_kd_node;
-struct			s_kd_node
+typedef struct s_kd_node	t_kd_node;
+
+struct						s_kd_node
 {
-	uint32_t	uuid;
-	t_box3d		bounding_box;
-	t_axis		axis;
-	t_tri_vec	*triangles;
-	t_kd_node	*left;
-	t_kd_node	*right;
+	uint32_t		uuid;
+	t_box3d			bounding_box;
+	t_axis			axis;
+	t_tri_vec		*triangles;
+	t_kd_node		*left;
+	t_kd_node		*right;
 };
 
 typedef struct				s_kd_tree
 {
-	uint32_t	num_nodes;
-	t_kd_node	*root;
+	uint32_t		num_nodes;
+	t_kd_node		*root;
 }							t_kd_tree;
 
 void						l3d_kd_tree_create_or_update(t_kd_tree **tree,
@@ -190,7 +190,8 @@ void						l3d_bounding_box_set(t_tri_vec *triangles,
 ** 3d objects
 */
 
-void						l3d_3d_object_transform(t_3d_object *obj, t_mat4 transform);
+void						l3d_3d_object_transform(t_3d_object *obj,
+							t_mat4 transform);
 t_3d_object					*l3d_3d_object_create(uint32_t num_vertices,
 							uint32_t num_triangles, uint32_t num_text_coords);
 void						l3d_3d_object_destroy(t_3d_object *object);
@@ -208,6 +209,6 @@ t_3d_object					**l3d_read_obj(const char *filename,
 
 float						l3d_fmax(float n1, float n2);
 float						l3d_fmin(float n1, float n2);
-double						l3d_rand_d();
+double						l3d_rand_d(void);
 
 #endif

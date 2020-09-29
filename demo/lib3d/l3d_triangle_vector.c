@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:47:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:35:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ t_tri_vec		*l3d_triangle_vec_empty(void)
 ** num triangles + initial vector capacity.
 */
 
-t_tri_vec		*l3d_triangle_vec(t_triangle **triangles, uint32_t num_triangles)
+t_tri_vec		*l3d_triangle_vec(t_triangle **triangles,
+				uint32_t num_triangles)
 {
 	t_tri_vec	*vector;
 	uint32_t	capacity;
 	int			i;
 
 	capacity = num_triangles > L3D_TRI_VEC_INITIAL_CAPACITY ?
-		num_triangles + L3D_TRI_VEC_INITIAL_CAPACITY : L3D_TRI_VEC_INITIAL_CAPACITY;
+		num_triangles + L3D_TRI_VEC_INITIAL_CAPACITY :
+		L3D_TRI_VEC_INITIAL_CAPACITY;
 	if ((!(vector = malloc(sizeof(t_tri_vec))) ||
 		!(vector->triangles = malloc(sizeof(t_triangle*) * capacity))) &&
 		ft_dprintf(2, "Failed to malloc triangle vector\n"))

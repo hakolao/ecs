@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 22:43:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:01:56 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:42:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static t_bool			l3d_is_valid_obj(t_obj *obj, uint32_t prev[3])
 ** There's a chanse this is wrong if objects can share vertices in the obj file.
 */
 
-t_bool				l3d_is_valid_obj_content(t_obj_content *obj_content)
+t_bool					l3d_is_valid_obj_content(t_obj_content *obj_content)
 {
 	int				i;
 
@@ -72,4 +72,3 @@ t_bool				l3d_is_valid_obj_content(t_obj_content *obj_content)
 	}
 	return (true);
 }
-

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:03:24 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:31:35 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:39:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,12 @@ static void			init_bounding_box(t_box3d *res, t_tri_vec *triangles)
 static void			bounding_box_size_and_center_set(t_box3d *res)
 {
 	ml_vector3_copy((t_vec3){res->xyz_max[0] - res->xyz_min[0],
-		res->xyz_max[1] - res->xyz_min[1], res->xyz_max[2] - res->xyz_min[2],
+		res->xyz_max[1] - res->xyz_min[1],
+		res->xyz_max[2] - res->xyz_min[2],
 	}, res->size);
 	ml_vector3_copy((t_vec3){res->xyz_min[0] + res->size[0] / 2.,
-		res->xyz_min[1] + res->size[1] / 2., res->xyz_min[2] + res->size[2] / 2.,
+		res->xyz_min[1] + res->size[1] / 2.,
+		res->xyz_min[2] + res->size[2] / 2.,
 	}, res->center);
 }
 

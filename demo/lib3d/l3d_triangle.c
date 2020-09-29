@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:55:40 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 22:33:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:40:29 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void				l3d_triangle_centroid_update(t_triangle *triangle)
 		triangle->vtc[2]->pos[2]) / 3.0,
 	}, triangle->center);
 }
-
 
 /*
 ** Out of all triangles inputted, calculates their center of mass.

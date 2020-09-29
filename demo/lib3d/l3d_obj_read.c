@@ -6,13 +6,13 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:27:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:09:21 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:27:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d_internals.h"
 
-static void				allocate_single_obj(t_obj *o)
+void					l3d_obj_content_allocate(t_obj *o)
 {
 	error_check(!(o->v = malloc(sizeof(t_vec3) * L3D_MAX_VERTICES)),
 		"Failed to malloc obj vs");
@@ -25,7 +25,7 @@ static void				allocate_single_obj(t_obj *o)
 		"Failed to malloc obj triangles");
 }
 
-static void				free_single_obj(t_obj *o)
+void					l3d_obj_content_free(t_obj *o)
 {
 	free(o->v);
 	free(o->vt);
@@ -33,7 +33,7 @@ static void				free_single_obj(t_obj *o)
 	free(o->triangles);
 }
 
-static void		obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
+static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
 {
 	int		i;
 	int		j;
@@ -62,7 +62,7 @@ static void		obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
 			obj->vertices[read_obj->triangles[i * 9 + 1 * 3 + 0] - 1];
 		obj->triangles[i].vtc[2] =
 			obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1];
-		calculate_triangle_centroid(&obj->triangles[i]);
+		l3d_triangle_centroid(&obj->triangles[i]);
 		obj->triangles[i].is_single_sided = L3D_SINGLE_SIDED;
 	}
 }
@@ -83,7 +83,7 @@ static t_3d_object		**l3d_3d_object_from_obj(t_obj_content *obj,
 		obj_to_3d_object(&obj->objects[i], l3d_objects[i]);
 		l3d_objects[i]->num_triangles = obj->objects[i].num_triangles;
 		l3d_objects[i]->num_vertices = obj->objects[i].num_vertices;
-		free_single_obj(&obj->objects[i]);
+		l3d_obj_content_free(&obj->objects[i]);
 	}
 	*num_objects = obj->num_objects;
 	return (l3d_objects);

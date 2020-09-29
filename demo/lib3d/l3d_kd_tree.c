@@ -6,12 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:13:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:29:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib3d.h"
-#include "ft_printf.h"
+#include "lib3d_internals.h"
 
 static void			kd_node_destroy(t_kd_node *root)
 {

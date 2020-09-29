@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/29 14:50:34 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/29 14:51:52 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/29 21:24:21 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,17 @@ LIBFT = ../../libft
 LIBGMATRIX = ../libgmatrix
 DIR_SRC = ./
 DIR_OBJ = temp
-SOURCES =
+SOURCES = l3d_triangle.c \
+			l3d_triangle_vector.c \
+			l3d_ray.c \
+			l3d_rand.c \
+			l3d_obj_read.c \
+			l3d_obj_read_utils.c \
+			l3d_3d_object.c \
+			l3d_kd_tree.c \
+			l3d_kd_tree_utils.c \
+			l3d_fminmax.c \
+			l3d_bounding_box.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))

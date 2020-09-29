@@ -6,13 +6,13 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:35:00 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:02:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:28:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib3d.h"
+#include "lib3d_internals.h"
 
-static t_bool			l3d_is_valid_obj(t_obj *obj)
+t_bool				l3d_is_valid_obj(t_obj *obj)
 {
 	int				i;
 	int				j;
@@ -116,7 +116,7 @@ void					l3d_obj_str_parse(char *str, t_obj_content *result)
 		if (*str)
 		{
 			o = &result->objects[result->num_objects];
-			allocate_single_obj(o);
+			l3d_obj_content_allocate(o);
 			while (*str)
 			{
 				if (*str == 'v' && *(str + 1) == ' ' && (str += 2))

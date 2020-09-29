@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 14:55:40 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 15:44:43 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:28:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void				l3d_triangles_midpoint(t_tri_vec *triangles, t_vec3 res)
 	}
 }
 
-void				l3d_triangle_normal_set(t_triangle *triangle)
+void				l3d_triangle_normal_update(t_triangle *triangle)
 {
 	t_vec3	ab;
 	t_vec3	ac;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:21:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:30:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 		ml_vector3_add(hit.hit_point, hit.normal, target);
 		ml_vector3_add(target, random, target);
 		ml_vector3_sub(target, hit.hit_point, direction);
-		set_ray(direction, hit.hit_point, &new_ray);
+		l3d_ray_set(direction, hit.hit_point, &new_ray);
 		new_color = u32_to_rgba(color(root, &new_ray, bounces + 1));
 		new_color.r *= 0.5;
 		new_color.g *= 0.5;

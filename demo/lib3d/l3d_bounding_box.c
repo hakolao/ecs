@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:03:24 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:11:23 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:29:48 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void				l3d_bounding_box_set(t_tri_vec *triangles, t_box3d *res)
 {
 	int		i;
 	int		j;
-	float	curr_min;
-	float	curr_max;
+	float	min;
+	float	max;
 
 	ml_vector3_copy((t_vec3){INT32_MIN, INT32_MIN, INT32_MIN}, res->xyz_max);
 	ml_vector3_copy((t_vec3){INT32_MAX, INT32_MAX, INT32_MAX}, res->xyz_min);
@@ -47,16 +47,14 @@ void				l3d_bounding_box_set(t_tri_vec *triangles, t_box3d *res)
 		j = -1;
 		while (++j < 3)
 		{
-			curr_max = l3d_fmin(triangles->triangles[i]->vtc[0]->pos[j], l3d_fmin(
+			min = l3d_fmin(triangles->triangles[i]->vtc[0]->pos[j], l3d_fmin(
 				triangles->triangles[i]->vtc[1]->pos[j],
 				triangles->triangles[i]->vtc[2]->pos[j]));
-			res->xyz_min[j] = res->xyz_min[j] < curr_min ?
-				res->xyz_min[j] : curr_min;
-			curr_max = l3d_fmax(triangles->triangles[i]->vtc[0]->pos[j], l3d_fmax(
+			res->xyz_min[j] = res->xyz_min[j] < min ? res->xyz_min[j] : min;
+			max = l3d_fmax(triangles->triangles[i]->vtc[0]->pos[j], l3d_fmax(
 				triangles->triangles[i]->vtc[1]->pos[j],
 				triangles->triangles[i]->vtc[2]->pos[j]));
-			res->xyz_max[j] = res->xyz_max[j] > curr_max ?
-				res->xyz_max[j] : curr_max;
+			res->xyz_max[j] = res->xyz_max[j] > max ? res->xyz_max[j] : max;
 		}
 	}
 	bounding_box_size_and_center_set(res);

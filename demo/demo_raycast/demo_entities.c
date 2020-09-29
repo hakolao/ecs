@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:22:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:22:03 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:30:39 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void						entity_ray_update(t_app *app,
 		(float)app->window->height) * scale;
 	ray->dir[2] = -3.0;
 	ml_vector3_sub(ray->dir, data->camera_pos, ray->dir);
-	l3d_set_ray(ray->dir, data->camera_pos, ray);
+	l3d_ray_set(ray->dir, data->camera_pos, ray);
 }
 
 void						entity_rays_create(t_app *app)

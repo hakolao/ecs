@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:22:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:28:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,6 @@ typedef struct				s_vertex
 	t_vec2					uv;
 }							t_vertex;
 
-/*
-** Final 3d object struct to which obj file is transformed
-*/
-
-typedef struct				s_3d_object
-{
-	t_vertex				**vertices;
-	int32_t					num_vertices;
-	t_triangle				*triangles;
-	int32_t					num_triangles;
-	t_vec2					*uvs;
-	int32_t					num_uvs;
-}							t_3d_object;
-
 typedef struct				s_box3d
 {
 	t_vec3					center;
@@ -101,6 +87,20 @@ typedef struct				s_triangle
 	t_vec3					normal;
 	t_bool					is_single_sided;
 }							t_triangle;
+
+/*
+** Final 3d object struct to which obj file is transformed
+*/
+
+typedef struct				s_3d_object
+{
+	t_vertex				**vertices;
+	int32_t					num_vertices;
+	t_triangle				*triangles;
+	int32_t					num_triangles;
+	t_vec2					*uvs;
+	int32_t					num_uvs;
+}							t_3d_object;
 
 typedef enum				e_axis
 {
@@ -170,7 +170,7 @@ void						l3d_triangle_vec_delete(t_tri_vec *vector);
 
 void						l3d_triangles_midpoint(t_tri_vec *triangles, t_vec3 res);
 void						l3d_triangle_centroid(t_triangle *triangle);
-void						l3d_triangle_normal_set(t_triangle *triangle);
+void						l3d_triangle_normal_update(t_triangle *triangle);
 
 /*
 ** Bounding box

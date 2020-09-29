@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:00:29 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:24:02 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:34:17 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static int		resize_callback(void *data, SDL_Event *event)
 {
-	t_app 		*app;
+	t_app	*app;
 
 	if (event->type == SDL_WINDOWEVENT &&
 		(event->window.event == SDL_WINDOWEVENT_RESIZED ||
-		 event->window.event == SDL_WINDOWEVENT_MINIMIZED ||
-		 event->window.event == SDL_WINDOWEVENT_MAXIMIZED ||
-		 event->window.event == SDL_WINDOWEVENT_SHOWN ||
-		 event->window.event == SDL_WINDOWEVENT_HIDDEN))
-		{
+		event->window.event == SDL_WINDOWEVENT_MINIMIZED ||
+		event->window.event == SDL_WINDOWEVENT_MAXIMIZED ||
+		event->window.event == SDL_WINDOWEVENT_SHOWN ||
+		event->window.event == SDL_WINDOWEVENT_HIDDEN))
+	{
 		app = (t_app*)data;
 		if (event->window.windowID == app->window->window_id)
 		{
@@ -35,7 +35,7 @@ static int		resize_callback(void *data, SDL_Event *event)
 				app->window->is_hidden = false;
 		}
 	}
-	return 0;
+	return (0);
 }
 
 void			recreate_frame(t_app *app)

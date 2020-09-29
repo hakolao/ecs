@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:07:58 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:23:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:32:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ uint32_t		color_blend_u32(uint32_t color1, uint32_t color2, float ratio)
 	SDL_Color	sdl_color2;
 	SDL_Color	new_color;
 
-	if ( ratio > 1.f )
+	if (ratio > 1.f)
 		ratio = 1.f;
-	else if ( ratio < 0.f )
+	else if (ratio < 0.f)
 		ratio = 0.f;
 	i_ratio = 1.f - ratio;
 	sdl_color1 = u32_to_rgba(color1);
@@ -49,5 +49,5 @@ uint32_t		color_blend_u32(uint32_t color1, uint32_t color2, float ratio)
 	new_color.g = (int)((sdl_color1.g * i_ratio) + (sdl_color2.g * ratio));
 	new_color.b = (int)((sdl_color1.b * i_ratio) + (sdl_color2.b * ratio));
 	new_color.a = (int)((sdl_color1.a * i_ratio) + (sdl_color2.a * ratio));
-    return rgba_to_u32(new_color);
+	return (rgba_to_u32(new_color));
 }

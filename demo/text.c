@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:09:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:23:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:33:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static SDL_Surface	*surface_from_font(t_app *app, t_text_params params)
 	SDL_Surface		*formatted_surface;
 
 	text_surface = TTF_RenderText_Blended_Wrapped(
-		app->window->font, params.text, params.text_color,
-			app->window->width);
+		app->window->font, params.text, params.text_color, app->window->width);
 	error_check(!text_surface, TTF_GetError());
 	formatted_surface = SDL_ConvertSurfaceFormat(text_surface,
 		PIXEL_FORMAT, 0);
@@ -43,14 +42,13 @@ static void			surface_to_framebuffer(t_app *app, SDL_Surface *surface,
 		while (++x < xy[0] + surface->w)
 		{
 			surface_pixel = ((uint32_t*)surface->pixels)[(y - xy[1]) *
-					surface->w + (x -  xy[0])];
+				surface->w + (x - xy[0])];
 			framebuffer_pixel =
 				app->window->framebuffer[y * app->window->width + x];
 			if (x < app->window->width && y < app->window->height &&
-				x  >= 0 && y >= 0)
+				x >= 0 && y >= 0)
 				app->window->framebuffer[y * app->window->width + x] =
-					color_blend_u32(framebuffer_pixel, surface_pixel,
-					blend_ratio);
+				color_blend_u32(framebuffer_pixel, surface_pixel, blend_ratio);
 		}
 	}
 }

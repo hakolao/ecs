@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 02:42:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 02:39:01 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,13 @@ t_test_state g_test_states[MAX_TESTS];
 
 static void		all_tests(void)
 {
-	ft_printf("World tests:\n");
-	OH_RUN_TEST(test_world_create);
-	ft_printf("World system tests:\n");
-	OH_RUN_TEST(test_world_system_add);
-	OH_RUN_TEST(test_world_system_remove);
-	ft_printf("World component tests:\n");
-	OH_RUN_TEST(test_world_component_add);
-	OH_RUN_TEST(test_world_component_remove);
-	ft_printf("World entity tests:\n");
-	OH_RUN_TEST(test_world_entity_add);
-	OH_RUN_TEST(test_world_entity_remove);
-	OH_RUN_TEST(test_world_entity_component_add);
-	OH_RUN_TEST(test_world_entity_utils);
+	ft_printf("Hash_map tests:\n");
+	OH_RUN_TEST(test_hash_map_create);
+	OH_RUN_TEST(test_hash_map_add);
+	OH_RUN_TEST(test_hash_map_get);
+	OH_RUN_TEST(test_hash_map_delete);
+	OH_RUN_TEST(test_hash_map_has_key);
+	OH_RUN_TEST(test_hash_map_foreach);
 }
 
 int				main(void)

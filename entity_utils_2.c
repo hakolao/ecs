@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:14:17 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 14:04:41 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:47:42 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,24 @@ t_bool			ecs_world_entity_at_contains(t_ecs_world *world,
 t_bool			ecs_world_entity_contains(uint64_t entity, uint64_t components)
 {
 	return ((entity & components) == components);
+}
+
+/*
+** Gets new entity index and increments next free entity index or decrements
+** next vacancy index. Only to be used by ecs_world_entity_add.
+*/
+
+uint64_t		ecs_world_new_entity_index(t_ecs_world *world)
+{
+	uint64_t		new_entity_index;
+
+	if (world->next_vacancy_index > -1)
+	{
+		new_entity_index = world->vacant_entities[world->next_vacancy_index];
+		world->vacant_entities[world->next_vacancy_index] = 0;
+		world->next_vacancy_index--;
+	}
+	else
+		new_entity_index = world->next_free_entity_index++;
+	return (new_entity_index);
 }

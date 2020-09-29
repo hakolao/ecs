@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:11 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:41:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:47:52 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ size_t			get_component_size(t_ecs_world *world,
 void			entity_remove_component(t_ecs_world *world,
 				uint64_t entity_index, uint64_t component_id);
 t_bool			is_valid_component_id(uint64_t component_id);
+uint64_t		ecs_world_new_entity_index(t_ecs_world *world);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 21:28:59 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:47:56 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,7 @@ int64_t			ecs_world_entity_add(t_ecs_world *world,
 	uint64_t		entity_mask;
 	uint64_t		new_entity_index;
 
-	if (world->next_vacancy_index > -1)
-	{
-		new_entity_index = world->vacant_entities[world->next_vacancy_index];
-		world->vacant_entities[world->next_vacancy_index] = 0;
-		world->next_vacancy_index--;
-	}
-	else
-		new_entity_index = world->next_free_entity_index++;
+	new_entity_index = ecs_world_new_entity_index(world);
 	if (new_entity_index >= world->max_entities && ft_dprintf(2,
 		"Entity index %d over max entities %d, entity not added\n",
 		new_entity_index, world->max_entities))

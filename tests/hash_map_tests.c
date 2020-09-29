@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 19:39:09 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/16 14:07:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:16:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ const char		*test_hash_map_create(void)
 	size = 128;
 	hash_map = NULL;
 	hash_map = hash_map_create(size);
-	oh_assert("Hash map wasn't created", hash_map != NULL);
-	oh_assert("Hash map size is wrong", hash_map->size == size);
+	OH_ASSERT("Hash map wasn't created", hash_map != NULL);
+	OH_ASSERT("Hash map size is wrong", hash_map->size == size);
 	hash_map_destroy_free(hash_map);
 	return (0);
 }
@@ -41,7 +41,7 @@ const char		*test_hash_map_add(void)
 	hashed_key = hash_map_hash(hash_map, key);
 	hash_map_add(hash_map, key, (void*)"an aristocrat");
 	result_str = (char*)hash_map->list[hashed_key]->val;
-	oh_assert("Hash map add is not correct",
+	OH_ASSERT("Hash map add is not correct",
 		ft_strequ(result_str, "an aristocrat"));
 	hash_map_destroy(hash_map);
 	return (0);
@@ -57,16 +57,15 @@ const char		*test_hash_map_get(void)
 	hash_map = hash_map_create(size);
 	key = (int)"okko";
 	hash_map_add(hash_map, key, (void*)"an aristocrat");
-	oh_assert("Hash map get is not correct",
+	OH_ASSERT("Hash map get is not correct",
 		ft_strequ((char*)hash_map_get(hash_map, key), "an aristocrat"));
 	key = (int)"marsupilami";
 	hash_map_add(hash_map, key, (void*)"an automat");
-	oh_assert("Hash map get is not correct",
+	OH_ASSERT("Hash map get is not correct",
 		ft_strequ((char*)hash_map_get(hash_map, key), "an automat"));
 	hash_map_destroy(hash_map);
 	return (0);
 }
-
 
 const char		*test_hash_map_delete(void)
 {
@@ -82,10 +81,10 @@ const char		*test_hash_map_delete(void)
 	key2 = 2;
 	hash_map_add(hash_map, key2, ft_strdup("an automat"));
 	hash_map_delete_free(hash_map, key1);
-	oh_assert("Hash map delete1 is not correct",
+	OH_ASSERT("Hash map delete1 is not correct",
 		hash_map_get(hash_map, key1) == NULL);
 	hash_map_delete_free(hash_map, key2);
-	oh_assert("Hash map delete2 is not correct",
+	OH_ASSERT("Hash map delete2 is not correct",
 		hash_map_get(hash_map, key2) == NULL);
 	hash_map_destroy(hash_map);
 	return (0);
@@ -103,9 +102,9 @@ const char		*test_hash_map_has_key(void)
 	key = (int)"okko";
 	hashed_key = hash_map_hash(hash_map, key);
 	hash_map_add(hash_map, key, (void*)"an aristocrat");
-	oh_assert("Hash has key is not correct",
+	OH_ASSERT("Hash has key is not correct",
 		hash_map_has_key(hash_map, key) == true);
-	oh_assert("Hash has key is not correct",
+	OH_ASSERT("Hash has key is not correct",
 		hash_map_has_key(hash_map, (int)"lol") == false);
 	hash_map_destroy(hash_map);
 	return (0);

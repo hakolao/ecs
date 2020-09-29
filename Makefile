@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/30 01:00:51 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/30 01:23:05 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)
 test: all
 	@make -C $(LIBFT)
 	$(CC) -lpthread -O2 \
-		-o test_run $(TEST_SRCS) -L$(LIBFT) -lft $(FLAGS) $(INCLUDES) $(NAME)
+		-o test_run $(TEST_SRCS) -I$(DIR_TESTS)/include \
+			 -L$(LIBFT) -lft $(FLAGS) $(INCLUDES) $(NAME)
 	./test_run
 	@/bin/rm -f main.o
 	@/bin/rm -f test_run

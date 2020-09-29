@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:15:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/08/16 20:19:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:13:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@
 #define mu_run_test(test) \
 	do { \
 		const char *message = test(); \
-		tests_run++; \
+		g_tests_run++; \
 		t_test_state state = \
 			test_state_create(message ? false : true, \
-				message, tests_run - 1); \
-		test_states[tests_run - 1] = state; \
+				message, g_tests_run - 1); \
+		g_test_states[g_tests_run - 1] = state; \
 		ft_printf(" test: %d: %s\n", state.id, \
 			state.success ? "Success" : state.result); \
 	} while (0)
 
-extern int tests_run;
-extern t_test_state test_states[MAX_TESTS];
+extern int g_tests_run;
+extern t_test_state g_test_states[MAX_TESTS];
 
 #endif

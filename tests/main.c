@@ -6,40 +6,42 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:38:28 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:19:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "oh_test.h"
 #include "tests.h"
 
-int tests_run = 0;
-t_test_state test_states[MAX_TESTS];
+int g_tests_run = 0;
+t_test_state g_test_states[MAX_TESTS];
 
-static void all_tests() {
+static void		all_tests(void)
+{
 	ft_printf("Hash_map tests:\n");
-	oh_run_test(test_hash_map_create);
-	oh_run_test(test_hash_map_add);
-	oh_run_test(test_hash_map_get);
-	oh_run_test(test_hash_map_delete);
-	oh_run_test(test_hash_map_has_key);
-	oh_run_test(test_hash_map_foreach);
+	OH_RUN_TEST(test_hash_map_create);
+	OH_RUN_TEST(test_hash_map_add);
+	OH_RUN_TEST(test_hash_map_get);
+	OH_RUN_TEST(test_hash_map_delete);
+	OH_RUN_TEST(test_hash_map_has_key);
+	OH_RUN_TEST(test_hash_map_foreach);
 	ft_printf("World tests:\n");
-	oh_run_test(test_world_create);
+	OH_RUN_TEST(test_world_create);
 	ft_printf("World system tests:\n");
-	oh_run_test(test_world_system_add);
-	oh_run_test(test_world_system_remove);
+	OH_RUN_TEST(test_world_system_add);
+	OH_RUN_TEST(test_world_system_remove);
 	ft_printf("World component tests:\n");
-	oh_run_test(test_world_component_add);
-	oh_run_test(test_world_component_remove);
+	OH_RUN_TEST(test_world_component_add);
+	OH_RUN_TEST(test_world_component_remove);
 	ft_printf("World entity tests:\n");
-	oh_run_test(test_world_entity_add);
-	oh_run_test(test_world_entity_remove);
-	oh_run_test(test_world_entity_component_add);
-	oh_run_test(test_world_entity_utils);
+	OH_RUN_TEST(test_world_entity_add);
+	OH_RUN_TEST(test_world_entity_remove);
+	OH_RUN_TEST(test_world_entity_component_add);
+	OH_RUN_TEST(test_world_entity_utils);
 }
 
-int main(void) {
+int				main(void)
+{
 	t_bool				success;
 	int					failures;
 	int					i;
@@ -48,19 +50,18 @@ int main(void) {
 	success = true;
 	failures = 0;
 	i = -1;
-	while (++i < tests_run)
+	while (++i < g_tests_run)
 	{
-		if (!test_states[i].success)
+		if (!g_test_states[i].success)
 		{
 			success = false;
 			failures++;
 		}
 	}
 	ft_printf("===========\n");
-	if (!success) {
-		ft_printf("%d out of %d TESTS FAILED\n", failures, tests_run);
-	} else {
-		ft_printf("ALL %d TESTS PASSED\n", tests_run);
-	}
-	return !success;
+	if (!success)
+		ft_printf("%d out of %d TESTS FAILED\n", failures, g_tests_run);
+	else
+		ft_printf("ALL %d TESTS PASSED\n", g_tests_run);
+	return (!success);
 }

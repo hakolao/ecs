@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 20:34:57 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/17 20:38:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:16:57 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ const char		*test_hash_map_foreach(void)
 	key = (int)"okko";
 	hashed_key = hash_map_hash(hash_map, key);
 	hash_map_add(hash_map, key, (void*)"an aristocrat");
-	oh_assert("Hash pre foreach did not work",
+	OH_ASSERT("Hash pre foreach did not work",
 		hash_map_get(hash_map, key) != NULL);
 	hash_map_foreach(hash_map, foo);
-	oh_assert("Hash foreach did not work",
+	OH_ASSERT("Hash foreach did not work",
 		hash_map_get(hash_map, key) == NULL);
 	hash_map_destroy(hash_map);
 	return (0);

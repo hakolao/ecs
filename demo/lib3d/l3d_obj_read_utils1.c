@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:35:00 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:07:57 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:22:13 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,8 @@ void					l3d_obj_str_parse(char *str, t_obj_content *result)
 	ft_memset(result, 0, sizeof(*result));
 	while (*str)
 	{
-		while (!(*str == 'o' && *(str + 1) == ' '))
+		while (!(*str == 'v' && *(str + 1) == ' '))
 			str++;
-		str++;
 		if (*str)
 		{
 			l3d_obj_parse_single_obj(&str,

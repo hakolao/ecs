@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/29 14:50:34 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/29 22:43:21 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/30 00:17:47 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SOURCES = l3d_triangle.c \
 			l3d_obj_read_utils2.c \
 			l3d_3d_object.c \
 			l3d_kd_tree.c \
+			l3d_kd_tree_node.c \
 			l3d_kd_tree_utils.c \
 			l3d_fminmax.c \
 			l3d_bounding_box.c

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 16:07:48 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 23:28:30 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:11:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void						l3d_obj_content_free(t_obj *o);
 void						l3d_kd_tree_split_triangles(t_tri_vec *triangles,
 							uint32_t axis, t_tri_vec *left_tris,
 							t_tri_vec *right_tris);
-
+t_kd_node					*l3d_kd_node_create(t_tri_vec *triangles);
+void						l3d_kd_node_destroy(t_kd_node *root);
 
 #endif

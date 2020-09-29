@@ -6,40 +6,16 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:54:05 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:38:16 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:17:04 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d_internals.h"
 
-static void			kd_node_destroy(t_kd_node *root)
-{
-	t_kd_node	*left;
-	t_kd_node	*right;
-	if (root)
-	{
-		l3d_triangle_vec_delete(root->triangles);
-		left = root->left;
-		right = root->right;
-		free(root);
-		root = NULL;
-		kd_node_destroy(left);
-		kd_node_destroy(right);
-	}
-}
-
-static t_kd_node	*tree_node_create(t_tri_vec *triangles)
-{
-	t_kd_node	*node;
-
-	if (!(node = malloc(sizeof(t_kd_node))))
-		return (NULL);
-	l3d_bounding_box_set(triangles, &node->bounding_box);
-	node->triangles = triangles;
-	node->left = NULL;
-	node->right = NULL;
-	return (node);
-}
+/*
+** Splits triangles by longest axis and until max depth has been reached or
+** minimum number of node triangles have been reached.
+*/
 
 static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 					uint32_t *num_nodes)
@@ -49,10 +25,9 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 	t_tri_vec	*left_tris;
 	t_tri_vec	*right_tris;
 
-	node = tree_node_create(triangles);
+	node = l3d_kd_node_create(triangles);
 	node->uuid = (*num_nodes)++;
-	if ((triangles->size == 0 || triangles->size == 1) &&
-		(node->axis = l3d_axis_none))
+	if (triangles->size == 0 || triangles->size == 1)
 		return (node);
 	node->axis = l3d_bounding_box_longest_axis(node->bounding_box);
 	left_tris = l3d_triangle_vec_empty();
@@ -73,6 +48,11 @@ static t_kd_node	*tree_create_recursive(t_tri_vec *triangles, uint32_t depth,
 	return (node);
 }
 
+/*
+** Creates a kd tree structure from triangles for faster bounding box & triangle
+** hit search.
+*/
+
 t_kd_tree			*l3d_kd_tree_create(t_triangle **triangles,
 					uint32_t num_triangles)
 {
@@ -87,12 +67,21 @@ t_kd_tree			*l3d_kd_tree_create(t_triangle **triangles,
 	return (tree);
 }
 
+/*
+** Destroys kd tree and frees it memory. Triangles stay intact.
+*/
+
 void				l3d_kd_tree_destroy(t_kd_tree *tree)
 {
-	kd_node_destroy(tree->root);
+	l3d_kd_node_destroy(tree->root);
 	free(tree);
 	tree = NULL;
 }
+
+/*
+** Destroys previous tree and creates a new one from updated triangles.
+** This is to be used after triangle vertices have been changed.
+*/
 
 void				l3d_kd_tree_create_or_update(t_kd_tree **tree,
 					t_triangle **triangles, uint32_t num_triangles)

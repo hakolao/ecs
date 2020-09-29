@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 15:31:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:55:31 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,5 +181,7 @@ void						ecs_systems_run_single(t_ecs_world *world,
 							uint64_t system_id);
 void						ecs_systems_run_parallel(int32_t num_threads,
 							t_ecs_world *world, uint64_t systems);
+t_system					ecs_world_system_get(t_ecs_world *world,
+							uint64_t system_id);
 
 #endif

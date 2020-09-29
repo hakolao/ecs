@@ -6,12 +6,11 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:47:56 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:06:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libecs.h"
-#include "libecs_internal_entity_utils.h"
+#include "libecs_internals.h"
 
 /*
 ** Adding an entity fills the first vacant index. If no vacancies next free

@@ -6,14 +6,14 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:41:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 13:43:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:06:10 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "oh_test.h"
 #include "libecs.h"
 #include "test_helpers.h"
-#include "libecs_internal_entity_utils.h"
+#include "libecs_internals.h"
 
 static uint64_t		add_mock_entity(t_ecs_world *world)
 {

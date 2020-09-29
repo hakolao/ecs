@@ -86,7 +86,7 @@ static void system_movement_handle(t_ecs_world *world, uint64_t entity_index)
 	t_position *pos;
 	t_velocity *vel;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_move)].params;
+	app = (t_app*)ecs_world_system_get(world, system_move).params;
 	pos = (t_position*)ecs_world_entity_component_get(world, entity_index, comp_pos);
 	vel = (t_velocity*)ecs_world_entity_component_get(world, entity_index, comp_vel);
 	pos->x += vel->dx * app->info.delta_time;

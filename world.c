@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:30:39 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/21 16:39:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 01:01:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** hash_maps with given parameters (max_entities)
 */
 
-t_ecs_world			*ecs_world_create(const char *name, uint64_t max_entities)
+t_ecs_world		*ecs_world_create(const char *name, uint64_t max_entities)
 {
 	t_ecs_world	*world;
 

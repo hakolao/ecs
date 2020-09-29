@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/29 16:23:29 by ohakola          ###   ########.fr        #
+#    Updated: 2020/09/30 01:00:51 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ SOURCES = entities.c \
 			entity_utils_2.c \
 			components.c \
 			systems.c \
+			systems_utils.c \
+			systems_parallel.c \
 			world.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))

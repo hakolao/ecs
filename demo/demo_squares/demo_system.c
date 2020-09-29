@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:29:34 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:57:14 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void					system_forces_handle(t_ecs_world *world,
 	t_vel			forces;
 	t_bool			is_gravity;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_forces)].params;
+	app = (t_app*)ecs_world_system_get(world, system_forces).params;
 	dt = (float)app->info.delta_time * 0.02;
 	physics = (t_physics*)ecs_world_entity_component_get(world,
 		entity_index, comp_physics);
@@ -58,8 +58,8 @@ static void					system_zbuffer_handle(t_ecs_world *world,
 	int32_t			y;
 	uint32_t		pixel_index;
 
-	window = ((t_app*)world->systems[ecs_system_index(world,
-		system_zbuffer)].params)->window;
+	window = ((t_app*)ecs_world_system_get(world,
+		system_zbuffer).params)->window;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world, entity_index,
@@ -99,8 +99,8 @@ static void					system_render_handle(t_ecs_world *world,
 	int32_t			y;
 	uint32_t		pixel_index;
 
-	window = ((t_app*)world->systems[ecs_system_index(world,
-		system_render)].params)->window;
+	window = ((t_app*)ecs_world_system_get(world,
+		system_render).params)->window;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world, entity_index,
@@ -130,7 +130,7 @@ static void					system_reset_handle(t_ecs_world *world,
 	t_visuals		*render_specs;
 	t_physics		*physics;
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_reset)].params;
+	app = (t_app*)ecs_world_system_get(world, system_reset).params;
 	render_specs = (t_visuals*)ecs_world_entity_component_get(world,
 		entity_index, comp_vis);
 	physics = (t_physics*)ecs_world_entity_component_get(world,

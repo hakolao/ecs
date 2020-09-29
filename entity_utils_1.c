@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 17:06:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/18 14:09:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:49:17 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static t_bool	add_entity_component_data(t_ecs_world *world,
 				uint64_t entity_index, t_component *comp,
-				uint64_t	component_index)
+				uint64_t component_index)
 {
 	void		*component_data;
 
@@ -36,8 +36,9 @@ static t_bool	add_entity_component_data(t_ecs_world *world,
 	}
 	else
 	{
-		component_data = hash_map_get(world->components_by_entity[component_index],
-		entity_index);
+		component_data =
+			hash_map_get(world->components_by_entity[component_index],
+				entity_index);
 		ft_memcpy(component_data, comp->data, comp->size);
 	}
 	return (true);

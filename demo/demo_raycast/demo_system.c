@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:30:31 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/30 00:57:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ static void					system_render_handle(t_ecs_world *world,
 	t_scene			*data;
 	int				i;
 	uint32_t		colors[((t_scene*)(
-		(t_app*)world->systems[ecs_system_index(world, system_render)].params
+		(t_app*)ecs_world_system_get(world, system_render).params
 	)->data)->ray_samples];
 
-	app = (t_app*)world->systems[ecs_system_index(world, system_render)].params;
+	app = (t_app*)ecs_world_system_get(world, system_render).params;
 	data = (t_scene*)app->data;
 	rays = (t_ray*)ecs_world_entity_component_get(world,
 		entity_index, comp_ray);

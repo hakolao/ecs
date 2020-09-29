@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:12:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:35:20 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void				l3d_kd_tree_split_triangles(t_tri_vec *triangles, t_axis axis,
 	}
 }
 
-void				l3d_kd_tree_print(t_kd_node *root)
+static void			kd_node_print_recursive(t_kd_node *root)
 {
 	char	axes[4];
 
@@ -51,7 +51,12 @@ void				l3d_kd_tree_print(t_kd_node *root)
 			root->bounding_box.xyz_min[0], root->bounding_box.xyz_min[1],
 			root->bounding_box.xyz_min[2], root->bounding_box.xyz_max[0],
 			root->bounding_box.xyz_max[1], root->bounding_box.xyz_max[2]);
-		l3d_kd_tree_print(root->left);
-		l3d_kd_tree_print(root->right);
+		kd_node_print_recursive(root->left);
+		kd_node_print_recursive(root->right);
 	}
+}
+
+void				l3d_kd_tree_print(t_kd_tree *tree)
+{
+	kd_node_print_recursive(tree->root);
 }

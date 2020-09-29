@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 21:28:33 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:38:30 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,12 @@ typedef struct				s_kd_tree
 	t_kd_node	*root;
 }							t_kd_tree;
 
-void						l3d_kd_tree_update(t_kd_tree *tree, t_triangle **triangles,
-							uint32_t num_triangles);
+void						l3d_kd_tree_create_or_update(t_kd_tree **tree,
+							t_triangle **triangles, uint32_t num_triangles);
 t_kd_tree					*l3d_kd_tree_create(t_triangle **triangles,
 							uint32_t num_triangles);
 void						l3d_kd_tree_destroy(t_kd_tree *tree);
-void						l3d_kd_tree_print(t_kd_node *root);
+void						l3d_kd_tree_print(t_kd_tree *tree);
 
 /*
 ** Ray

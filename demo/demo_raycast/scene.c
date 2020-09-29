@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:20:00 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:39:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void			demo_scene_create(t_app *app)
 	scene->fov = 90.0;
 	demo_scene_set_transforms(scene);
 	demo_scene_set_triangle_refs(scene);
-	l3d_kd_tree_update(scene->object_tree, scene->triangle_ref,
+	l3d_kd_tree_create_or_update(&scene->object_tree, scene->triangle_ref,
 		scene->num_triangles);
 }
 

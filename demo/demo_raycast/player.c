@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 14:09:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 16:06:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/09/29 21:38:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void			rotate_player(t_scene *scene, uint32_t delta_time, t_vec3 axes)
 	ml_vector3_mul(axes, ml_rad(scene->player_rot_speed * delta_time), axes);
 	ml_matrix4_rotation(-axes[0], -axes[1], -axes[2], rotation);
 	update_world_rotation(scene, rotation);
-	l3d_kd_tree_update(scene->object_tree, scene->triangle_ref,
+	l3d_kd_tree_create_or_update(&scene->object_tree, scene->triangle_ref,
 		scene->num_triangles);
 }
 
@@ -94,6 +94,6 @@ void			move_player(t_scene *scene, uint32_t delta_time, t_move dir)
 	ml_vector3_copy(new_pos, scene->player_pos);
 	ml_matrix4_translation(-add[0], -add[1], -add[2], translation);
 	update_world_translation(scene, translation);
-	l3d_kd_tree_update(scene->object_tree, scene->triangle_ref,
+	l3d_kd_tree_create_or_update(&scene->object_tree, scene->triangle_ref,
 		scene->num_triangles);
 }

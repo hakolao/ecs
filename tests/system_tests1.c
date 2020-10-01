@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   system_tests.c                                     :+:      :+:    :+:   */
+/*   system_tests1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:15:19 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/01 16:26:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/01 17:54:08 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ const char		*test_world_system_run(void)
 		comp_position);
 	OH_ASSERT("System run single did not work right\n",
 		position->x = 15 && position->y == 28);
+	ecs_world_destroy(world);
 	return (0);
 }
 
@@ -100,7 +101,7 @@ const char		*test_world_system_run_many(void)
 {
 	t_system		system;
 	t_ecs_world		*world;
-	t_position		*position;
+	t_position		*pos;
 
 	system.system_id = 5;
 	system.system_handle_func = mock_system_handle;
@@ -111,16 +112,16 @@ const char		*test_world_system_run_many(void)
 	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
 		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
 	ecs_systems_run(world, system.system_id);
-	position = (t_position*)ecs_world_entity_component_get(world, 0,
+	pos = (t_position*)ecs_world_entity_component_get(world, 0,
 		comp_position);
-	OH_ASSERT("Systems run did not work right\n",
-		position->x = 15 && position->y == 28);
+	OH_ASSERT("Systems run did not work right\n", pos->x = 15 && pos->y == 28);
 	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
 		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
 	ecs_systems_run_parallel(8, world, system.system_id);
-	position = (t_position*)ecs_world_entity_component_get(world, 1,
+	pos = (t_position*)ecs_world_entity_component_get(world, 1,
 		comp_position);
 	OH_ASSERT("Systems run parallel did not work right\n",
-		position->x = 15 && position->y == 28);
+		pos->x = 15 && pos->y == 28);
+	ecs_world_destroy(world);
 	return (0);
 }

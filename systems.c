@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:06:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/01 16:27:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,13 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 	uint64_t	i;
 	uint64_t	entity_index;
 	uint64_t	removed_systems;
+	uint64_t	max_num_entities;
 
 	if (world->num_entities == 0)
 		return ;
 	entity_index = -1;
-	while (++entity_index < world->max_entities)
+	max_num_entities = world->num_entities + (world->next_vacancy_index + 1);
+	while (++entity_index < max_num_entities)
 	{
 		if (world->entities[entity_index] == 0)
 			continue ;
@@ -89,10 +91,7 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if (contains_system(systems, world->systems[i].system_id) &&
-				world->systems[i].system_id != ECS_SYSTEM_EMPTY &&
-				ecs_world_entity_contains(world->entities[entity_index],
-				world->systems[i].components_mask))
+			if (system_and_entity_matches(world, systems, entity_index, i))
 				world->systems[i].system_handle_func(world, entity_index);
 			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 				removed_systems++;
@@ -108,13 +107,15 @@ void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
 {
 	uint64_t	entity_index;
 	t_system	system;
+	uint64_t	max_num_entities;
 
 	if (world->num_entities == 0 ||
 		!hash_map_has_key(world->index_by_system, system_id))
 		return ;
 	system = world->systems[ecs_system_index(world, system_id)];
 	entity_index = -1;
-	while (++entity_index < world->max_entities)
+	max_num_entities = world->num_entities + (world->next_vacancy_index + 1);
+	while (++entity_index < max_num_entities)
 	{
 		if (world->entities[entity_index] == 0 &&
 			!ecs_world_entity_contains(world->entities[entity_index],

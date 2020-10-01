@@ -6,17 +6,22 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:15:19 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:16:57 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/01 16:26:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "oh_test.h"
 #include "libecs.h"
+#include "test_helpers.h"
 
-static void		mock_system_handle(t_ecs_world *world, uint64_t entity)
+static void		mock_system_handle(t_ecs_world *world, uint64_t entity_index)
 {
-	(void)entity;
-	(void)world;
+	t_position		*position;
+
+	position = (t_position*)ecs_world_entity_component_get(world,
+		entity_index, comp_position);
+	position->x = 15;
+	position->y = 28;
 }
 
 const char		*test_world_system_add(void)
@@ -66,5 +71,56 @@ const char		*test_world_system_remove(void)
 		world->systems[1].system_id == ECS_SYSTEM_EMPTY &&
 		world->next_free_system_index == 0);
 	ecs_world_destroy(world);
+	return (0);
+}
+
+const char		*test_world_system_run(void)
+{
+	t_system		system;
+	t_ecs_world		*world;
+	t_position		*position;
+
+	system.system_id = 5;
+	system.system_handle_func = mock_system_handle;
+	system.components_mask = comp_position;
+	system.params = (void*)&system.system_id;
+	world = ecs_world_create("Test world", 64);
+	ecs_world_system_add(world, system);
+	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
+		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
+	ecs_systems_run_single(world, system.system_id);
+	position = (t_position*)ecs_world_entity_component_get(world, 0,
+		comp_position);
+	OH_ASSERT("System run single did not work right\n",
+		position->x = 15 && position->y == 28);
+	return (0);
+}
+
+const char		*test_world_system_run_many(void)
+{
+	t_system		system;
+	t_ecs_world		*world;
+	t_position		*position;
+
+	system.system_id = 5;
+	system.system_handle_func = mock_system_handle;
+	system.components_mask = comp_position;
+	system.params = (void*)&system.system_id;
+	world = ecs_world_create("Test world", 64);
+	ecs_world_system_add(world, system);
+	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
+		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
+	ecs_systems_run(world, system.system_id);
+	position = (t_position*)ecs_world_entity_component_get(world, 0,
+		comp_position);
+	OH_ASSERT("Systems run did not work right\n",
+		position->x = 15 && position->y == 28);
+	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
+		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
+	ecs_systems_run_parallel(8, world, system.system_id);
+	position = (t_position*)ecs_world_entity_component_get(world, 1,
+		comp_position);
+	OH_ASSERT("Systems run parallel did not work right\n",
+		position->x = 15 && position->y == 28);
 	return (0);
 }

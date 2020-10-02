@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 21:49:59 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 03:03:58 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/02 20:08:22 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ typedef struct				s_triangle
 	t_vec3			center;
 	t_vec3			normal;
 	t_bool			is_single_sided;
+	t_vec3			ab;
+	t_vec3			ac;
 }							t_triangle;
 
 /*

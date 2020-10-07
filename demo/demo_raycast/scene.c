@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 12:06:53 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:21:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 22:35:32 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void			demo_scene_create(t_app *app)
 
 	scene = (t_scene*)app->data;
 	init_scene_player(scene);
-	scene->objects = l3d_read_obj(OBJ_PATH, &scene->num_objects);
+	scene->objects[0] = l3d_read_obj(OBJ_PATH);
+	scene->num_objects = 1;
 	ml_vector3_copy((t_vec3){0, 0, 0}, scene->camera_pos);
 	scene->fov = 90.0;
 	demo_scene_set_transforms(scene);
@@ -92,5 +93,4 @@ void			demo_scene_destroy(t_app *app)
 		l3d_3d_object_destroy(scene->objects[i]);
 		scene->objects[i] = NULL;
 	}
-	free(scene->objects);
 }

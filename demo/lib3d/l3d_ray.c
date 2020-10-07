@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 22:24:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/06 14:56:26 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 16:10:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ void						l3d_triangle_hit_record_set(float afuvt[5],
 void						l3d_bounding_box_hit_record_set(float t,
 								t_ray *ray, t_hit *hit)
 {
-	t_vec3	add;
-
+	(void)ray;
 	hit->t = t;
-	ml_vector3_mul(ray->dir, hit->t, add);
-	ml_vector3_add(ray->origin, add, hit->hit_point);
 }

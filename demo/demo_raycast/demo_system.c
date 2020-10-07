@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:57:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 15:37:14 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 static uint32_t				average_color(uint32_t *colors, float num_colors)
 {
 	int			i;
-	SDL_Color	color;
-	SDL_Color	new_color;
+	uint32_t	color[4];
 	uint32_t	rgba[4];
 
 	i = -1;
@@ -25,20 +24,17 @@ static uint32_t				average_color(uint32_t *colors, float num_colors)
 	i = -1;
 	while (++i < (int)num_colors)
 	{
-		color = u32_to_rgba(colors[i]);
-		rgba[0] += color.r;
-		rgba[1] += color.g;
-		rgba[2] += color.b;
-		rgba[3] += color.a;
+		l3d_u32_to_rgba(colors[i], color);
+		rgba[0] += color[0];
+		rgba[1] += color[1];
+		rgba[2] += color[2];
+		rgba[3] += color[3];
 	}
-	new_color = (SDL_Color){rgba[0] / num_colors, rgba[1] / num_colors,
-		rgba[2] / num_colors, rgba[3] / num_colors
-	};
-	return (rgba_to_u32((SDL_Color){
-		255 * sqrt((float)new_color.r / 255.0),
-		255 * sqrt((float)new_color.g / 255.0),
-		255 * sqrt((float)new_color.b / 255.0),
-		255 * sqrt((float)new_color.a / 255.0)
+	return (l3d_rgba_to_u32((uint32_t[4]){
+		255 * sqrt((float)(rgba[0] / num_colors) / 255.0),
+		255 * sqrt((float)(rgba[1] / num_colors) / 255.0),
+		255 * sqrt((float)(rgba[2] / num_colors) / 255.0),
+		255 * sqrt((float)(rgba[3] / num_colors) / 255.0)
 	}));
 }
 
@@ -49,8 +45,9 @@ static uint32_t				color_default(t_ray *ray)
 
 	ml_vector3_normalize(ray->dir, unit_dir);
 	t = 0.5 * (unit_dir[1] + 1.0);
-	return (color_blend_u32(rgba_to_u32((SDL_Color){255, 255, 255, 255}),
-		rgba_to_u32((SDL_Color){0.5 * 255, 0.7 * 255, 1.0 * 255, 255}),
+	return (l3d_color_blend_u32(
+		l3d_rgba_to_u32((uint32_t[4]){255, 255, 255, 255}),
+		l3d_rgba_to_u32((uint32_t[4]){0.5 * 255, 0.7 * 255, 1.0 * 255, 255}),
 		t));
 }
 
@@ -86,7 +83,7 @@ static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 	t_vec3			random;
 	t_ray			new_ray;
 	t_vec3			direction;
-	SDL_Color		new_color;
+	uint32_t		new_color[4];
 
 	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
 	{
@@ -95,12 +92,12 @@ static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 		ml_vector3_add(target, random, target);
 		ml_vector3_sub(target, hit.hit_point, direction);
 		l3d_ray_set(direction, hit.hit_point, &new_ray);
-		new_color = u32_to_rgba(color(root, &new_ray, bounces + 1));
-		new_color.r *= 0.5;
-		new_color.g *= 0.5;
-		new_color.b *= 0.5;
-		new_color.a *= 0.5;
-		return (rgba_to_u32(new_color));
+		l3d_u32_to_rgba(color(root, &new_ray, bounces + 1), new_color);
+		new_color[0] *= 0.5;
+		new_color[1] *= 0.5;
+		new_color[2] *= 0.5;
+		new_color[3] *= 0.5;
+		return (l3d_rgba_to_u32(new_color));
 	}
 	return (color_default(ray));
 }

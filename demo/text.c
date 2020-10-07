@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:09:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:33:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 15:40:05 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,18 @@ static SDL_Surface	*surface_from_font(t_app *app, t_text_params params)
 	return (formatted_surface);
 }
 
-static void			surface_to_framebuffer(t_app *app, SDL_Surface *surface,
-					float blend_ratio, int xy[2])
-{
-	uint32_t	framebuffer_pixel;
-	uint32_t	surface_pixel;
-	int			x;
-	int			y;
-
-	y = xy[1] - 1;
-	while (++y < xy[1] + surface->h)
-	{
-		x = xy[0] - 1;
-		while (++x < xy[0] + surface->w)
-		{
-			surface_pixel = ((uint32_t*)surface->pixels)[(y - xy[1]) *
-				surface->w + (x - xy[0])];
-			framebuffer_pixel =
-				app->window->framebuffer[y * app->window->width + x];
-			if (x < app->window->width && y < app->window->height &&
-				x >= 0 && y >= 0)
-				app->window->framebuffer[y * app->window->width + x] =
-				color_blend_u32(framebuffer_pixel, surface_pixel, blend_ratio);
-		}
-	}
-}
-
 void				render_text(t_app *app, t_text_params params)
 {
 	SDL_Surface	*surface;
 
 	surface = surface_from_font(app, params);
-	surface_to_framebuffer(app, surface, params.blend_ratio, params.xy);
+	l3d_framebuffer_image_place(
+		&(t_surface){.h = app->window->height,
+			.w = app->window->width,
+			.pixels = app->window->framebuffer},
+		&(t_surface){.h = surface->h,
+			.w = surface->w,
+			.pixels = surface->pixels},
+		params.xy, params.blend_ratio);
 	SDL_FreeSurface(surface);
 }

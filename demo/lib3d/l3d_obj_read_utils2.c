@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 22:43:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:42:13 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 15:28:56 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,22 @@ static t_bool			l3d_is_valid_obj(t_obj *obj, uint32_t prev[3])
 t_bool					l3d_is_valid_obj_content(t_obj_content *obj_content)
 {
 	int				i;
+	uint32_t		vtn_indices[3];
 
 	i = -1;
+	vtn_indices[0] = 0;
+	vtn_indices[1] = 0;
+	vtn_indices[2] = 0;
 	while (++i < (int)obj_content->num_objects)
 	{
-		if (i == 0)
-			error_check(!l3d_is_valid_obj(&obj_content->objects[i],
-				(uint32_t[3]){0, 0, 0}),
-				"Invalid number of v, vt, vn or triangles");
-		else
-			error_check(!l3d_is_valid_obj(&obj_content->objects[i],
-				(uint32_t[3]){obj_content->objects[i - 1].num_vertices,
-				obj_content->objects[i - 1].num_v_text_coords,
-				obj_content->objects[i - 1].num_v_normals}),
-				"Invalid number of v, vt, vn or triangles");
+		if (i > 0)
+		{
+			vtn_indices[0] += obj_content->objects[i - 1].num_vertices;
+			vtn_indices[1] += obj_content->objects[i - 1].num_v_text_coords;
+			vtn_indices[2] += obj_content->objects[i - 1].num_v_normals;
+		}
+		error_check(!l3d_is_valid_obj(&obj_content->objects[i], vtn_indices),
+			"Invalid number of v, vt, vn or triangles");
 	}
 	return (true);
 }

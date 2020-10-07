@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 15:27:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:08:10 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 15:28:46 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj,
 	int		j;
 	int		v_i;
 	int		vt_i;
+	int		vn_i;
 
 	i = -1;
 	while (++i < (int)read_obj->num_triangles)
@@ -63,12 +64,11 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj,
 		{
 			v_i = read_obj->triangles[i * 9 + j * 3 + 0] - 1 - prev_i[0];
 			vt_i = read_obj->triangles[i * 9 + j * 3 + 1] - 1 - prev_i[1];
-			if (obj->vertices[v_i] == NULL)
-				error_check(!(obj->vertices[v_i] =
-					malloc(sizeof(t_vertex))), "Failed to malloc vertex");
-			ml_vector3_copy(read_obj->v[v_i], obj->vertices[v_i]->pos);
-			obj->vertices[v_i]->color = 0xFFFFFFFF;
-			ml_vector2_copy(read_obj->vt[vt_i], obj->vertices[v_i]->uv);
+			vn_i = read_obj->triangles[i * 9 + j * 3 + 2] - 1 - prev_i[2];
+			error_check(obj->vertices[v_i] == NULL && !(obj->vertices[v_i] =
+				malloc(sizeof(t_vertex))), "Failed to malloc vertex");
+			l3d_3d_object_set_vertex(obj->vertices[v_i], read_obj->v[v_i],
+				read_obj->vt[vt_i], read_obj->vt[vn_i]);
 		}
 		l3d_triangle_set(&obj->triangles[i],
 		obj->vertices[read_obj->triangles[i * 9 + 0 * 3 + 0] - 1 - prev_i[0]],
@@ -85,28 +85,31 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj,
 static t_3d_object		**l3d_3d_object_from_obj(t_obj_content *obj,
 						uint32_t *num_objects)
 {
-	t_3d_object	**l3d_objects;
-	int			i;
+	t_3d_object		**obj3ds;
+	int				i;
+	uint32_t		vtn_indices[3];
 
-	error_check(!(l3d_objects =
-		malloc(sizeof(*l3d_objects) * obj->num_objects)),
+	error_check(!(obj3ds = malloc(sizeof(*obj3ds) * obj->num_objects)),
 			"Failed to malloc 3d obj");
+	ft_memset(vtn_indices, 0, sizeof(vtn_indices));
 	i = -1;
 	while (++i < (int)obj->num_objects)
 	{
-		l3d_objects[i] = l3d_3d_object_create(obj->objects[i].num_vertices,
+		if (i > 0)
+		{
+			vtn_indices[0] += obj->objects[i - 1].num_vertices;
+			vtn_indices[1] += obj->objects[i - 1].num_v_text_coords;
+			vtn_indices[2] += obj->objects[i - 1].num_v_normals;
+		}
+		obj3ds[i] = l3d_3d_object_create(obj->objects[i].num_vertices,
 			obj->objects[i].num_triangles, obj->objects[i].num_v_text_coords);
-		obj_to_3d_object(&obj->objects[i], l3d_objects[i],
-			i == 0 ? (uint32_t[3]){0, 0, 0} :
-			(uint32_t[3]){obj->objects[i - 1].num_vertices,
-				obj->objects[i - 1].num_v_text_coords,
-				obj->objects[i - 1].num_v_normals});
-		l3d_objects[i]->num_triangles = obj->objects[i].num_triangles;
-		l3d_objects[i]->num_vertices = obj->objects[i].num_vertices;
+		obj_to_3d_object(&obj->objects[i], obj3ds[i], vtn_indices);
+		obj3ds[i]->num_triangles = obj->objects[i].num_triangles;
+		obj3ds[i]->num_vertices = obj->objects[i].num_vertices;
 		l3d_obj_content_free(&obj->objects[i]);
 	}
 	*num_objects = obj->num_objects;
-	return (l3d_objects);
+	return (obj3ds);
 }
 
 /*

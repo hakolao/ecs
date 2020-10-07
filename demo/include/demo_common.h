@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/29 15:16:49 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 15:39:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <SDL_ttf.h>
 # include "libft.h"
 # include "libecs.h"
+# include "lib3d.h"
 
 # define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 # define FONT "demo/assets/pixelated.ttf"

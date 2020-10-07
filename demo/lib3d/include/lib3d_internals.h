@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 16:07:48 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:11:51 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 12:26:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,63 @@
 # define LIB3D_INTERNALS_H
 
 # include "lib3d.h"
+
+# define L3D_MAX_BMP_WIDTH 65536
+
+/*
+** Make sure file header data alignment is correct
+*/
+
+# pragma pack(push)
+# pragma pack(1)
+
+/*
+** Don't use image size which can be zero for uncompressed bmps
+** https://elcharolin.wordpress.com/2018/11/28/read-and-write-bmp-files-in-c-c/
+*/
+
+typedef struct				s_bmp_file_header
+{
+	uint16_t	file_type;
+	uint32_t	size;
+	uint16_t	reserved1;
+	uint16_t	reserved2;
+	uint32_t	data_offset;
+	uint32_t	info_size;
+	int32_t		width;
+	int32_t		height;
+	uint16_t	color_planes;
+	uint16_t	bits_per_pixel;
+	uint32_t	compression_type;
+	uint32_t	image_size;
+	int32_t		pixels_per_meter_x;
+	int32_t		pixels_per_meter_y;
+	uint32_t	number_of_bit_map_colors;
+	uint32_t	number_of_important_colors;
+}							t_bmp_file_header;
+
+# pragma pack(pop)
+
+typedef struct				s_image_data
+{
+	unsigned char	*pixels;
+	uint32_t		width;
+	uint32_t		height;
+	uint32_t		bytes_per_pixel;
+}							t_image_data;
+
+typedef struct				s_raster_data
+{
+	float x1;
+	float x2;
+	float x3;
+	float y1;
+	float y2;
+	float y3;
+	float slope_ab;
+	float slope_bc;
+	float slope_ac;
+}							t_raster_data;
 
 /*
 ** OBJ reading

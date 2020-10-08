@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/07 15:37:14 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/08 17:21:25 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
 	t_vec3			direction;
 	uint32_t		new_color[4];
 
-	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hit(root, ray, FLT_MAX, &hit))
+	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hit(root, ray, &hit))
 	{
 		random_in_unit_sphere(random);
 		ml_vector3_add(hit.hit_point, hit.normal, target);

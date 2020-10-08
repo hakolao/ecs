@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/30 01:23:05 by ohakola          ###   ########.fr        #
+#    Updated: 2020/10/07 22:44:15 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,8 @@ test: all
 
 DIR_DEMO = ./demo
 LIBSDL2 = $(DIR_DEMO)/SDL2
+LIB3D = ./demo/lib3d
+LIBGMATRIX = ./demo/libgmatrix
 DEMO_SRCS = $(wildcard $(DIR_DEMO)/*.c)
 DEMO_FLAGS =  -lpthread -O2 \
 				-rpath $(LIBSDL2) \
@@ -73,7 +75,13 @@ DEMO_INCLUDES = -I$(DIR_DEMO)/include \
 DEMO_SQUARE_SRCS = $(wildcard $(DIR_DEMO)/demo_squares/*.c)
 demo_squares: all
 	@make -C $(LIBFT)
+	@make -C $(LIBGMATRIX)
+	@make -C $(LIB3D)
 	$(CC) -o demo_squares $(DEMO_SRCS) $(DEMO_SQUARE_SRCS) \
+		-I$(LIBGMATRIX)/include \
+		-I$(LIB3D)/include \
+		-L$(LIBGMATRIX) -lgmatrix \
+		-L$(LIB3D) -l3d \
 		-I$(DIR_DEMO)/demo_squares/include \
 		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
 	./demo_squares
@@ -81,8 +89,6 @@ demo_squares: all
 	@make clean
 
 DEMO_RC_SRCS = $(wildcard $(DIR_DEMO)/demo_raycast/*.c)
-LIBGMATRIX = ./demo/libgmatrix
-LIB3D = ./demo/lib3d
 demo_raycast: all
 	@make -C $(LIBFT)
 	@make -C $(LIBGMATRIX)

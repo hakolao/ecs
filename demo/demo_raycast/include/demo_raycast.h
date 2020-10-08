@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/07 16:13:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/07 22:33:53 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 typedef struct				s_scene
 {
-	t_3d_object				**objects;
+	t_3d_object				*objects[8];
 	uint32_t				num_objects;
 	t_kd_tree				*object_tree;
 	t_triangle				*triangle_ref[L3D_MAX_TRIANGLES];
@@ -111,8 +111,6 @@ void						update_scene_triangle_tree(t_scene *scene);
 ** 3d Object functions
 */
 
-void						l3d_3d_object_destroy(t_3d_object *object);
-void						obj_content_to_scene(t_scene *scene, t_obj_content *obj);
 void						read_objects_to_scene(t_scene *scene, const char *filename);
 
 /*

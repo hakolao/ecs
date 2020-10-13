@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:50:03 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:59:15 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/13 13:16:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,15 @@ uint64_t		ecs_system_index(t_ecs_world *world, uint64_t system_id)
 
 	get_res = hash_map_get(world->index_by_system, system_id);
 	return (get_res == 0 ? 0 : *(uint64_t*)&get_res);
+}
+
+t_bool			entity_matches_system(t_ecs_world *world,
+					uint64_t systems, uint64_t entity_index,
+					uint64_t system_index)
+{
+	return (contains_system(systems,
+		world->systems[system_index].system_id) &&
+		world->systems[system_index].system_id != ECS_SYSTEM_EMPTY &&
+		ecs_world_entity_contains(world->entities[entity_index],
+		world->systems[system_index].components_mask));
 }

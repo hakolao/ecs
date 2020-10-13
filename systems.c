@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/01 16:27:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/13 12:32:40 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if (system_and_entity_matches(world, systems, entity_index, i))
+			if (entity_matches_system(world, systems, entity_index, i))
 				world->systems[i].system_handle_func(world, entity_index);
 			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 				removed_systems++;

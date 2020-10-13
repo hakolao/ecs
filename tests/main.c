@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/01 17:48:48 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/13 12:57:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void		all_tests(void)
 	OH_RUN_TEST(test_world_system_run);
 	OH_RUN_TEST(test_world_system_run_many);
 	OH_RUN_TEST(test_world_system_run_many_entities);
+	OH_RUN_TEST(test_world_system_run_many_per_thread);
 	ft_printf("World component tests:\n");
 	OH_RUN_TEST(test_world_component_add);
 	OH_RUN_TEST(test_world_component_remove);

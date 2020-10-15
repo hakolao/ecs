@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/08 17:22:11 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/08 17:22:12 by ohakola          ###   ########.fr       */
+/*   Created: 2020/10/07 14:34:23 by ohakola           #+#    #+#             */
+/*   Updated: 2020/10/13 19:06:12 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # define L3D_TRI_VEC_INITIAL_CAPACITY 10
 
 # define L3D_MAX_OBJECTS 32
-# define L3D_MAX_TRIANGLES 16383
-# define L3D_MAX_VERTICES 16383
+# define L3D_MAX_TRIANGLES 16384
+# define L3D_MAX_VERTICES 16384
 
 /*
 ** OBJ file temporary structs. They are used in transfering obj data to final
@@ -122,8 +122,13 @@ typedef struct				s_plane
 {
 	t_vec3		origin;
 	t_vec3		normal;
+	float		d;
 }							t_plane;
 
+typedef struct				s_material
+{
+	uint32_t	*texture;
+}							t_material;
 
 /*
 ** Final 3d object struct to which obj file is transformed.
@@ -136,8 +141,10 @@ typedef struct				s_3d_object
 	int32_t			num_vertices;
 	t_triangle		*triangles;
 	int32_t			num_triangles;
-	t_vec2			*uvs;
-	int32_t			num_uvs;
+	t_material		material;
+	t_mat4			rotation;
+	t_mat4			scale;
+	t_vec3			position;
 }							t_3d_object;
 
 /*
@@ -222,8 +229,9 @@ t_bool						l3d_triangle_ray_hit(t_triangle *triangle,
 t_bool						l3d_bounding_box_ray_hit(t_box3d *box,
 								t_ray *ray, t_hit *hit);
 void						l3d_ray_set(t_vec3 dir, t_vec3 origin, t_ray *ray);
-void						l3d_triangle_hit_record_set(float afuvt[5], t_ray *ray,
-							t_triangle *triangle, t_hit *hit);
+void						l3d_triangle_hit_record_set(float afuvt[5],
+								t_ray *ray,
+								t_triangle *triangle, t_hit *hit);
 void						l3d_bounding_box_hit_record_set(float t,
 								t_ray *ray, t_hit *hit);
 t_bool						l3d_plane_ray_hit(t_plane *plane, t_ray *ray,
@@ -268,9 +276,14 @@ void						l3d_bounding_box_set(t_tri_vec *triangles,
 
 void						l3d_3d_object_transform(t_3d_object *obj,
 								t_mat4 transform);
+void						l3d_3d_object_translate(t_3d_object *object,
+								float x, float y, float z);
+void						l3d_3d_object_scale(t_3d_object *object,
+								float x, float y, float z);
+void						l3d_3d_object_rotate(t_3d_object *object,
+								float x, float y, float z);
 t_3d_object					*l3d_3d_object_create(uint32_t num_vertices,
-								uint32_t num_triangles,
-								uint32_t num_text_coords);
+								uint32_t num_triangles);
 void						l3d_3d_object_destroy(t_3d_object *object);
 void						l3d_3d_object_set_vertex(t_vertex *vertex,
 							t_vec3 pos, t_vec2 text, t_vec3 normal);
@@ -294,17 +307,17 @@ double						l3d_rand_d(void);
 */
 
 void						l3d_triangle_raster(uint32_t *buffer,
-												uint32_t *dimensions,
-												t_triangle *triangle,
-												t_vec2 *points_2d);
+								uint32_t *dimensions,
+								t_triangle *triangle,
+								t_vec2 *points_2d);
 
-	/*
+/*
 ** Plot pixel
 */
 
-	void l3d_pixel_plot(uint32_t *buffer,
-						uint32_t dimensions_wh[2], int32_t xy[2],
-						uint32_t color);
+void						l3d_pixel_plot(uint32_t *buffer,
+								uint32_t dimensions_wh[2], int32_t xy[2],
+								uint32_t color);
 
 /*
 ** Line draw

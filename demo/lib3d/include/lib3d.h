@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 14:34:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 19:06:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/15 17:59:28 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ typedef struct				s_vertex
 {
 	t_vec4			pos;
 	uint32_t		color;
-	t_vec2			uv;
-	t_vec3			normal;
 }							t_vertex;
 
 /*
@@ -98,6 +96,13 @@ typedef struct				s_box3d
 	float			xyz_max[3];
 }							t_box3d;
 
+typedef struct				s_material
+{
+	uint32_t	*texture;
+	uint32_t	width;
+	uint32_t	height;
+}							t_material;
+
 /*
 ** Triangle contains pointers to vertices (which get transformed over time)
 ** Center and normal should be updated if vertices are transformed.
@@ -106,12 +111,16 @@ typedef struct				s_box3d
 typedef struct				s_triangle
 {
 	t_vertex		*vtc[3];
+	t_vec2			uvs[3];
+	t_vec3			normals[3];
 	t_vec3			center;
 	t_vec3			normal;
 	t_bool			is_single_sided;
 	t_vec3			ab;
 	t_vec3			ac;
 	t_vertex		*ordered_vtc[3];
+	t_material		*material;
+	t_vec2			points_2d[3];
 }							t_triangle;
 
 /*
@@ -124,11 +133,6 @@ typedef struct				s_plane
 	t_vec3		normal;
 	float		d;
 }							t_plane;
-
-typedef struct				s_material
-{
-	uint32_t	*texture;
-}							t_material;
 
 /*
 ** Final 3d object struct to which obj file is transformed.
@@ -286,7 +290,7 @@ t_3d_object					*l3d_3d_object_create(uint32_t num_vertices,
 								uint32_t num_triangles);
 void						l3d_3d_object_destroy(t_3d_object *object);
 void						l3d_3d_object_set_vertex(t_vertex *vertex,
-							t_vec3 pos, t_vec2 text, t_vec3 normal);
+								t_vec3 pos);
 
 /*
 ** OBJ reading
@@ -307,17 +311,28 @@ double						l3d_rand_d(void);
 */
 
 void						l3d_triangle_raster(uint32_t *buffer,
-								uint32_t *dimensions,
-								t_triangle *triangle,
-								t_vec2 *points_2d);
+												uint32_t *dimensions,
+												t_triangle *triangle);
+void						l3d_calculate_bary_coords(
+													t_vec2 *triangle_points_2d,
+													t_vec2 point,
+													float *barycoords);
+void						l3d_interpolate_uv(t_triangle *triangle,
+												float *barycoords,
+												t_vec2 point_uv);
+uint32_t					l3d_sample_texture(uint32_t *texture_data,
+												int width,
+												int height, t_vec2 uv_point);
+
 
 /*
 ** Plot pixel
 */
 
-void						l3d_pixel_plot(uint32_t *buffer,
-								uint32_t dimensions_wh[2], int32_t xy[2],
-								uint32_t color);
+							void l3d_pixel_plot(uint32_t *buffer,
+												uint32_t dimensions_wh[2],
+												int32_t xy[2],
+												uint32_t color);
 
 /*
 ** Line draw

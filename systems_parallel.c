@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:59:45 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 22:04:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:27:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ static void		ecs_systems_run_entities_per_thread(void *params)
 
 	d = (t_system_parallel*)params;
 	world = *d->world;
-	if (world->num_entities == 0 || d->num_threads == 0 ||
-		d->entity_group->num_ids == 0)
+	if (world->num_entities == 0 || d->entity_group->num_ids == 0)
 		return ;
 	e_i = -1;
 	while (++e_i < d->entity_group->num_ids)
@@ -118,10 +117,10 @@ void			ecs_systems_run_parallel_on_entities(t_thread_pool *tp,
 					t_hash_table *entities_by_thread)
 {
 	int32_t					i;
-	t_system_parallel		data[tp->num_threads];
+	t_system_parallel		data[entities_by_thread->size];
 
 	i = -1;
-	while (++i < (int32_t)tp->num_threads)
+	while (++i < (int32_t)entities_by_thread->size)
 	{
 		data[i].num_threads = tp->num_threads;
 		data[i].systems = systems;

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/16 19:23:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 02:39:01 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/16 19:24:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void		all_tests(void)
 	OH_RUN_TEST(test_hash_map_get);
 	OH_RUN_TEST(test_hash_map_delete);
 	OH_RUN_TEST(test_hash_map_has_key);
-	OH_RUN_TEST(test_hash_map_foreach);
+	ft_printf("Thread pool tests: \n");
+	OH_RUN_TEST(test_thread_pool_run);
 }
 
 int				main(void)

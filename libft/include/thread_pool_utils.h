@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tests.h                                            :+:      :+:    :+:   */
+/*   thread_pool_utils.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/16 19:23:54 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/16 19:23:01 by ohakola          ###   ########.fr       */
+/*   Created: 2020/10/16 16:47:50 by ohakola           #+#    #+#             */
+/*   Updated: 2020/10/18 21:45:58 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TESTS_H
-# define TESTS_H
+#ifndef THREAD_POOL_UTILS_H
+# define THREAD_POOL_UTILS_H
 
-const char		*test_hash_map_create(void);
-const char		*test_hash_map_add(void);
-const char		*test_hash_map_get(void);
-const char		*test_hash_map_delete(void);
-const char		*test_hash_map_has_key(void);
-const char		*test_thread_pool_run(void);
+# include "thread_pool.h"
+
+t_thread_work	*thread_pool_work_create(t_thread_work_func work_func,
+					void *params);
+void			thread_pool_work_destroy(t_thread_work *work);
+t_thread_work	*thread_pool_work_get(t_thread_pool *thread_pool);
+t_bool			thread_pool_worker_synchronize(t_thread_pool *thread_pool);
 
 #endif

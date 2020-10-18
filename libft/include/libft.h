@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/07 15:43:46 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/16 16:56:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <pthread.h>
 # include "t_bool.h"
 # include "hash_map.h"
+# include "thread_pool.h"
 
 typedef struct	s_list
 {

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/01 17:45:30 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 13:05:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:01:33 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ const char		*test_world_system_run_many_entities(void)
 
 const char		*test_world_system_run_many_per_thread(void)
 {
+	t_thread_pool	*tp;
 	t_system		system;
 	t_ecs_world		*world;
 	uint64_t		e_i;
 	uint64_t		num_entities;
 	t_hash_table	*ents_map;
 
+	tp = thread_pool_create(2);
 	ents_map = hash_map_create(2);
 	system.system_id = 5;
 	system.system_handle_func = mock_system_handle;
@@ -87,7 +89,8 @@ const char		*test_world_system_run_many_per_thread(void)
 		.ids = (uint64_t[5]){0, 1, 2, 3, 4}, .num_ids = 5});
 	hash_map_add(ents_map, 1, &(t_entity_id_group){
 		.ids = (uint64_t[5]){5, 6, 7, 8, 9}, .num_ids = 5});
-	ecs_systems_run_parallel_on_entities(2, world, system.system_id, ents_map);
+	ecs_systems_run_parallel_on_entities(tp, world, system.system_id, ents_map);
 	hash_map_destroy(ents_map);
+	thread_pool_destroy(tp);
 	return (test_multiple(world, num_entities));
 }

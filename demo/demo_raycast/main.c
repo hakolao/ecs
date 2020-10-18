@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/28 16:13:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:07:45 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void			recreate_after_resize(t_app *app)
 static void			systems_run(t_app *app)
 {
 	systems_params_update(app);
-	ecs_systems_run_parallel(NUM_THREADS, app->world, system_render);
+	ecs_systems_run_parallel(app->thread_pool, app->world, system_render);
 }
 
 static void 		player_action_handle(t_app *app, SDL_Event event)
@@ -139,6 +139,7 @@ static void			app_cleanup(t_app *app)
 	t_scene	*data;
 
 	data = (t_scene*)app->data;
+	thread_pool_destroy(app->thread_pool);
 	demo_scene_destroy(app);
 	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
@@ -156,6 +157,7 @@ int					main(void)
 	t_app		app;
 	t_scene		data;
 
+	app.thread_pool = thread_pool_create(NUM_THREADS);
 	app.info.fps = 0;
 	app.info.delta_time = 0;
 	data.ray_samples = RAY_SAMPLES;

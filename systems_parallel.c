@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:59:45 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 13:17:24 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:04:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,48 +86,44 @@ static void		ecs_systems_run_entities_per_thread(void *params)
 ** will cause unexpected bugs. Only run this on component updates.
 */
 
-void			ecs_systems_run_parallel(int32_t num_threads,
+void			ecs_systems_run_parallel(t_thread_pool *tp,
 					t_ecs_world *world, uint64_t systems)
 {
-	pthread_t				threads[num_threads];
 	int32_t					i;
-	t_system_parallel		data[num_threads];
+	t_system_parallel		data[tp->num_threads];
 	uint64_t				max_num_entities;
 
 	i = -1;
 	max_num_entities = world->num_entities + (world->next_vacancy_index + 1);
-	while (++i < num_threads)
+	while (++i < (int32_t)tp->num_threads)
 	{
-		data[i].num_threads = num_threads;
+		data[i].num_threads = tp->num_threads;
 		data[i].systems = systems;
 		data[i].thread_id = i;
 		data[i].world = &world;
-		data[i].min_entity_index = i * (max_num_entities / num_threads);
+		data[i].min_entity_index = i * (max_num_entities / tp->num_threads);
 		data[i].max_entity_index = (i + 1) *
-			(max_num_entities / num_threads);
-		if (i == num_threads - 1)
+			(max_num_entities / tp->num_threads);
+		if (i == (int32_t)tp->num_threads - 1)
 			data[i].max_entity_index = max_num_entities;
-		if (pthread_create(&threads[i], NULL, (void*)ecs_systems_run_per_thread,
-			&data[i]))
-			ft_dprintf(2, "Failed to create thread.\n");
+		if (!thread_pool_add_work(tp,
+			(void*)ecs_systems_run_per_thread, &data[i]))
+			ft_dprintf(2, "Failed to add work to thread pool.\n");
 	}
-	i = -1;
-	while (++i < num_threads)
-		pthread_join(threads[i], NULL);
+	thread_pool_wait(tp);
 }
 
-void			ecs_systems_run_parallel_on_entities(int32_t num_threads,
+void			ecs_systems_run_parallel_on_entities(t_thread_pool *tp,
 					t_ecs_world *world, uint64_t systems,
 					t_hash_table *entities_by_thread)
 {
-	pthread_t				threads[num_threads];
 	int32_t					i;
-	t_system_parallel		data[num_threads];
+	t_system_parallel		data[tp->num_threads];
 
 	i = -1;
-	while (++i < num_threads)
+	while (++i < (int32_t)tp->num_threads)
 	{
-		data[i].num_threads = num_threads;
+		data[i].num_threads = tp->num_threads;
 		data[i].systems = systems;
 		data[i].thread_id = i;
 		data[i].world = &world;
@@ -135,11 +131,9 @@ void			ecs_systems_run_parallel_on_entities(int32_t num_threads,
 			(t_entity_id_group*)hash_map_get(entities_by_thread, i);
 		if (data[i].entity_group == NULL)
 			ft_dprintf(2, "Invalid entities by thread input\n");
-		if (pthread_create(&threads[i], NULL,
+		if (!thread_pool_add_work(tp,
 			(void*)ecs_systems_run_entities_per_thread, &data[i]))
-			ft_dprintf(2, "Failed to create thread.\n");
+			ft_dprintf(2, "Failed to add work to thread pool.\n");
 	}
-	i = -1;
-	while (++i < num_threads)
-		pthread_join(threads[i], NULL);
+	thread_pool_wait(tp);
 }

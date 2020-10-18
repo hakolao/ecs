@@ -134,7 +134,7 @@ void entities_create(t_app *app)
 ```c
 // multiple systems inputted like: system_move | system_render
 ecs_systems_run(app->world, system_move);
-ecs_systems_run_parallel(NUM_THREADS, app->world, system_move);
+ecs_systems_run_parallel(app->thread_pool, app->world, system_move);
 ```
 
 5. Update system params if needed, e.g. delta time. Though before ecs_systems_run.

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:57:55 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 21:39:44 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 21:54:47 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,24 @@ t_thread_pool			*thread_pool_create(size_t num_threads)
 	pthread_t		thread;
 	size_t			i;
 
-	if (num_threads == 0)
-		num_threads = 2;
 	error_check(!(thread_pool = malloc(sizeof(*thread_pool))),
 		"Failed to malloc thread pool");
 	thread_pool->num_threads_working = 0;
 	thread_pool->num_jobs = 0;
 	thread_pool->stop = false;
-	thread_pool->num_threads_alive = num_threads;
+	thread_pool->num_threads = num_threads == 0 ? 2 : num_threads;
 	pthread_mutex_init(&thread_pool->work_mutex, NULL);
 	pthread_cond_init(&thread_pool->work_to_process, NULL);
 	pthread_cond_init(&thread_pool->threads_vacant_all, NULL);
 	thread_pool->work_first = NULL;
 	thread_pool->work_last = NULL;
 	i = -1;
-	while (++i < num_threads)
+	while (++i < thread_pool->num_threads)
 	{
 		error_check(pthread_create(&thread, NULL, (void*)thread_pool_worker,
 			thread_pool) != 0, "Failed create thread");
 		error_check(pthread_detach(thread) != 0, "Failed to detach thread");
+		thread_pool->num_threads_alive++;
 	}
 	return (thread_pool);
 }

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 17:10:31 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/07 15:39:37 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:05:38 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "libecs.h"
 # include "lib3d.h"
 
+# define NUM_THREADS 8
 # define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 # define FONT "demo/assets/pixelated.ttf"
 # define FONT_SIZE 20
@@ -65,6 +66,7 @@ typedef struct				s_app
 	t_info					info;
 	t_ecs_world				*world;
 	void					*data;
+	t_thread_pool			*thread_pool;
 }							t_app;
 
 /*

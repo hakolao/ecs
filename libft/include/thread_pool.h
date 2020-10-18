@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 15:47:10 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 21:28:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 21:52:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct					s_thread_pool
 	pthread_mutex_t		work_mutex;
 	pthread_cond_t		work_to_process;
 	pthread_cond_t		threads_vacant_all;
+	size_t				num_threads;
 	volatile size_t		num_threads_working;
 	volatile size_t		num_threads_alive;
 	volatile size_t		num_jobs;

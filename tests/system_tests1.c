@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:15:19 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/01 17:54:08 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:02:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ const char		*test_world_system_run_many(void)
 	t_system		system;
 	t_ecs_world		*world;
 	t_position		*pos;
+	t_thread_pool	*tp;
 
+	tp = thread_pool_create(2);
 	system.system_id = 5;
 	system.system_handle_func = mock_system_handle;
 	system.components_mask = comp_position;
@@ -117,11 +119,12 @@ const char		*test_world_system_run_many(void)
 	OH_ASSERT("Systems run did not work right\n", pos->x = 15 && pos->y == 28);
 	ecs_world_entity_add(world, 1, &(t_component){.id = comp_position, .size =
 		sizeof(t_position), .data = &(t_position){.x = 5, .y = 10}});
-	ecs_systems_run_parallel(8, world, system.system_id);
+	ecs_systems_run_parallel(tp, world, system.system_id);
 	pos = (t_position*)ecs_world_entity_component_get(world, 1,
 		comp_position);
 	OH_ASSERT("Systems run parallel did not work right\n",
 		pos->x = 15 && pos->y == 28);
 	ecs_world_destroy(world);
+	thread_pool_destroy(tp);
 	return (0);
 }

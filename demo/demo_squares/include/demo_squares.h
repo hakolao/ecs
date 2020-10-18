@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/22 17:26:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:05:07 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define DEMO_SQUARES_H
 
 # include "demo_common.h"
-
-# define NUM_THREADS 8
 
 # define NAME "Demo World"
 

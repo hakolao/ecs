@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/15 15:37:12 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:05:11 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "demo_common.h"
 # include "libgmatrix.h"
 # include "lib3d.h"
-
-# define NUM_THREADS 8
 
 # define NAME "Demo Raycast"
 

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/24 18:04:09 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/18 22:07:50 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ static void			recreate_after_resize(t_app *app)
 static void			systems_run(t_app *app)
 {
 	systems_params_update(app);
-	ecs_systems_run_parallel(NUM_THREADS, app->world, system_zbuffer);
-	ecs_systems_run_parallel(NUM_THREADS, app->world,
+	ecs_systems_run_parallel(app->thread_pool, app->world, system_zbuffer);
+	ecs_systems_run_parallel(app->thread_pool, app->world,
 		system_forces | system_render | system_reset);
 }
 
@@ -109,6 +109,7 @@ static void			main_loop(t_app *app)
 
 static void			app_cleanup(t_app *app)
 {
+	thread_pool_destroy(app->thread_pool);
 	ecs_world_destroy(app->world);
 	free(app->window->framebuffer);
 	SDL_DestroyRenderer(app->window->renderer);
@@ -125,6 +126,7 @@ int					main(void)
 	t_app	app;
 	t_bool	is_gravity;
 
+	app.thread_pool = thread_pool_create(NUM_THREADS);
 	app.info.fps = 0;
 	app.info.delta_time = 0;
 	is_gravity = true;

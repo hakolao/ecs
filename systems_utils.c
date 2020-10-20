@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:50:03 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 13:16:55 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/20 15:22:19 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_bool			entity_matches_system(t_ecs_world *world,
 {
 	return (contains_system(systems,
 		world->systems[system_index].system_id) &&
-		world->systems[system_index].system_id != ECS_SYSTEM_EMPTY &&
 		ecs_world_entity_contains(world->entities[entity_index],
 		world->systems[system_index].components_mask));
 }

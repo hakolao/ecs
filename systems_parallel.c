@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:59:45 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 22:27:19 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/20 15:20:55 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ static void		ecs_systems_run_per_thread(void *params)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if (entity_matches_system(*data->world, data->systems, e_i, i))
-				world->systems[i].system_handle_func(world, e_i);
-			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
+			if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 				removed_systems++;
+			else if (entity_matches_system(*data->world, data->systems, e_i, i))
+				world->systems[i].system_handle_func(world, e_i);
 		}
 	}
 }
@@ -47,12 +47,12 @@ static void		run_system_on_entity(t_system_parallel *data,
 	t_ecs_world			*world;
 
 	world = *data->world;
-	if (entity_matches_system(*data->world, data->systems,
+	if (world->systems[system_i].system_id == ECS_SYSTEM_EMPTY)
+		(*removed_systems)++;
+	else if (entity_matches_system(*data->world, data->systems,
 		data->entity_group->ids[e_i], system_i))
 		world->systems[system_i].system_handle_func(world,
 			data->entity_group->ids[e_i]);
-	else if (world->systems[system_i].system_id == ECS_SYSTEM_EMPTY)
-		(*removed_systems)++;
 }
 
 static void		ecs_systems_run_entities_per_thread(void *params)

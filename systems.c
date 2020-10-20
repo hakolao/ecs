@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/15 23:07:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 12:32:40 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/10/20 15:22:24 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ void			ecs_systems_run(t_ecs_world *world, uint64_t systems)
 		removed_systems = 0;
 		while (++i < world->num_systems + removed_systems)
 		{
-			if (entity_matches_system(world, systems, entity_index, i))
-				world->systems[i].system_handle_func(world, entity_index);
-			else if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
+			if (world->systems[i].system_id == ECS_SYSTEM_EMPTY)
 				removed_systems++;
+			else if (entity_matches_system(world, systems, entity_index, i))
+				world->systems[i].system_handle_func(world, entity_index);
 		}
 	}
 }
@@ -109,7 +109,7 @@ void			ecs_systems_run_single(t_ecs_world *world, uint64_t system_id)
 	t_system	system;
 	uint64_t	max_num_entities;
 
-	if (world->num_entities == 0 ||
+	if (system_id == ECS_SYSTEM_EMPTY || world->num_entities == 0 ||
 		!hash_map_has_key(world->index_by_system, system_id))
 		return ;
 	system = world->systems[ecs_system_index(world, system_id)];

@@ -3,15 +3,11 @@
 A parallelized entity component system written in C using a limited number of c libraries
 for self education purposes.
 
-I've tested the performance with a million simple square entities moving (1 pixel sized) on screen at 24fps with 2017 macbook pro, but not more than that unless I end up using this in my projects (Usually I don't make anything that I don't use, but this ECS project was done to learn the ECS concept, and possibly to be used in school 42 projects if deemed useful :D).
-
 ## Run
 
 ```
 git clone https://github.com/hakolao/ecs.git && cd ecs
 make demo_squares # runs a visual demo, if you wish to edit parameters, go to demo/demo_squares/include/demo_squares.h
-# Or if you're courageous, try the simple raytrace attempt:
-make demo_raycast # Just an attempt to place rays as entities to the world...
 make test # runs tests
 ```
 

@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/12/09 19:03:55 by ohakola          ###   ########.fr        #
+#    Updated: 2020/12/10 00:01:25 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
 TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)
 test: all
 	@make -C $(LIBFT)
-	$(CC) -lpthread -O3 -lto \
+	$(CC) -lpthread -O3 -flto \
 		-o test_run $(TEST_SRCS) -I$(DIR_TESTS)/include \
 			 -L$(LIBFT) -lft $(FLAGS) $(INCLUDES) $(NAME)
 	./test_run
@@ -88,22 +88,6 @@ demo_squares: all
 	@/bin/rm -f main.o
 	@make clean
 
-DEMO_RC_SRCS = $(wildcard $(DIR_DEMO)/demo_raycast/*.c)
-demo_raycast: all
-	@make -C $(LIBFT)
-	@make -C $(LIBGMATRIX)
-	@make -C $(LIB3D)
-	$(CC) -o demo_raycast $(DEMO_SRCS) $(DEMO_RC_SRCS) \
-		-I$(LIBGMATRIX)/include \
-		-I$(LIB3D)/include \
-		-L$(LIBGMATRIX) -lgmatrix \
-		-L$(LIB3D) -l3d \
-		-I$(DIR_DEMO)/demo_raycast/include \
-		$(FLAGS) $(INCLUDES) $(DEMO_INCLUDES) $(DEMO_FLAGS) $(NAME)
-	./demo_raycast
-	@/bin/rm -f main.o
-	@make clean
-
 clean:
 	@/bin/rm -f $(OBJS)
 	@/bin/rm -rf $(DIR_OBJ)
@@ -116,7 +100,6 @@ fclean: clean
 	@make -C $(LIBFT) fclean
 	@make -C $(LIBGMATRIX) fclean
 	@make -C $(LIB3D) fclean
-	@if [ -a demo_raycast ]; then rm demo_raycast; fi;
 	@if [ -a demo_squares ]; then rm demo_squares; fi;
 	@if [ -a test_run ]; then rm test_run; fi;
 

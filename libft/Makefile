@@ -6,11 +6,11 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/15 14:43:04 by ohakola           #+#    #+#              #
-#    Updated: 2020/10/16 19:23:32 by ohakola          ###   ########.fr        #
+#    Updated: 2020/12/07 19:56:25 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = clang
+CC = gcc
 NAME = libft.a
 DIR_SRC = ./
 DIR_OBJ = temp
@@ -141,7 +141,7 @@ SOURCES = ft_atoi.c \
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))
 INC=-I./include/
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -O3 -flto
 
 all: $(DIR_OBJ) $(NAME)
 
@@ -156,7 +156,7 @@ $(DIR_OBJ):
 	@mkdir -p temp/thread_pool
 
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
-	@$(CC) $(FLAGS) $(INC) -c -o $@ $<
+	@$(CC) -c -o $@ $< $(FLAGS) $(INC)
 
 DIR_TESTS = ./tests
 TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)

@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 19:20:36 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/08 17:21:25 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/12/09 19:03:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,28 +76,37 @@ void						random_in_unit_sphere(t_vec3 res)
 ** https://www.realtimerendering.com/raytracing/Ray%20Tracing%20in%20a%20Weekend.pdf
 */
 
-static uint32_t				color(t_kd_node *root, t_ray *ray, uint32_t bounces)
+static uint32_t				color(t_kd_tree *tree, t_ray *ray, uint32_t bounces)
 {
-	t_hit			hit;
+	t_hits			*hits;
+	t_hit			*hit;
 	t_vec3			target;
 	t_vec3			random;
 	t_ray			new_ray;
 	t_vec3			direction;
 	uint32_t		new_color[4];
 
-	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hit(root, ray, &hit))
+	hits = NULL;
+	if (bounces < MAX_BOUNCES && l3d_kd_tree_ray_hits(tree,
+		ray->origin, ray->dir, &hits))
 	{
-		random_in_unit_sphere(random);
-		ml_vector3_add(hit.hit_point, hit.normal, target);
-		ml_vector3_add(target, random, target);
-		ml_vector3_sub(target, hit.hit_point, direction);
-		l3d_ray_set(direction, hit.hit_point, &new_ray);
-		l3d_u32_to_rgba(color(root, &new_ray, bounces + 1), new_color);
-		new_color[0] *= 0.5;
-		new_color[1] *= 0.5;
-		new_color[2] *= 0.5;
-		new_color[3] *= 0.5;
-		return (l3d_rgba_to_u32(new_color));
+		l3d_get_closest_hit(hits, &hit);
+		if (hit != NULL)
+		{
+			random_in_unit_sphere(random);
+			ml_vector3_add(hit->hit_point, hit->normal, target);
+			ml_vector3_add(target, random, target);
+			ml_vector3_sub(target, hit->hit_point, direction);
+			l3d_ray_set(direction, hit->hit_point, &new_ray);
+			l3d_u32_to_rgba(color(tree, &new_ray, bounces + 1), new_color);
+			new_color[0] *= 0.5;
+			new_color[1] *= 0.5;
+			new_color[2] *= 0.5;
+			new_color[3] *= 0.5;
+			return (l3d_rgba_to_u32(new_color));
+		}
+		l3d_delete_hits(&hits);
+
 	}
 	return (color_default(ray));
 }
@@ -122,7 +131,7 @@ static void					system_render_handle(t_ecs_world *world,
 		entity_index, comp_pixel);
 	i = -1;
 	while (++i < data->ray_samples)
-		colors[i] = color(data->object_tree->root, &rays[i], 0);
+		colors[i] = color(data->object_tree, &rays[i], 0);
 	app->window->framebuffer[pixel->y * app->window->width + pixel->x] =
 		average_color(colors, data->ray_samples);
 }

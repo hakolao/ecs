@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 22:43:43 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/13 19:05:34 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:22:07 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/07 14:29:41 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,6 @@ void				l3d_read_obj_triangle_line(char **str,
 		tmp++;
 	if (*tmp != '\n')
 		error_check(true, "Invalid triangle, read_obj expect faces to be "
-			"triangles e.g. (1/1/1/ 2/2/2 3/3/3\n");
+			"triangles e.g. (1/1/1/ 2/2/2 3/3/3)\n");
 	ft_scroll_over(str, '\n');
 }

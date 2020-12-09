@@ -6,11 +6,11 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/09/30 02:02:03 by ohakola          ###   ########.fr        #
+#    Updated: 2020/12/09 18:54:58 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = clang
+CC = gcc
 NAME = libgmatrix.a
 LIBFT = ../../libft
 DIR_SRC = ./
@@ -22,6 +22,7 @@ SOURCES = ml_matrix4_id.c \
 			ml_matrix4_mul_vec.c \
 			ml_matrix4_projection.c \
 			ml_matrix4_rotation.c \
+			ml_matrix4_general_rotation.c \
 			ml_matrix4_rotate.c \
 			ml_matrix4_view.c \
 			ml_print1.c \
@@ -48,13 +49,18 @@ SOURCES = ml_matrix4_id.c \
 			ml_vector2_mag.c \
 			ml_vector2_sub.c \
 			ml_vector2_normalize.c \
+			ml_vector2_mul.c \
+			ml_vector2_dot.c \
+			ml_vector2_add.c \
 			ml_matrix4_translation.c \
-			ml_matrix4_copy.c
+			ml_matrix4_copy.c \
+			ml_matrix3_create.c \
+			ml_matrix3_mul_vec3.c
 
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))
 INCLUDES = -I ./include -I $(LIBFT)/include
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -O3 -flto
 
 all: $(DIR_OBJ) $(NAME)
 

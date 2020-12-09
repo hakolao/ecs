@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 18:09:20 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/07 15:40:05 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/12/09 18:57:14 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void				render_text(t_app *app, t_text_params params)
 	SDL_Surface	*surface;
 
 	surface = surface_from_font(app, params);
-	l3d_framebuffer_image_place(
+	l3d_image_place(
 		&(t_surface){.h = app->window->height,
 			.w = app->window->width,
 			.pixels = app->window->framebuffer},

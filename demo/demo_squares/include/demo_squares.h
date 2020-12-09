@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 22:05:07 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/12/09 19:05:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 # define NAME "Demo World"
 
-# define MAX_ENTITIES 10000
-# define ENTITY_SIZE 30
+# define MAX_ENTITIES 1000000
+# define ENTITY_SIZE 1
 
 # define CONST_GRAVITY 9.81
 # define CONST_MOVEMENT 1.0

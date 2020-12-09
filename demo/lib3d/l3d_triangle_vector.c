@@ -5,12 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/23 13:53:28 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 00:35:01 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:22:07 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:23:36 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib3d.h"
+
+t_tri_vec		*l3d_triangle_vec_with_capacity(uint32_t capacity)
+{
+	t_tri_vec	*vector;
+
+	if ((!(vector = malloc(sizeof(t_tri_vec))) ||
+		!(vector->triangles = malloc(sizeof(t_triangle*) * capacity))) &&
+		ft_dprintf(2, "Failed to malloc triangle vector\n"))
+		exit(1);
+	vector->size = 0;
+	vector->capacity = capacity;
+	return (vector);
+}
 
 /*
 ** Creates an empty triangle vector.
@@ -69,7 +82,7 @@ void			l3d_triangle_vec_push(t_tri_vec *vector, t_triangle *triangle)
 	uint32_t	new_capacity;
 	int			i;
 
-	if (vector->size < vector->capacity - 1)
+	if (vector->size < vector->capacity)
 		vector->triangles[vector->size++] = triangle;
 	else
 	{

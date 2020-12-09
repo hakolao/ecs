@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/15 14:42:13 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/16 16:56:06 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:15:47 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/07 21:13:06 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 
 # define BUFF_SIZE 50
 # define MAX_FD 65536
-# define FILE_READ_BUF 1024
+# define FILE_READ_BUF 65536
 
-# include <string.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -88,6 +87,7 @@ typedef struct	s_file_contents
 {
 	void				*buf;
 	uint32_t			size;
+	uint32_t			capacity;
 }				t_file_contents;
 
 int				ft_isalnum(int c);
@@ -178,8 +178,7 @@ void			ft_sort_int_tab(int *tab, unsigned int size, int dir);
 long double		ft_abs_long_double(long double nb);
 int				ft_match(char *s1, char *s2);
 void			ft_strrev(char *str);
-size_t			get_num_len(long long unsigned int nb,
-				long long unsigned int base);
+size_t			get_num_len(uint64_t nb, uint64_t base);
 void			ft_capitalize(char *str);
 void			ft_uncapitalize(char *str);
 long double		ft_powl(long double nb, int pow);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 15:27:49 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/15 17:59:28 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:22:07 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:48:34 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@
 
 void					l3d_obj_content_allocate(t_obj *o)
 {
-	error_check(!(o->v = malloc(sizeof(t_vec3) * L3D_MAX_VERTICES)),
+	error_check(!(o->v = malloc(sizeof(t_vec3) * L3D_MAX_OBJ_VERTICES)),
 		"Failed to malloc obj vs");
-	error_check(!(o->vt = malloc(sizeof(t_vec2) * L3D_MAX_VERTICES)),
+	error_check(!(o->vt = malloc(sizeof(t_vec2) * L3D_MAX_OBJ_VERTICES)),
 		"Failed to malloc obj v textures");
-	error_check(!(o->vn = malloc(sizeof(t_vec3) * L3D_MAX_VERTICES)),
+	error_check(!(o->vn = malloc(sizeof(t_vec3) * L3D_MAX_OBJ_VERTICES)),
 		"Failed to malloc obj v normals");
 	error_check(!(o->triangles =
-		malloc(sizeof(uint32_t) * 9 * L3D_MAX_TRIANGLES)),
+		malloc(sizeof(uint32_t) * 9 * L3D_MAX_OBJ_TRIANGLES)),
 		"Failed to malloc obj triangles");
 }
 
-/*
-** Frees obj data struct's malloced content
-*/
-
-void					l3d_obj_content_free(t_obj *o)
+static void				set_3d_object_triangles_and_indices(
+							t_obj *in, t_3d_object *out, int32_t i)
 {
-	free(o->v);
-	free(o->vt);
-	free(o->vn);
-	free(o->triangles);
+	out->triangles[i].vtc_indices[0] = in->triangles[i * 9 + 0 * 3 + 0] - 1;
+	out->triangles[i].vtc_indices[1] = in->triangles[i * 9 + 1 * 3 + 0] - 1;
+	out->triangles[i].vtc_indices[2] = in->triangles[i * 9 + 2 * 3 + 0] - 1;
+	l3d_triangle_set(&out->triangles[i], (t_vertex*[3]){
+		out->vertices[out->triangles[i].vtc_indices[0]],
+		out->vertices[out->triangles[i].vtc_indices[1]],
+		out->vertices[out->triangles[i].vtc_indices[2]]}, out);
 }
 
 /*
@@ -47,33 +47,28 @@ void					l3d_obj_content_free(t_obj *o)
 ** read...
 */
 
-static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
+static void				obj_to_3d_object(t_obj *in, t_3d_object *out)
 {
-	int		i;
-	int		j;
-	int		v_i;
-	int		vt_i;
-	int		vn_i;
+	int32_t		i;
+	int32_t		j;
+	int32_t		v_i;
+	int32_t		vt_i;
+	int32_t		vn_i;
 
 	i = -1;
-	while (++i < (int)read_obj->num_triangles)
+	while (++i < (int32_t)in->num_triangles)
 	{
 		j = -1;
 		while (++j < 3)
 		{
-			v_i = read_obj->triangles[i * 9 + j * 3 + 0] - 1;
-			vt_i = read_obj->triangles[i * 9 + j * 3 + 1] - 1;
-			vn_i = read_obj->triangles[i * 9 + j * 3 + 2] - 1;
-			error_check(obj->vertices[v_i] == NULL && !(obj->vertices[v_i] =
-				malloc(sizeof(t_vertex))), "Failed to malloc vertex");
-			l3d_3d_object_set_vertex(obj->vertices[v_i], read_obj->v[v_i]);
-			ml_vector2_copy(read_obj->vt[vt_i], obj->triangles[i].uvs[j]);
-			ml_vector3_copy(read_obj->vn[vn_i], obj->triangles[i].normals[j]);
+			v_i = in->triangles[i * 9 + j * 3 + 0] - 1;
+			vt_i = in->triangles[i * 9 + j * 3 + 1] - 1;
+			vn_i = in->triangles[i * 9 + j * 3 + 2] - 1;
+			l3d_3d_object_set_vertex(out->vertices[v_i], in->v[v_i]);
+			ml_vector2_copy(in->vt[vt_i], out->triangles[i].uvs[j]);
+			ml_vector3_copy(in->vn[vn_i], out->triangles[i].normals[j]);
 		}
-		l3d_triangle_set(&obj->triangles[i],
-			obj->vertices[read_obj->triangles[i * 9 + 0 * 3 + 0] - 1],
-			obj->vertices[read_obj->triangles[i * 9 + 1 * 3 + 0] - 1],
-			obj->vertices[read_obj->triangles[i * 9 + 2 * 3 + 0] - 1]);
+		set_3d_object_triangles_and_indices(in, out, i);
 	}
 }
 
@@ -82,17 +77,24 @@ static void				obj_to_3d_object(t_obj *read_obj, t_3d_object *obj)
 ** array. Saves the number of objects to inputed num_objects ref.
 */
 
-static t_3d_object		*l3d_3d_object_from_obj(t_obj *obj)
+static t_3d_object		*l3d_3d_object_from_obj(t_obj *obj, t_surface *texture,
+							t_surface *normal_map)
 {
 	t_3d_object	*l3d_object;
 
-	error_check(!(l3d_object = malloc(sizeof(*l3d_object))),
-		"Failed to malloc 3d obj");
 	l3d_object = l3d_3d_object_create(obj->num_vertices, obj->num_triangles);
+	if (texture)
+		l3d_object->material->texture = texture;
+	if (normal_map)
+		l3d_object->material->normal_map = normal_map;
 	obj_to_3d_object(obj, l3d_object);
 	l3d_object->num_triangles = obj->num_triangles;
 	l3d_object->num_vertices = obj->num_vertices;
-	l3d_obj_content_free(obj);
+	free(obj->v);
+	free(obj->vt);
+	free(obj->vn);
+	free(obj->triangles);
+	l3d_object_aabb_update(l3d_object);
 	return (l3d_object);
 }
 
@@ -102,15 +104,16 @@ static t_3d_object		*l3d_3d_object_from_obj(t_obj *obj)
 ** is not returned.
 */
 
-t_3d_object				*l3d_read_obj(const char *filename)
+t_3d_object				*l3d_read_obj(const char *filename, t_surface *texture,
+							t_surface *normal_map)
 {
 	t_file_contents	*obj_file;
 	t_obj			obj;
 
-	error_check(!(obj_file = read_file(filename)), "Failed to read file");
+	error_check(!(obj_file = read_file(filename)), "Failed read obj file");
 	l3d_obj_str_parse((char*)obj_file->buf, &obj);
 	if (!l3d_is_valid_obj(&obj))
 		return (NULL);
 	destroy_file_contents(obj_file);
-	return (l3d_3d_object_from_obj(&obj));
+	return (l3d_3d_object_from_obj(&obj, texture, normal_map));
 }

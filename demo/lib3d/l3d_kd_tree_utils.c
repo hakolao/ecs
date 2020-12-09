@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/23 18:02:15 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 03:14:47 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:22:07 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:22:51 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void			kd_node_print_recursive(t_kd_node *root)
 	if (root != NULL)
 	{
 		ft_printf("Triangles: %d\n", root->triangles->size);
+		ft_printf("Depth: %d\n", root->depth);
 		ft_printf("uuid: %d\nbbox.center: [%0.2f %0.2f %0.2f]\n"
 			"axis: %c\n"
 			"bbox.size: [%0.2f %0.2f %0.2f]\n"

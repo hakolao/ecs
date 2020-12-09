@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:46:27 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 22:05:11 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/12/09 18:56:37 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@
 
 # define RAY_SAMPLES 4
 # define MAX_BOUNCES 4
+# define MAX_TRIANGLES 65536
 
 typedef struct				s_scene
 {
 	t_3d_object				*objects[8];
 	uint32_t				num_objects;
 	t_kd_tree				*object_tree;
-	t_triangle				*triangle_ref[L3D_MAX_TRIANGLES];
+	t_triangle				*triangle_ref[MAX_TRIANGLES];
 	uint32_t				num_triangles;
 	t_vec3					camera_pos;
 	float					fov;

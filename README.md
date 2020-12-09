@@ -1,6 +1,7 @@
 # LibECS
 
-An entity component system written in C using a limited number of c libraries.
+An entity component system written in C using a limited number of c libraries
+for self education purposes.
 
 ## Run
 

@@ -6,7 +6,7 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/10/07 22:44:15 by ohakola          ###   ########.fr        #
+#    Updated: 2020/12/09 19:03:55 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SOURCES = entities.c \
 SRCS = $(addprefix $(DIR_SRC)/,$(SOURCES))
 OBJS = $(addprefix $(DIR_OBJ)/,$(SOURCES:.c=.o))
 INCLUDES = -I ./include -I $(LIBFT)/include
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -O3 -flto
 
 all: $(DIR_OBJ) $(NAME)
 
@@ -46,7 +46,7 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c
 TEST_SRCS =$(wildcard $(DIR_TESTS)/*.c)
 test: all
 	@make -C $(LIBFT)
-	$(CC) -lpthread -O2 \
+	$(CC) -lpthread -O3 -lto \
 		-o test_run $(TEST_SRCS) -I$(DIR_TESTS)/include \
 			 -L$(LIBFT) -lft $(FLAGS) $(INCLUDES) $(NAME)
 	./test_run
@@ -62,7 +62,7 @@ LIBSDL2 = $(DIR_DEMO)/SDL2
 LIB3D = ./demo/lib3d
 LIBGMATRIX = ./demo/libgmatrix
 DEMO_SRCS = $(wildcard $(DIR_DEMO)/*.c)
-DEMO_FLAGS =  -lpthread -O2 \
+DEMO_FLAGS =  -lpthread -O3 -flto \
 				-rpath $(LIBSDL2) \
 				-framework SDL2 -F$(LIBSDL2)/ \
 				-framework SDL2_image -F$(LIBSDL2)/ \

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/16 17:00:11 by ohakola           #+#    #+#             */
-/*   Updated: 2020/08/16 17:01:55 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:17:23 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:18:18 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 float		ml_vector3_dot(t_vec3 v1, t_vec3 v2)
 {
-	size_t		i;
+	int			i;
 	float		res;
 
 	i = -1;

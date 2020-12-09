@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 14:55:40 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/02 20:11:32 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:22:07 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:50:00 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,35 @@ void				l3d_triangle_vec_midpoint(t_tri_vec *triangles, t_vec3 res)
 }
 
 /*
-** Updates triangle normals. (Usually used after vertice pos changes)
-*/
-
-void				l3d_triangle_normal_update(t_triangle *triangle)
-{
-	ml_vector3_cross(triangle->ab, triangle->ac, triangle->normal);
-}
-
-/*
 ** Sets triangle values
 */
 
-void				l3d_triangle_set(t_triangle *triangle,
-					t_vertex *vtc1, t_vertex *vtc2, t_vertex *vtc3)
+void				l3d_triangle_set(t_triangle *triangle, t_vertex *vtc[3],
+						t_3d_object *obj)
 {
+	triangle->material = obj->material;
 	triangle->is_single_sided = L3D_SINGLE_SIDED;
-	triangle->vtc[0] = vtc1;
-	triangle->vtc[1] = vtc2;
-	triangle->vtc[2] = vtc3;
+	triangle->vtc[0] = vtc[0];
+	triangle->vtc[1] = vtc[1];
+	triangle->vtc[2] = vtc[2];
 	l3d_triangle_centroid_update(triangle);
 	l3d_triangle_normal_update(triangle);
+}
+
+void				l3d_triangle_destroy(t_triangle *triangle,
+						t_bool with_vertices)
+{
+	int32_t	i;
+
+	if (with_vertices)
+	{
+		i = -1;
+		while (++i < 3)
+		{
+			free(triangle->vtc[i]);
+			triangle->vtc[i] = NULL;
+		}
+	}
+	free(triangle);
+	triangle = NULL;
 }

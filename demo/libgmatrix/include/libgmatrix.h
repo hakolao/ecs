@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/17 13:11:01 by ohakola           #+#    #+#             */
-/*   Updated: 2020/09/30 01:50:33 by ohakola          ###   ########.fr       */
+/*   Created: 2020/12/06 17:17:23 by ohakola           #+#    #+#             */
+/*   Updated: 2020/12/06 17:20:05 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef float		t_vec2[2];
 typedef float		t_vec3[3];
 typedef float		t_vec4[4];
 typedef t_vec4		t_mat4[4];
+typedef t_vec3		t_mat3[3];
 
 typedef struct		s_canvas
 {
@@ -45,6 +46,9 @@ void				ml_vector2_print(t_vec2 v);
 float				ml_vector2_mag(t_vec2 v);
 void				ml_vector2_sub(t_vec2 v1, t_vec2 v2, t_vec2 res);
 void				ml_vector2_normalize(t_vec2 v, t_vec2 res);
+void				ml_vector2_mul(t_vec2 v1, float k, t_vec2 res);
+float				ml_vector2_dot(t_vec2 v1, t_vec2 v2);
+void				ml_vector2_add(t_vec2 v1, t_vec2 v2, t_vec2 res);
 
 void				ml_vector3_add(t_vec3 v1, t_vec3 v2, t_vec3 res);
 void				ml_vector3_sub(t_vec3 v1, t_vec3 v2, t_vec3 res);
@@ -71,7 +75,17 @@ void				ml_vector4_copy(t_vec4 src, t_vec4 dest);
 void				ml_vector4_set_all(t_vec4 vec, float val);
 
 /*
-** Matrix
+**	Matrix3
+*/
+
+void				ml_matrix3_column(t_vec3 column1, t_vec3 column2,
+										t_vec3 column3, t_mat3 res);
+void				ml_matrix3_row(t_vec3 row1, t_vec3 row2,
+										t_vec3 row3, t_mat3 res);
+void				ml_matrix3_mul_vec3(t_mat3 m, t_vec3 v, t_vec3 res);
+
+/*
+**	Matrix4
 */
 
 void				ml_matrix4_id(t_mat4 res);
@@ -89,6 +103,8 @@ void				ml_matrix4_rotation_x(float rad, t_mat4 res);
 void				ml_matrix4_rotation_y(float rad, t_mat4 res);
 void				ml_matrix4_rotation_z(float rad, t_mat4 res);
 void				ml_matrix4_rotation(float rad_x, float rad_y, float rad_z,
+					t_mat4 res);
+void				ml_matrix4_general_rotation(t_vec3 axis, float rad_angle,
 					t_mat4 res);
 void				ml_matrix4_rotate_x(t_mat4 m, float rad, t_mat4 res);
 void				ml_matrix4_rotate_y(t_mat4 m, float rad, t_mat4 res);
@@ -108,5 +124,6 @@ void				ml_vector4_print(t_vec3 v);
 void				ml_vector4_to_str(t_vec3 v, char *res);
 void				ml_matrix4_to_str(t_mat4 m, char *res);
 void				ml_vector3_to_str(t_vec3 v, char *res);
+void				ml_vector2_to_str(t_vec3 v, char *res);
 
 #endif

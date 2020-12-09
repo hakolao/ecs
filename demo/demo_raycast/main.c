@@ -6,7 +6,7 @@
 /*   By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/17 17:13:23 by ohakola           #+#    #+#             */
-/*   Updated: 2020/10/18 22:07:45 by ohakola          ###   ########.fr       */
+/*   Updated: 2020/12/09 23:50:44 by ohakola          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,11 @@ int					main(void)
 {
 	t_app		app;
 	t_scene		data;
+	int32_t		cpu_count;
 
-	app.thread_pool = thread_pool_create(NUM_THREADS);
+	cpu_count = SDL_GetCPUCount();
+	app.thread_pool =
+		thread_pool_create(cpu_count > NUM_THREADS ? cpu_count : NUM_THREADS);
 	app.info.fps = 0;
 	app.info.delta_time = 0;
 	data.ray_samples = RAY_SAMPLES;

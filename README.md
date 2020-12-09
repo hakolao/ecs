@@ -1,6 +1,6 @@
 # LibECS
 
-An entity component system written in C using a limited number of c libraries
+A parallelized entity component system written in C using a limited number of c libraries
 for self education purposes.
 
 I've tested the performance with a million simple square entities moving (1 pixel sized) on screen at 24fps with 2017 macbook pro, but not more than that unless I end up using this in my projects (Usually I don't make anything that I don't use, but this ECS project was done to learn the ECS concept, and possibly to be used in school 42 projects if deemed useful :D).

@@ -6,11 +6,11 @@
 #    By: ohakola <ohakola@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/17 13:09:18 by ohakola           #+#    #+#              #
-#    Updated: 2020/12/10 00:01:25 by ohakola          ###   ########.fr        #
+#    Updated: 2020/12/14 13:38:23 by ohakola          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = clang
+CC = gcc
 NAME = libecs.a
 LIBFT = ./libft
 DIR_SRC = ./
